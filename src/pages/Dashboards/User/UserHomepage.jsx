@@ -202,6 +202,7 @@ const DashboardLayout = () => {
       <div className={`flex-grow transition-all duration-300 ${open ? "ml-64" : "ml-20"}`}>
         {/* Content */}
         <div className={`p-4 transition-all duration-300 ${open ? "pl-10" : "pl-4"}`}>
+        <Outlet />
           <h1 className="text-2xl font-semibold text-gray-800">Main dashboard</h1>
         </div>
       </div>
