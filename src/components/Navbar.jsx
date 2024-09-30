@@ -18,6 +18,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const NavItem = ({ icon, text, isActive, onClick, isMobile = false }) => (
   <motion.li 
@@ -81,24 +82,33 @@ const ProfileDropdown = ({ auth, setAuth }) => {
         className="flex items-center space-x-2 p-2 rounded-md text-purple-600 hover:text-white hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 transition-colors duration-200"
       >
         <User size={20} />
-        <span className="hidden md:inline">{auth.fullName}</span>
+        <Link to={`/user/${auth.username}`} className="hidden md:inline">{auth.fullName}</Link>
         <ChevronDown size={16} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </motion.button>
       
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-            <a href="#profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Your Profile</a>
-            <a href="#settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Settings</a>
-            <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">Sign out</button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+  <AnimatePresence>
+    {isOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.2 }}
+        className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+        <a href="#profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          Your Profile
+        </a>
+        <a href="#settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          Settings
+        </a>
+        <button
+          onClick={handleLogout}
+          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+          Sign out
+        </button>
+      </motion.div>
+    )}
+  </AnimatePresence>
+
     </div>
   );
 };

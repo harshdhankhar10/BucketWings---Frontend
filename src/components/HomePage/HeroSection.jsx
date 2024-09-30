@@ -44,11 +44,11 @@ export const HeroSection = () => {
   ];
 
   return (
-    <div className="px-4 bg-gradient-to-b from-purple-900 to-indigo-900 min-h-screen text-white overflow-hidden">
+    <div className=" bg-gradient-to-b from-purple-900 to-indigo-900 min-h-screen text-white overflow-hidden">
       <div className="relative h-screen">
         <ParallaxBackground imgUrl={features[activeFeature].imgUrl} />
-        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent" />
-        <div className="absolute inset-0 flex flex-col justify-center items-center px-4">
+        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent " />
+        <div className="absolute inset-0 flex flex-col justify-center items-center px-4 ">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeFeature}
