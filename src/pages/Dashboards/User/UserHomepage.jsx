@@ -14,7 +14,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 
 const DashboardLayout = () => {
   const [open, setOpen] = useState(true);
@@ -41,9 +41,9 @@ const DashboardLayout = () => {
       title: "Goals",
       icon: FiTarget,
       submenus: [
-        { title: "View All Goals", link: "#" },
-        { title: "Create New Goal", link: "#" },
-        { title: "Completed Goals", link: "#" },
+        { title: "View All Goals", link: "/dashboard/user/myGoals" },
+        { title: "Create New Goal", link: "/dashboard/user/create-goal" },
+        // { title: "Completed Goals", link: "#" },
       ],
     },
     {
@@ -203,7 +203,6 @@ const DashboardLayout = () => {
         {/* Content */}
         <div className={`p-4 transition-all duration-300 ${open ? "pl-10" : "pl-4"}`}>
         <Outlet />
-          <h1 className="text-2xl font-semibold text-gray-800">Main dashboard</h1>
         </div>
       </div>
     </div>
@@ -277,6 +276,7 @@ const MenuOption = ({
             >
               <AnimatePresence>
                 {open && (
+                  <Link to={submenu.link}>
                   <motion.span
                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: "auto" }}
@@ -285,6 +285,7 @@ const MenuOption = ({
                   >
                     {submenu.title}
                   </motion.span>
+                  </Link>
                 )}
               </AnimatePresence>
             </div>

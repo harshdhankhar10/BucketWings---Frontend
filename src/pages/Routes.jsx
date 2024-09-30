@@ -13,6 +13,11 @@ import PrivateRoute from './PrivateRoute'
 
 // User Dashboard Pages
 import UserHomepage from './Dashboards/User/UserHomepage'
+import MainDashboard from './Dashboards/User/MainDashboard'
+import CreateGoal from './Dashboards/User/Goal Management/CreateGoal'
+import MyGoals from './Dashboards/User/Goal Management/MyGoals'
+import ViewGoal from './Dashboards/User/Goal Management/ViewGoal'
+import EditGoal from './Dashboards/User/Goal Management/EditGoal'
 
 
 // Admin Dashboard Pages
@@ -30,8 +35,15 @@ const RoutesPath = () => {
 
 
       {/* Private Routes */}
-      <Route path="/dashboard/user" element={<PrivateRoute />}>
-        <Route path="" element={<UserHomepage />} />
+      <Route path="/dashboard/" element={<PrivateRoute />}>
+        <Route path="user" element={<UserHomepage />} >
+          <Route path="" element={<MainDashboard />} />
+          <Route path="create-goal" element={<CreateGoal />} />
+          <Route path="myGoals" element={<MyGoals />} />
+          <Route path="view-goal/:id" element={<ViewGoal />} />
+          <Route path="edit-goal/:id" element={<EditGoal />} />
+        </Route>
+       
       </Route>
 
       {/* Admin Private Routes */}\
