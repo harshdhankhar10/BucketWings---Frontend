@@ -18,6 +18,10 @@ import CreateGoal from './Dashboards/User/Goal Management/CreateGoal'
 import MyGoals from './Dashboards/User/Goal Management/MyGoals'
 import ViewGoal from './Dashboards/User/Goal Management/ViewGoal'
 import EditGoal from './Dashboards/User/Goal Management/EditGoal'
+import CreateStory from './Dashboards/User/Story Management/CreateStory'
+import ViewStory from './Dashboards/User/Story Management/ViewStory'
+import EditStory from './Dashboards/User/Story Management/EditStory'
+import MyStories from './Dashboards/User/Story Management/MyStories'
 
 
 // Admin Dashboard Pages
@@ -42,6 +46,16 @@ const RoutesPath = () => {
           <Route path="myGoals" element={<MyGoals />} />
           <Route path="view-goal/:id" element={<ViewGoal />} />
           <Route path="edit-goal/:id" element={<EditGoal />} />
+
+          <Route path="create-story" element={<CreateStory />} />
+          <Route path="myStories" element={<MyStories />} />
+          <Route path="view-story/:id" element={<ViewStory />} />
+          <Route path="edit-story/:id" element={<EditStory />} />
+         
+
+          
+          
+
         </Route>
        
       </Route>

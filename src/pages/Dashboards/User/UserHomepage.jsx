@@ -13,6 +13,10 @@ import {
   FiHelpCircle,
   FiLogOut,
 } from "react-icons/fi";
+import { TbBrandStorytel } from "react-icons/tb";
+import { VscMilestone } from "react-icons/vsc";
+
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Outlet, Link } from "react-router-dom";
 
@@ -47,6 +51,14 @@ const DashboardLayout = () => {
       ],
     },
     {
+      title : "Stories",
+      icon : TbBrandStorytel,
+      submenus : [
+        {title : "View All Stories", link : "/dashboard/user/myStories"},
+        {title : "Create New Story", link : "/dashboard/user/create-story"},
+        ]
+    },
+    {
       title: "Tasks",
       icon: FiCheckSquare,
       submenus: [
@@ -54,6 +66,16 @@ const DashboardLayout = () => {
         { title: "Create New Task", link: "#" },
         { title: "Pending Tasks", link: "#" },
         { title: "Completed Tasks", link: "#" },
+      ],
+    },
+    {
+      title: "Milestones",
+      icon: VscMilestone,
+      submenus: [
+        { title: "View All Milestones", link: "#" },
+        { title: "Create New Milestone", link: "#" },
+        { title: "Pending Milestones", link: "#" },
+        { title: "Completed Milestones", link: "#" },
       ],
     },
     {
