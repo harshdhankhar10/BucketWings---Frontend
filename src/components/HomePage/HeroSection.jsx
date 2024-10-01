@@ -12,31 +12,31 @@ export const HeroSection = () => {
       content: "Easily set personal and professional goals with BucketWing. Create actionable plans, track your progress, and stay motivated as you work towards achieving your aspirations.",
     },
     {
-      imgUrl: "https://images.unsplash.com/photo-1511056995740-3a1dcbb1d7e5?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imgUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       subheading: "Collaboration",
       heading: "Share your journey",
       content: "Collaborate with friends and family by sharing your goals. Get support, encouragement, and accountability from your network as you all work towards your individual objectives.",
     },
     {
-      imgUrl: "https://images.unsplash.com/photo-1554191248-5691c5ecb1f1?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imgUrl: "https://plus.unsplash.com/premium_photo-1670213989453-7d03000c3fdf?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       subheading: "Progress Tracking",
       heading: "Stay on track with ease",
       content: "Visualize your progress with interactive charts and reminders. BucketWing helps you see how far you've come and what steps you need to take to achieve your goals on time.",
     },
     {
-      imgUrl: "https://images.unsplash.com/photo-1589648048828-63c7e3cc3f43?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imgUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       subheading: "Community Support",
       heading: "Join a like-minded community",
       content: "Become part of a vibrant community where you can share experiences, seek advice, and find inspiration. Engage in discussions and learn from others who are on similar journeys.",
     },
     {
-      imgUrl: "https://images.unsplash.com/photo-1575544972308-cf20619efc0e?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imgUrl: "https://cdn1.expresscomputer.in/wp-content/uploads/2024/02/27105647/EC_Digital_Library_technology_750.jpg",
       subheading: "Resource Library",
       heading: "Tools and tips for success",
       content: "Access a wealth of resources, including articles, videos, and guides designed to help you succeed. Equip yourself with knowledge and strategies to overcome challenges.",
     },
     {
-      imgUrl: "https://images.unsplash.com/photo-1560845175-33b88eac3b20?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imgUrl: "https://plus.unsplash.com/premium_photo-1713628398566-12b20ca5b862?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       subheading: "Achievements Showcase",
       heading: "Celebrate your victories",
       content: "Document and showcase your achievements as you reach your goals. Share your milestones with your community and receive recognition for your hard work and dedication.",
@@ -47,7 +47,7 @@ export const HeroSection = () => {
     <div className=" bg-gradient-to-b from-purple-900 to-indigo-900 min-h-screen text-white overflow-hidden">
       <div className="relative h-screen">
         <ParallaxBackground imgUrl={features[activeFeature].imgUrl} />
-        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent " />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#E0E7FF] to-transparent " />
         <div className="absolute inset-0 flex flex-col justify-center items-center px-4 ">
           <AnimatePresence mode="wait">
             <motion.div

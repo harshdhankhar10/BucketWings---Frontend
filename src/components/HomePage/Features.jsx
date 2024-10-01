@@ -1,142 +1,82 @@
-import React, { useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { FiArrowUpRight, FiChevronDown, FiChevronUp, FiChevronLeft, FiChevronRight} from "react-icons/fi";
+import React from 'react';
+import { BookOpen, Target, Calendar, Trophy, BarChart, Users } from 'lucide-react';
 
-export const EnhancedFeatureHeroSection = () => {
-  const [activeFeature, setActiveFeature] = useState(0);
-  const features = [
-    {
-      imgUrl: "https://images.unsplash.com/photo-1610540604745-3e96fba9ccef?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8R29hbCUyMFNldHRpbmd8ZW58MHx8MHx8fDA%3D",
-      subheading: "Goal Setting",
-      heading: "Dream it, plan it, achieve it",
-      content: "Easily set personal and professional goals with BucketWing. Create actionable plans, track your progress, and stay motivated as you work towards achieving your aspirations.",
-    },
-    {
-      imgUrl: "https://images.unsplash.com/photo-1511056995740-3a1dcbb1d7e5?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Collaboration",
-      heading: "Share your journey",
-      content: "Collaborate with friends and family by sharing your goals. Get support, encouragement, and accountability from your network as you all work towards your individual objectives.",
-    },
-    {
-      imgUrl: "https://images.unsplash.com/photo-1554191248-5691c5ecb1f1?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Progress Tracking",
-      heading: "Stay on track with ease",
-      content: "Visualize your progress with interactive charts and reminders. BucketWing helps you see how far you've come and what steps you need to take to achieve your goals on time.",
-    },
-    {
-      imgUrl: "https://images.unsplash.com/photo-1589648048828-63c7e3cc3f43?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Community Support",
-      heading: "Join a like-minded community",
-      content: "Become part of a vibrant community where you can share experiences, seek advice, and find inspiration. Engage in discussions and learn from others who are on similar journeys.",
-    },
-    {
-      imgUrl: "https://images.unsplash.com/photo-1575544972308-cf20619efc0e?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Resource Library",
-      heading: "Tools and tips for success",
-      content: "Access a wealth of resources, including articles, videos, and guides designed to help you succeed. Equip yourself with knowledge and strategies to overcome challenges.",
-    },
-    {
-      imgUrl: "https://images.unsplash.com/photo-1560845175-33b88eac3b20?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Achievements Showcase",
-      heading: "Celebrate your victories",
-      content: "Document and showcase your achievements as you reach your goals. Share your milestones with your community and receive recognition for your hard work and dedication.",
-    },
-  ];
-  
+const features = [
+  {
+    icon: Target,
+    title: "Goal Setting & Tracking",
+    description: "Set clear objectives and track your progress with intuitive visual tools. Our smart reminders keep you motivated and on track to achieve your dreams."
+  },
+  {
+    icon: Calendar,
+    title: "Intelligent Scheduling",
+    description: "Optimize your time with AI-powered scheduling. Our system learns your preferences and productivity patterns to suggest the best times for tasks and meetings."
+  },
+  {
+    icon: Trophy,
+    title: "Achievement Showcase",
+    description: "Celebrate your wins, big and small. Our achievement system gamifies your progress, making productivity feel rewarding and fun."
+  },
+  {
+    icon: BarChart,
+    title: "Insightful Analytics",
+    description: "Gain deep insights into your productivity trends with beautiful, easy-to-understand charts and reports. Make data-driven decisions to continuously improve your performance."
+  },
+  {
+    icon: Users,
+    title: "Seamless Collaboration",
+    description: "Work effortlessly with your team. Share tasks, goals, and progress updates in real-time. Our collaboration tools make teamwork smooth and enjoyable."
+  },
+  {
+    icon: BookOpen,
+    title: "Learning Resources",
+    description: "Access a curated library of productivity tips, courses, and expert advice. Continuously improve your skills and stay updated with the latest productivity techniques."
+  }
+];
+
+const FeatureCard = ({ icon: Icon, title, description }) => (
+  <div className="bg-white rounded-lg shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+    <div className="flex items-center mb-4">
+      <div className="bg-indigo-100 rounded-full p-3 mr-4">
+        <Icon className="w-6 h-6 text-indigo-600" />
+      </div>
+      <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
+    </div>
+    <p className="text-gray-600">{description}</p>
+  </div>
+);
+
+const Features = () => {
   return (
-    <div className=" bg-gradient-to-b from-purple-900 to-indigo-900 min-h-screen text-white overflow-hidden">
-
-      <div className="relative h-screen">
-        <ParallaxBackground imgUrl={features[activeFeature].imgUrl} />
-        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent" />
-        <div className="absolute inset-0 flex flex-col justify-center items-center px-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeFeature}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="text-center relative -top-16"
-            >
-              <h2 className="text-2xl md:text-4xl font-semibold mb-2 text-purple-300">
-                {features[activeFeature].subheading}
-              </h2>
-              <h1 className="text-4xl md:text-7xl font-bold mb-6 max-w-4xl mx-auto leading-tight">
-                {features[activeFeature].heading}
-              </h1>
-              <p className="text-xl md:text-2xl max-w-2xl mx-auto mb-8">
-                {features[activeFeature].content}
-              </p>
-              <button className="bg-white text-purple-900 px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-100 transition-colors inline-flex items-center">
-                Start Your Journey <FiArrowUpRight className="ml-2" />
-              </button>
-            </motion.div>
-          </AnimatePresence>
+    <div className="bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            Powerful Features to Boost Your Productivity
+          </h2>
+          <p className="mt-4 text-xl text-gray-600">
+            Discover tools designed to help you achieve more and work smarter.
+          </p>
         </div>
-        <FeatureNavigation
-          activeFeature={activeFeature}
-          setActiveFeature={setActiveFeature}
-          totalFeatures={features.length}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard key={index} {...feature} />
+          ))}
+        </div>
+        <div className="mt-12 text-center">
+          <a
+            href="#"
+            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition duration-300 ease-in-out"
+          >
+            Get Started
+            <svg className="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   );
 };
 
-const ParallaxBackground = ({ imgUrl }) => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end start"],
-  });
-
-  const scale = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0.2]);
-
-  return (
-    <motion.div
-      ref={targetRef}
-      style={{
-        backgroundImage: `url(${imgUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        scale,
-        opacity,
-      }}
-      className="absolute inset-0"
-    />
-  );
-};
-
-const FeatureNavigation = ({ activeFeature, setActiveFeature, totalFeatures }) => {
-  return (
-    <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 flex space-x-4">
-      <button
-        onClick={() => setActiveFeature((prev) => (prev - 1 + totalFeatures) % totalFeatures)}
-        className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors"
-      >
-        <FiChevronLeft className="w-6 h-6" />
-      </button>
-      <div className="flex items-center space-x-2">
-        {Array.from({ length: totalFeatures }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveFeature(index)}
-            className={`w-3 h-3 rounded-full transition-colors ${
-              index === activeFeature ? "bg-white" : "bg-white/50 hover:bg-white/80"
-            }`}
-          />
-        ))}
-      </div>
-      <button
-        onClick={() => setActiveFeature((prev) => (prev + 1) % totalFeatures)}
-        className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors"
-      >
-        <FiChevronRight className="w-6 h-6" />
-      </button>
-    </div>
-  );
-};
-
-export default EnhancedFeatureHeroSection;
+export default Features;
