@@ -142,7 +142,7 @@ const NavBar = () => {
             whileTap={{ scale: 0.95 }}
             className="flex-shrink-0 text-purple-600 font-bold text-3xl"
           >
-            BucketWings
+            <Link to="/">BucketWings</Link>
           </motion.div>
           
           <div className="hidden lg:flex items-center space-x-8">
@@ -172,6 +172,7 @@ const NavBar = () => {
             {auth ? (
               <ProfileDropdown auth={auth} setAuth={setAuth} />
             ) : (
+              <Link to="/login">
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -180,6 +181,7 @@ const NavBar = () => {
                 <LogIn size={20} />
                 <span className="hidden md:inline">Login</span>
               </motion.button>
+              </Link>
             )}
           </div>
           
@@ -261,12 +263,13 @@ const NavBar = () => {
               </div>
             ) : (
               <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
-                <button 
-                  className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-purple-600 hover:bg-purple-700"
+                <Link to="/login">
+                <button className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-purple-600 hover:bg-purple-700"
                 >
                   <LogIn size={20} className="mr-2" />
                   Login
                 </button>
+                </Link>
               </div>
             )}
           </motion.div>

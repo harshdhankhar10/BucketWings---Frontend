@@ -14,14 +14,23 @@ import PrivateRoute from './PrivateRoute'
 // User Dashboard Pages
 import UserHomepage from './Dashboards/User/UserHomepage'
 import MainDashboard from './Dashboards/User/MainDashboard'
+import UpdateProfile from './Dashboards/User/Profile Management/UpdateProfile'
+
 import CreateGoal from './Dashboards/User/Goal Management/CreateGoal'
 import MyGoals from './Dashboards/User/Goal Management/MyGoals'
 import ViewGoal from './Dashboards/User/Goal Management/ViewGoal'
 import EditGoal from './Dashboards/User/Goal Management/EditGoal'
+
 import CreateStory from './Dashboards/User/Story Management/CreateStory'
 import ViewStory from './Dashboards/User/Story Management/ViewStory'
 import EditStory from './Dashboards/User/Story Management/EditStory'
 import MyStories from './Dashboards/User/Story Management/MyStories'
+
+import FilterTasks from './Dashboards/User/Task Management/FilterTasks'
+import CreateTask from './Dashboards/User/Task Management/CreateTask'
+import MyTasks from './Dashboards/User/Task Management/MyTasks'
+import UpdateTask from './Dashboards/User/Task Management/UpdateTask'
+import TaskDashboard from './Dashboards/User/Task Management/TaskDashboard'
 
 
 // Admin Dashboard Pages
@@ -42,6 +51,7 @@ const RoutesPath = () => {
       <Route path="/dashboard/" element={<PrivateRoute />}>
         <Route path="user" element={<UserHomepage />} >
           <Route path="" element={<MainDashboard />} />
+          <Route path="update-profile" element={<UpdateProfile />} />
           <Route path="create-goal" element={<CreateGoal />} />
           <Route path="myGoals" element={<MyGoals />} />
           <Route path="view-goal/:id" element={<ViewGoal />} />
@@ -51,6 +61,12 @@ const RoutesPath = () => {
           <Route path="myStories" element={<MyStories />} />
           <Route path="view-story/:id" element={<ViewStory />} />
           <Route path="edit-story/:id" element={<EditStory />} />
+
+          <Route path="create-task" element={<CreateTask />} />
+          <Route path="my-tasks" element={<MyTasks />} />
+          <Route path="update-task/:id" element={<UpdateTask />} />
+          <Route path="filter-tasks" element={<FilterTasks />} />
+          <Route path="task-dashboard" element={<TaskDashboard />} />
          
 
           

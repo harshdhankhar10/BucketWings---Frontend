@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { UserCircle, Mail, Calendar, Shield, Clock, FileText, User, Home, Settings, Bell, LogOut } from 'lucide-react';
+import { UserCircle, Mail, Calendar, Shield, Clock, FileText, User, Home, Settings, Bell, LogOut, Users } from 'lucide-react';
 import NavBar from '../components/Navbar';
-
+import { toast } from 'react-toastify';
 
 const ProfileItem = ({ icon, label, value }) => (
   <div className="flex items-center space-x-2 mb-4">
@@ -35,10 +35,25 @@ const MyProfile = () => {
     fetchUserData();
   }, [username]);
 
+  const handleShareProfile = async ()=>{
+    try {
+      await navigator.share({
+        title: "Share Profile",
+        text: `Check out ${user.fullName}'s profile on our platform.`,
+        url: window.location.href,
+      });
+    } catch (error) {
+      console.error("Error sharing profile:", error);
+      toast.error("Error sharing profile. Please try again.");
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      <NavBar />
-      <div className="flex">
+ <>
+    <NavBar />
+     <div className="min-h-screen bg-gray-100">
+    
+      <div className="">
         <main className="flex-1 p-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -62,22 +77,27 @@ const MyProfile = () => {
                     <h1 className="text-3xl font-bold text-center mt-4">{user.fullName}</h1>
                     <p className="text-purple-200 text-center font-medium">@{user.username}</p>
                   </div>
+                  <div className="bg-white/20 rounded-lg p-4 mb-6">
+                    <div className="flex items-center justify-center space-x-2">
+                      <Users className="text-white" size={24} />
+                      <span className="text-2xl font-bold">{user.follower || 0}</span>
+                    </div>
+                    <p className="text-center text-sm mt-1">Followers</p>
+                  </div>
                   <div className="space-y-2">
                     {auth && (
-                     <div>
-                    <Link to={`/dashboard/${auth.role}`} className="flex items-center space-x-2 mb-2 bg-white text-purple-700 px-4 rounded-lg hover:bg-purple-100 transition-colors">
-                        <button className="w-full bg-white text-purple-600 py-2 rounded-lg hover:bg-purple-100 transition-colors">
-                        Go to Dashboard
-                        </button>
-                    </Link>
-                     <Link to="/settings" className="flex items-center space-x-2 bg-white text-purple-700 px-4 rounded-lg hover:bg-purple-100 transition-colors">
-                      <button className="w-full bg-white text-purple-600 py-2 rounded-lg hover:bg-purple-100 transition-colors">
-                      Edit Profile
-                    </button>
-                      </Link>
-                     </div>
+                      <div>
+                        <Link to={`/dashboard/${auth.role}`} className="flex items-center space-x-2 mb-2 bg-white text-purple-700 px-4 rounded-lg hover:bg-purple-100 transition-colors">
+                          <button className="w-full bg-white text-purple-600 py-2 rounded-lg hover:bg-purple-100 transition-colors">
+                            Go to Dashboard
+                          </button>
+                        </Link>
+                       
+                      </div>
                     )}
-                    <button className="w-full bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-800 transition-colors">
+                    <button
+                      onClick={handleShareProfile}
+                     className="w-full bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-800 transition-colors">
                       Share Profile
                     </button>
                   </div>
@@ -97,12 +117,13 @@ const MyProfile = () => {
                     <p className="text-gray-600">{user.bio || "No bio provided"}</p>
                   </div>
                   <div className="mt-8 flex space-x-4">
-                    <button className="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition-colors">
+                  {
+                    auth && (
+                      <button className="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition-colors">
                       Message
                     </button>
-                    <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                      Follow
-                    </button>
+                    )
+                  }
                   </div>
                 </div>
               </div>
@@ -113,6 +134,7 @@ const MyProfile = () => {
         </main>
       </div>
     </div>
+ </>
   );
 };
 

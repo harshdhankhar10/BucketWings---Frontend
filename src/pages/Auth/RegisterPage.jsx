@@ -4,7 +4,7 @@ import { Calendar, Globe, Mail, Lock, User, Camera, User2Icon } from 'lucide-rea
 import axios from 'axios';
 import NavBar from '../../components/Navbar';
 import { toast } from 'react-toastify';
-
+import {useNavigate, Link} from 'react-router-dom';
 const SignupForm = () => {
   // Separate individual fields using useState
   const [fullName, setFullName] = useState('');
@@ -17,6 +17,7 @@ const SignupForm = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [subscribeNewsletter, setSubscribeNewsletter] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -102,6 +103,8 @@ const SignupForm = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        navigate('/login');
+        
       } else {
         toast.error(response.data.message);
       }

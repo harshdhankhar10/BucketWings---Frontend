@@ -15,11 +15,11 @@ const LoginPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const storedAuth = JSON.parse(localStorage.getItem("auth"));
+    const storedAuth = JSON.parse(localStorage.getItem('auth'));
     if (storedAuth?.user) {
       setIsLoggedIn(true);
-      toast.success("You are already logged in.");
-      navigate(`/user/${storedAuth.user.username}`) // Redirect to dashboard or another page
+      toast.success('You are already logged in.');
+      navigate(`/user/${storedAuth.user.username}`);
     }
   }, [navigate]);
 
@@ -36,14 +36,14 @@ const LoginPage = () => {
           user: response.data.user,
           token: response.data.token,
         });
-        localStorage.setItem("auth", JSON.stringify(response.data));  
+        localStorage.setItem('auth', JSON.stringify(response.data));
         setIsLoggedIn(true);
-        navigate(`/dashboard/${response.data.user.role}`); // Redirect to dashboard or another page
+        navigate(`/user/${response.data.user.username}`); 
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error("Invalid credentials. Please try again.");
+      toast.error('Invalid credentials. Please try again.');
     }
   };
 

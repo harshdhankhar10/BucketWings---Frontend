@@ -62,10 +62,10 @@ const DashboardLayout = () => {
       title: "Tasks",
       icon: FiCheckSquare,
       submenus: [
-        { title: "View All Tasks", link: "#" },
-        { title: "Create New Task", link: "#" },
-        { title: "Pending Tasks", link: "#" },
-        { title: "Completed Tasks", link: "#" },
+        {title : "View Dashboard", link : "/dashboard/user/task-dashboard"},
+        { title: "View All Tasks", link: "/dashboard/user/my-tasks" },
+        { title: "Create New Task", link: "/dashboard/user/create-task" },
+        { title: "Filter Tasks", link: "/dashboard/user/filter-tasks" },
       ],
     },
     {
@@ -100,7 +100,7 @@ const DashboardLayout = () => {
       title: "Settings",
       icon: FiSettings,
       submenus: [
-        { title: "Profile Settings", link: "#" },
+        { title: "Profile Settings", link: "/dashboard/user/update-profile" },
         { title: "Account Security", link: "#" },
         { title: "Notification Settings", link: "#" },
         { title: "Privacy", link: "#" },
