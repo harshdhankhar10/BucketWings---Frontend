@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CheckCircle, Clock, AlertCircle, User, Calendar, Eye, Trash2, Edit2, Filter, PauseCircle } from 'lucide-react';
-
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 const MyTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,20 +54,33 @@ const MyTasks = () => {
     }
   };
 
-  const handleViewTask = (taskId) => {
-    // Implement view task functionality
-    console.log('View task', taskId);
+  const handleDeleteTask =async (taskId) => {
+    try {
+      // const response = await axios.delete(`${import.meta.env.VITE_REACT_APP_API}/api/v1/tasks/delete/${taskId}`);
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this task!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await axios.delete(`${import.meta.env.VITE_REACT_APP_API}/api/v1/tasks/delete/${taskId}`);
+          if (response.data.success) {
+            Swal.fire('Deleted!', 'Your task has been deleted.', 'success');
+            fetchTasks();
+          }
+        }else{
+          Swal.fire('Cancelled', 'Your task is safe :)', 'error');
+        }
+      });
+      
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
   };
 
-  const handleDeleteTask = (taskId) => {
-    // Implement delete task functionality
-    console.log('Delete task', taskId);
-  };
-
-  const handleUpdateTask = (taskId) => {
-    // Implement update task functionality
-    console.log('Update task', taskId);
-  };
 
   const filteredTasks = tasks.filter(task => {
     if (filter === 'all') return true;
@@ -149,18 +163,23 @@ const MyTasks = () => {
                     <span className="ml-2 text-sm font-medium text-gray-900">{task.status}</span>
                   </div>
                   <div className="flex space-x-2">
+                    <Link to={`/dashboard/user/view-task/${task._id}`}
+                    >
                     <button
-                      onClick={() => handleViewTask(task._id)}
+                      
                       className="inline-flex items-center p-2 border border-transparent rounded-full text-purple-700 bg-purple-100 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
                     >
                       <Eye className="h-5 w-5" />
                     </button>
+                    </Link>
+                    <Link to={`/dashboard/user/update-task/${task._id}`} 
+                    >
                     <button
-                      onClick={() => handleUpdateTask(task._id)}
                       className="inline-flex items-center p-2 border border-transparent rounded-full text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
                       <Edit2 className="h-5 w-5" />
                     </button>
+                    </Link>
                     <button
                       onClick={() => handleDeleteTask(task._id)}
                       className="inline-flex items-center p-2 border border-transparent rounded-full text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"

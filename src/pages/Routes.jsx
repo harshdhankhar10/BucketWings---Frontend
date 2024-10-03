@@ -31,6 +31,7 @@ import CreateTask from './Dashboards/User/Task Management/CreateTask'
 import MyTasks from './Dashboards/User/Task Management/MyTasks'
 import UpdateTask from './Dashboards/User/Task Management/UpdateTask'
 import TaskDashboard from './Dashboards/User/Task Management/TaskDashboard'
+import ViewTask from './Dashboards/User/Task Management/ViewTask'
 
 
 // Admin Dashboard Pages
@@ -67,6 +68,7 @@ const RoutesPath = () => {
           <Route path="update-task/:id" element={<UpdateTask />} />
           <Route path="filter-tasks" element={<FilterTasks />} />
           <Route path="task-dashboard" element={<TaskDashboard />} />
+          <Route path="view-task/:id" element={<ViewTask />} />
          
 
           
