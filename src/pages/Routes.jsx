@@ -33,6 +33,10 @@ import UpdateTask from './Dashboards/User/Task Management/UpdateTask'
 import TaskDashboard from './Dashboards/User/Task Management/TaskDashboard'
 import ViewTask from './Dashboards/User/Task Management/ViewTask'
 
+import MessagesInbox from './Dashboards/User/Messages Management/MessagesInbox'
+import SentMessages from './Dashboards/User/Messages Management/SentMessages'
+import SendMessage from './Dashboards/User/Messages Management/SendMessage'
+import ViewMessage from './Dashboards/User/Messages Management/ViewMessage'
 
 // Admin Dashboard Pages
 import AdminHomepage from './Dashboards/Admin/AdminHomepage'
@@ -69,6 +73,12 @@ const RoutesPath = () => {
           <Route path="filter-tasks" element={<FilterTasks />} />
           <Route path="task-dashboard" element={<TaskDashboard />} />
           <Route path="view-task/:id" element={<ViewTask />} />
+
+          <Route path="messages/inbox" element={<MessagesInbox />} />
+          <Route path="messages/sent" element={<SentMessages />} />
+          <Route path="messages/send" element={<SendMessage />} />
+          <Route path="messages/view/:id" element={<ViewMessage />} />
+          
          
 
           

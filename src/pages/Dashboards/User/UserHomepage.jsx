@@ -88,12 +88,12 @@ const DashboardLayout = () => {
       ],
     },
     {
-      title: "Messages",
+      title: `Messages`,
       icon: FiMessageSquare,
       submenus: [
-        { title: "Inbox", link: "#" },
-        { title: "Sent", link: "#" },
-        { title: "Notifications", link: "#" },
+        { title: "Inbox", link: "/dashboard/user/messages/inbox" },
+        { title: "Sent", link: "/dashboard/user/messages/sent" },
+        // { title: "Notifications", link: "#" },
       ],
     },
     {
