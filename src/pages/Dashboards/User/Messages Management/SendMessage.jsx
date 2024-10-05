@@ -3,14 +3,16 @@ import { Paperclip, Send, X, Check, Mail, Calendar, User } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const SendMessage = () => {
     const navigate = useNavigate();
-  const [receiverEmail, setReceiverEmail] = useState('');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
-  const [attachment, setAttachment] = useState(null);
+    const location = useLocation();
+  const { state } = location;
+  const [receiverEmail, setReceiverEmail] = useState(state?.receiverEmail || '');
+  const [subject, setSubject] = useState(state?.subject || '');
+  const [message, setMessage] = useState(state?.content || '');
+  const [attachment, setAttachment] = useState(state?.attachment || null);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
 
   const handleSubmit = async(e) => {
