@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Paperclip, Reply, Forward, Star, Trash2 } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const ViewMessage = () => {
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
@@ -39,6 +41,17 @@ const ViewMessage = () => {
       }
     });
   };
+  const handleDeleteMessage = async (id) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/delete-from-inbox/${id}`);
+      setMessage((prevMessages) => prevMessages.filter((message) => message.id !== id));
+      toast.success('Message deleted successfully from your Inbox!');
+      navigate('/dashboard/user/messages/inbox');
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
+  };
+
 
   if (loading) {
     return (
@@ -79,7 +92,8 @@ const ViewMessage = () => {
               <button className="text-gray-600 hover:text-yellow-500 transition duration-300">
                 <Star size={20} />
               </button>
-              <button className="text-gray-600 hover:text-red-500 transition duration-300">
+              <button  onClick = {() => handleDeleteMessage(message._id)}
+              className="text-gray-600 hover:text-red-500 transition duration-300">
                 <Trash2 size={20} />
               </button>
             </div>

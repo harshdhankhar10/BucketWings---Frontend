@@ -15,6 +15,7 @@ import {
 } from "react-icons/fi";
 import { TbBrandStorytel } from "react-icons/tb";
 import { VscMilestone } from "react-icons/vsc";
+import axios from "axios";
 
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,6 +25,7 @@ const DashboardLayout = () => {
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState("Dashboard");
   const [expandedMenu, setExpandedMenu] = useState(null);
+  const [messageLength, setMessageLength] = useState(0);
   const sidebarRef = useRef(null);
 
   useEffect(() => {
@@ -38,6 +40,25 @@ const DashboardLayout = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const fetchMessagesLength = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/inbox`
+        );
+        if (response.data.success) {
+          setMessageLength(response.data.messages.length);
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    }
+
+    fetchMessagesLength();
+  }, []);
+
+
 
   const menuItems = [
     { title: "Dashboard", icon: FiHome, link: "#" },
@@ -88,7 +109,7 @@ const DashboardLayout = () => {
       ],
     },
     {
-      title: `Messages`,
+      title: `Messages (${messageLength})`,
       icon: FiMessageSquare,
       submenus: [
         { title: "Inbox", link: "/dashboard/user/messages/inbox" },

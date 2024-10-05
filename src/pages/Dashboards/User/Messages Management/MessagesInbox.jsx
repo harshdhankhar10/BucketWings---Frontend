@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Star, Trash2, Search, Filter, MoreVertical, Paperclip, Edit3, ChevronDown } from 'lucide-react';
+import { Mail, Trash2, Search, Filter, MoreVertical, Paperclip, Edit3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Inbox = () => {
   const [messages, setMessages] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFolder, setSelectedFolder] = useState('Inbox');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
 
   useEffect(() => {
@@ -14,33 +14,62 @@ const Inbox = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/inbox`);
         if (response.data.success) {
-          const mappedMessages = response.data.messages.map(msg => ({
-            id: msg._id,
-            sender: msg.email,  // sender is now the email from response
-            subject: msg.subject,
-            preview: msg.content,
-            date: new Date(msg.sentAt).toLocaleDateString(),
-            attachment: msg.attachment ? true : false,  // Check if there is an attachment
-            isStarred: msg.status === 'starred',
-            isRead: msg.status === 'read',
-          }));
+          const mappedMessages = response.data.messages
+            .filter((msg) => !msg.isDeleted)
+            .map((msg) => ({
+              id: msg._id,
+              sender: msg.email,
+              subject: msg.subject,
+              preview: msg.content,
+              date: new Date(msg.sentAt).toLocaleDateString(),
+              attachment: !!msg.attachment,
+              isStarred: msg.status === 'starred',
+              isRead: msg.status === 'read',
+            }));
           setMessages(mappedMessages);
-        } else {
-          console.error(response.data.message);
         }
       } catch (error) {
         console.error('Error fetching messages:', error);
       }
     };
+
     fetchMessages();
   }, []);
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+  const handleSearch = async (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/search?query=${searchTerm}`
+      );
+      if (response.data.success) {
+        const mappedMessages = response.data.messages.map((msg) => ({
+          id: msg._id,
+          sender: msg.email,
+          subject: msg.subject,
+          preview: msg.content,
+          date: new Date(msg.sentAt).toLocaleDateString(),
+          attachment: !!msg.attachment,
+          isStarred: msg.status === 'starred',
+          isRead: msg.status === 'read',
+        }));
+        setMessages(mappedMessages);
+      }
+    } catch (error) {
+      console.error('Error searching messages:', error);
+    }
   };
 
-  const handleDeleteMessage = (id) => {
-    setMessages(messages.filter(message => message.id !== id));
+  const handleDeleteMessage = async (id) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/delete-from-inbox/${id}`);
+      setMessages((prevMessages) => prevMessages.filter((message) => message.id !== id));
+      toast.success('Message deleted successfully from your Inbox!');
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
   };
 
   return (
@@ -55,13 +84,13 @@ const Inbox = () => {
           </button>
         </Link>
         <nav className="flex-grow space-y-1">
-          <Link to="/dashboard/user/messages/inbox" className={`flex items-center justify-between p-2 rounded-lg hover:bg-gray-200 transition duration-150`}>
+          <Link to="/dashboard/user/messages/inbox" className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-200 transition duration-150">
             <div className="flex items-center">
               <Mail className="mr-2" />
               <span>Inbox</span>
             </div>
           </Link>
-          <Link to="/dashboard/user/messages/sent" className={`flex items-center justify-between p-2 rounded-lg hover:bg-gray-200 transition duration-150`}>
+          <Link to="/dashboard/user/messages/sent" className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-200 transition duration-150">
             <div className="flex items-center">
               <Mail className="mr-2" />
               <span>Sent</span>
@@ -114,24 +143,28 @@ const Inbox = () => {
                 !message.isRead ? 'bg-white' : 'bg-gray-50'
               }`}
             >
-            <Link to={`/dashboard/user/messages/view/${message.id}`}>
               <div className="flex items-center p-4">
-                <img src={user.profilePicture} alt={user.fullName} className="w-10 h-10 rounded-full mr-4" />
-                <div className="flex-grow min-w-0">
-                  <div className="flex items-center mb-1">
-                    <h3 className="font-semibold text-gray-800 truncate mr-2">{message.sender}</h3>
-                    <span className="text-sm text-gray-500">{message.date}</span>
+                {/* Profile picture and message content are wrapped inside Link */}
+                <Link to={`/dashboard/user/messages/view/${message.id}`} className="flex-grow flex items-center min-w-0">
+                  <img src={user.profilePicture} alt={user.fullName} className="w-10 h-10 rounded-full mr-4" />
+                  <div className="flex-grow min-w-0">
+                    <div className="flex items-center mb-1">
+                      <h3 className="font-semibold text-gray-800 truncate mr-2">{message.sender}</h3>
+                      <span className="text-sm text-gray-500">{message.date}</span>
+                    </div>
+                    <p className="text-gray-800 font-medium">{message.subject}</p>
+                    <p className="text-sm text-gray-500">
+                      {message.preview.length > 100 ? `${message.preview.substring(0, 120)}...` : message.preview}
+                    </p>
                   </div>
-                  <p className="text-gray-800 font-medium ">{message.subject}</p>
-                  <p className="text-sm text-gray-500">
-                  {message.preview.length > 100 ? `${message.preview.substring(0, 120)}...` : message.preview}
-                  </p>
-                </div>
+                </Link>
+
+                {/* Action buttons (like delete) should be outside of Link */}
                 <div className="flex items-center space-x-2 ml-4">
                   {message.attachment && <Paperclip size={16} className="text-gray-400" />}
                   <button
                     onClick={(e) => {
-                      e.stopPropagation();
+                      e.stopPropagation(); // Prevent click on delete from triggering the Link
                       handleDeleteMessage(message.id);
                     }}
                     className="text-gray-400 hover:text-red-500"
@@ -140,7 +173,6 @@ const Inbox = () => {
                   </button>
                 </div>
               </div>
-            </Link>
             </div>
           ))}
         </div>
