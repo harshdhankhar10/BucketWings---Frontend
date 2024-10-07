@@ -236,7 +236,8 @@ const NavBar = () => {
             </div>
             {auth ? (
               <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
-                <div className="flex items-center">
+               <Link to={`/dashboard/${auth.role}`} className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-md">
+               <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <img className="h-10 w-10 rounded-full" src={`https://ui-avatars.com/api/?name=${auth.fullName}&background=random`} alt={auth.fullName} />
                   </div>
@@ -245,6 +246,7 @@ const NavBar = () => {
                     <div className="text-sm font-medium text-gray-500">{auth.email}</div>
                   </div>
                 </div>
+               </Link>
                 <div className="mt-3 space-y-1">
                   <a href="#profile" className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-md">Your Profile</a>
                   <a href="#settings" className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-md">Settings</a>

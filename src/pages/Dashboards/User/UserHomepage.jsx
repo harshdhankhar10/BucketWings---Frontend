@@ -122,9 +122,9 @@ const DashboardLayout = () => {
       icon: FiSettings,
       submenus: [
         { title: "Profile Settings", link: "/dashboard/user/update-profile" },
-        { title: "Account Security", link: "#" },
-        { title: "Notification Settings", link: "#" },
-        { title: "Privacy", link: "#" },
+        { title: "Account Security", link: "/dashboard/user/account-setting" },
+        { title: "Notification Settings", link: "/dashboard/user/notification-setting" },
+        { title: "Privacy", link: "/dashboard/user/privacy" },
       ],
     },
     {
@@ -140,18 +140,18 @@ const DashboardLayout = () => {
       title: "Resources",
       icon: FiBook,
       submenus: [
-        { title: "Guides & Tutorials", link: "#" },
-        { title: "Recommended Tools", link: "#" },
-        { title: "FAQ", link: "#" },
+        { title: "Guides & Tutorials", link: "/dashboard/user/guides-tutorials" },
+        { title: "Recommended Tools", link: "/dashboard/user/recommended-tools" },
+        { title: "FAQ", link: "/dashboard/user/faq" },
       ],
     },
     {
       title: "Support",
       icon: FiHelpCircle,
       submenus: [
-        { title: "Help Center", link: "#" },
-        { title: "Contact Support", link: "#" },
-        { title: "Report an Issue", link: "#" },
+        { title: "Help Center", link: "/dashboard/user/help-center" },
+        { title: "Contact Support", link: "/dashboard/user/contact-support" },
+        { title: "Report an Issue", link: "/dashboard/user/report-issue" },
       ],
     },
     { title: "Sign Out", icon: FiLogOut, link: "#" },

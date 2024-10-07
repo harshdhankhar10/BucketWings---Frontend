@@ -14,6 +14,7 @@ const UpdateProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
 
   // Utility function to format date for input field
   const formatDateForInput = (dateString) => {
@@ -88,6 +89,20 @@ const UpdateProfile = () => {
       setError('Failed to update profile');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleVerifyEmail = async () => {
+    setIsVerifying(true);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/users/verify-email`);
+      if (response.data.success) {
+        setSuccess('Verification email sent. Please check your inbox.');
+      }
+    } catch (error) {
+      setError('Failed to send verification email');
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -174,7 +189,21 @@ const UpdateProfile = () => {
                   )}
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg shadow-inner space-y-2 text-sm text-gray-600">
-                  <p><span className="font-semibold">Email:</span> {user.email}</p>
+                  <div className="flex justify-between items-center">
+                    <p><span className="font-semibold">Email:</span> {user.email}</p>
+                    <button
+                      type="button"
+                      onClick={handleVerifyEmail}
+                      disabled={isVerifying || user.isVerified}
+                      className={`px-3 py-1 text-xs font-medium rounded-full ${
+                        user.isVerified
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                      }`}
+                    >
+                      {user.isVerified ?   'Verified' : isVerifying ? 'Sending...' : 'Verify Email'}
+                    </button>
+                  </div>
                   <p><span className="font-semibold">Status:</span> {user.status}</p>
                   <p><span className="font-semibold">Verified:</span> {user.isVerified ? 'Yes' : 'No'}</p>
                   <p><span className="font-semibold">Member Since:</span> {new Date(user.createdAt).toLocaleDateString()}</p>

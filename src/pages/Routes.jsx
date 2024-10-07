@@ -6,15 +6,42 @@ import RegisterPage from './Auth/RegisterPage'
 import Homepage from "./Homepage"
 import MyProfile from './MyProfile'
 import Spinner from '../components/Spinner'
+import FAQSection from '../components/HomePage/Faq'
+
 
 import AdminPrivateRoute from './AdminPrivateRoute'
 import PrivateRoute from './PrivateRoute'
 
 
+// Community Forum Pages
+import CommunityDashboard from './Community Forum/CommunityDashboard'
+import CommunityHome from './Community Forum/CommunityHome'
+import MyPosts from './Community Forum/MyPosts'
+import MyNetwork from './Community Forum/MyNetwork'
+import Messages from './Community Forum/Messages'
+import Bookmarks from './Community Forum/Bookmarks'
+import Settings from './Community Forum/Settings'
+import CreatePost from './Community Forum/CreatePost'
+import ViewUserProfile from './Community Forum/ViewUserProfile'
+
+
+
 // User Dashboard Pages
 import UserHomepage from './Dashboards/User/UserHomepage'
 import MainDashboard from './Dashboards/User/MainDashboard'
+
 import UpdateProfile from './Dashboards/User/Profile Management/UpdateProfile'
+import AccountSetting from "./Dashboards/User/Account Management/AccountSetting"
+import NotificationSetting from './Dashboards/User/Account Management/NotificationSetting'
+import Privacy from './Dashboards/User/Account Management/Privacy'
+
+import HelpCenter from './Dashboards/User/Support Management/HelpCenter'
+import ContactSupport from './Dashboards/User/Support Management/ContactSupport'
+import ReportIssue from './Dashboards/User/Support Management/ReportIssue'
+
+import GuidesAndTutorials from './Dashboards/User/Resources Management/GuidesAndTutorials'
+import RecommendedTools from './Dashboards/User/Resources Management/RecommendedTools'
+
 
 import CreateGoal from './Dashboards/User/Goal Management/CreateGoal'
 import MyGoals from './Dashboards/User/Goal Management/MyGoals'
@@ -38,6 +65,7 @@ import SentMessages from './Dashboards/User/Messages Management/SentMessages'
 import SendMessage from './Dashboards/User/Messages Management/SendMessage'
 import ViewMessage from './Dashboards/User/Messages Management/ViewMessage'
 
+
 // Admin Dashboard Pages
 import AdminHomepage from './Dashboards/Admin/AdminHomepage'
 
@@ -51,12 +79,41 @@ const RoutesPath = () => {
         <Route path="/user/:username" element={<MyProfile />} />
         <Route path="/spinner" element={<Spinner />} />
 
+        {/* Community Forum Routes */}
+        <Route path="/community" element={<CommunityDashboard />} >
+          <Route path="" element={<CommunityHome />} />
+          <Route path="my-posts" element={<MyPosts />} />
+          <Route path="my-network" element={<MyNetwork />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="bookmarks" element={<Bookmarks />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="create-post" element={<CreatePost />} />
+          <Route path="user/:username" element={<ViewUserProfile />} />
+          
+        </Route>
+
 
       {/* Private Routes */}
       <Route path="/dashboard/" element={<PrivateRoute />}>
         <Route path="user" element={<UserHomepage />} >
           <Route path="" element={<MainDashboard />} />
+
           <Route path="update-profile" element={<UpdateProfile />} />
+          <Route path="account-setting" element={<AccountSetting />} />
+          <Route path="notification-setting" element={<NotificationSetting />} />
+          <Route path="privacy" element={<Privacy />} />
+
+          <Route path="help-center" element={<HelpCenter />} />
+          <Route path="contact-support" element={<ContactSupport />} />
+          <Route path="report-issue" element={<ReportIssue />} />
+
+          <Route path="guides-tutorials" element={<GuidesAndTutorials />} />
+          <Route path="recommended-tools" element={<RecommendedTools />} />
+          <Route path="faq" element={<FAQSection/>} />
+
+
+
+
           <Route path="create-goal" element={<CreateGoal />} />
           <Route path="myGoals" element={<MyGoals />} />
           <Route path="view-goal/:id" element={<ViewGoal />} />
