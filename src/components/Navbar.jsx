@@ -17,10 +17,11 @@ import {
   X,
   ChevronDown
 } from 'lucide-react';
+import { MdOutlineMarkUnreadChatAlt } from "react-icons/md";
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
-const NavItem = ({ icon, text, isActive, onClick, isMobile = false }) => (
+const NavItem = ({ icon, text, path, isActive, onClick, isMobile = false }) => (
   <motion.li 
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
@@ -31,18 +32,20 @@ const NavItem = ({ icon, text, isActive, onClick, isMobile = false }) => (
     } ${isMobile ? 'py-3 px-4' : ''}`}
     onClick={onClick}
   >
-    <span className="relative">
-      {icon}
-      {isActive && !isMobile && (
-        <motion.span
-          layoutId="activeIndicator"
-          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-purple-600"
-          initial={false}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        />
-      )}
-    </span>
-    <span className={isMobile ? 'inline' : 'hidden md:inline'}>{text}</span>
+    <NavLink to={path} className="flex items-center">
+      <span className="relative">
+        {icon}
+        {isActive && !isMobile && (
+          <motion.span
+            layoutId="activeIndicator"
+            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-purple-600"
+            initial={false}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          />
+        )}
+      </span>
+      <span className={isMobile ? 'inline ml-2' : 'hidden md:inline ml-2'}>{text}</span>
+    </NavLink>
   </motion.li>
 );
 
@@ -86,29 +89,28 @@ const ProfileDropdown = ({ auth, setAuth }) => {
         <ChevronDown size={16} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </motion.button>
       
-  <AnimatePresence>
-    {isOpen && (
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.2 }}
-        className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
-        <a href="#profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
-          Your Profile
-        </a>
-        <a href="#settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
-          Settings
-        </a>
-        <button
-          onClick={handleLogout}
-          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
-          Sign out
-        </button>
-      </motion.div>
-    )}
-  </AnimatePresence>
-
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+            <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+              Your Profile
+            </Link>
+            <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+              Settings
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+              Sign out
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -122,15 +124,15 @@ const NavBar = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const navItems = [
-    { icon: <Home size={20} />, text: 'Home' },
-    { icon: <Target size={20} />, text: 'My Goals' },
-    { icon: <PlusCircle size={20} />, text: 'Create Goal' },
-    { icon: <Milestone size={20} />, text: 'Milestones' },
-    { icon: <List size={20} />, text: 'Bucket List' },
-    { icon: <Bell size={20} />, text: 'Notifications' },
-    { icon: <Settings size={20} />, text: 'Settings' },
-    { icon: <Info size={20} />, text: 'About Us' },
-    { icon: <HelpCircle size={20} />, text: 'Help/Support' },
+    { icon: <Home size={20} />, text: 'Home', path: '/' },
+    { icon: <Target size={20} />, text: 'My Goals', path: '/goals' },
+    { icon: <PlusCircle size={20} />, text: 'Create Goal', path: '/create-goal' },
+    { icon: <Milestone size={20} />, text: 'Milestones', path: '/milestones' },
+    { icon: <MdOutlineMarkUnreadChatAlt size={20} />, text: 'Community Forum', path: '/community' },
+    { icon: <Bell size={20} />, text: 'Notifications', path: '/notifications' },
+    { icon: <Settings size={20} />, text: 'Settings', path: '/settings' },
+    { icon: <Info size={20} />, text: 'About Us', path: '/about' },
+    { icon: <HelpCircle size={20} />, text: 'Help/Support', path: '/help' },
   ];
 
   return (
@@ -151,6 +153,7 @@ const NavBar = () => {
                 key={index} 
                 icon={item.icon} 
                 text={item.text} 
+                path={item.path}
                 isActive={activeItem === item.text}
                 onClick={() => setActiveItem(item.text)}
               />
@@ -172,7 +175,7 @@ const NavBar = () => {
             {auth ? (
               <ProfileDropdown auth={auth} setAuth={setAuth} />
             ) : (
-              <Link to="/login">
+              <NavLink to="/login">
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -181,7 +184,7 @@ const NavBar = () => {
                 <LogIn size={20} />
                 <span className="hidden md:inline">Login</span>
               </motion.button>
-              </Link>
+              </NavLink>
             )}
           </div>
           
@@ -205,75 +208,24 @@ const NavBar = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-white shadow-lg rounded-b-2xl overflow-hidden"
+            className="md:hidden bg-white shadow-lg rounded-b-2xl"
           >
-            <div className="px-4 py-3 bg-gray-50">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-white rounded-full py-2 px-4 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300"
-                />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              </div>
-            </div>
-            <div className="py-2 px-2">
+            <ul className="flex flex-col space-y-1 py-4">
               {navItems.map((item, index) => (
                 <NavItem 
                   key={index} 
                   icon={item.icon} 
                   text={item.text} 
-                  isActive={activeItem === item.text}
-                  onClick={() => {
-                    setActiveItem(item.text);
-                    setIsOpen(false);
-                  }}
+                  path={item.path}
                   isMobile={true}
+                  isActive={activeItem === item.text}
+                  onClick={() => { 
+                    setIsOpen(false);
+                    setActiveItem(item.text);
+                  }}
                 />
               ))}
-            </div>
-            {auth ? (
-              <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
-               <Link to={`/dashboard/${auth.role}`} className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-md">
-               <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={`https://ui-avatars.com/api/?name=${auth.fullName}&background=random`} alt={auth.fullName} />
-                  </div>
-                  <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">{auth.fullName}</div>
-                    <div className="text-sm font-medium text-gray-500">{auth.email}</div>
-                  </div>
-                </div>
-               </Link>
-                <div className="mt-3 space-y-1">
-                  <a href="#profile" className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-md">Your Profile</a>
-                  <a href="#settings" className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-md">Settings</a>
-                  <button 
-                    onClick={() => {
-                      localStorage.removeItem('auth');
-                      setAuth(null);
-                      setIsOpen(false);
-                      toast.success('You have been logged out successfully!');
-                    }} 
-                    className="block w-full text-left px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-md"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
-                <Link to="/login">
-                <button className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-purple-600 hover:bg-purple-700"
-                >
-                  <LogIn size={20} className="mr-2" />
-                  Login
-                </button>
-                </Link>
-              </div>
-            )}
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>

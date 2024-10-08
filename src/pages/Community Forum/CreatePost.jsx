@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { X, Plus, Image as ImageIcon, Check } from 'lucide-react';
-import ReactQuill from 'react-quill'; // Make sure to import ReactQuill
+import ReactQuill from 'react-quill'; 
 import 'react-quill/dist/quill.snow.css';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -30,10 +32,47 @@ const CreatePost = () => {
     setPollOptions(updatedOptions);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ title, content, tags, category, image, pollQuestion, pollOptions, correctOption });
-    // Implement post submission logic here
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/create-post`, {
+        title,
+        content,
+        tags,
+        category,
+        image,
+        pollQuestion,
+        pollOptions,
+        correctOption,
+      })
+      if(response.data.success){
+        Swal.fire({
+          icon: 'success',
+          title: 'Post Created Successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        setTitle('');
+        setContent('');
+        setTags([]);
+        setCategory('');
+        setImage(null);
+        setPollQuestion('');
+        setPollOptions(['', '', '', '']);
+        setCorrectOption(null);
+      }
+      else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message,
+        });
+      }
+      
+    } catch (error) {
+      console.error(error);
+    }
+  
   };
 
   const modules = {
@@ -140,7 +179,7 @@ const CreatePost = () => {
         </div>
 
         <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg">
-          <label className="block text-lg font-medium text-gray-700 mb-2">Poll</label>
+          <label className="block text-lg font-medium text-gray-700 mb-2">Poll (Optional)</label>
           <div className="mb-3">
             <label htmlFor="pollQuestion" className="block text-sm font-medium text-gray-700 mb-1">Question</label>
             <input

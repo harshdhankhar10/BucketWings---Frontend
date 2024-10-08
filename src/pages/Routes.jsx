@@ -23,6 +23,9 @@ import Bookmarks from './Community Forum/Bookmarks'
 import Settings from './Community Forum/Settings'
 import CreatePost from './Community Forum/CreatePost'
 import ViewUserProfile from './Community Forum/ViewUserProfile'
+import ViewPost from './Community Forum/ViewPost'
+import PostByCategory from './Community Forum/PostByCategories'
+import PostByTags from './Community Forum/PostByTags'
 
 
 
@@ -82,6 +85,7 @@ const RoutesPath = () => {
         {/* Community Forum Routes */}
         <Route path="/community" element={<CommunityDashboard />} >
           <Route path="" element={<CommunityHome />} />
+          <Route path="view-post/:slug" element={<ViewPost />} />
           <Route path="my-posts" element={<MyPosts />} />
           <Route path="my-network" element={<MyNetwork />} />
           <Route path="messages" element={<Messages />} />
@@ -89,6 +93,8 @@ const RoutesPath = () => {
           <Route path="settings" element={<Settings />} />
           <Route path="create-post" element={<CreatePost />} />
           <Route path="user/:username" element={<ViewUserProfile />} />
+          <Route path="category/:category" element={<PostByCategory />} />
+          <Route path="tag/:tag" element={<PostByTags />} />
           
         </Route>
 
