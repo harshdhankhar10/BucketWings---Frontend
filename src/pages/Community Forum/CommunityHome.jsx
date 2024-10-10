@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { PlusCircle } from 'lucide-react';
-import { Filter, Heart, MessageCircle, Share2, Star, Zap } from 'lucide-react';
+import { PlusCircle, Filter, Heart, MessageCircle, Share2, Star, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 const CommunityHome = () => {
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
+  const userId = user?.id;
 
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/all-posts`);
-        setPosts(response.data.posts);
+        const updatedPosts = response.data.posts.map(post => ({
+          ...post,
+          hasLiked: post.likes.includes(userId) 
+        }));
+        setPosts(updatedPosts);
       } catch (error) {
         console.error("Error fetching posts", error);
       }
@@ -20,21 +27,60 @@ const CommunityHome = () => {
     fetchAllPosts();
   }, []);
 
-  const handleLikePost = (postId) => async () => {
+  const handleLikePost = (id, hasLiked) => async () => {
     try {
-      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/like-post/${postId}`);
+      if(!user) {
+        return toast.error("Please login to like/unlike posts");
+      }
+      
+      const endpoint = hasLiked 
+        ? `${import.meta.env.VITE_REACT_APP_API}/api/v1/community/unlike/${id}`
+        : `${import.meta.env.VITE_REACT_APP_API}/api/v1/community/like/${id}`;
+
+      const response = await axios.put(endpoint);
+  
       if (response.data.success) {
         setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post._id === postId ? { ...post, likes: [...post.likes, response.data.userId]}
-            : post
-          )
+          prevPosts.map((post) => {
+            if (post._id === id) {
+              const updatedLikes = hasLiked
+                ? post.likes.filter(userId => userId !== response.data.userId)
+                : [...post.likes, response.data.userId];
+              return { 
+                ...post, 
+                likes: updatedLikes, 
+                likeCount: updatedLikes.length, 
+                hasLiked: !hasLiked
+              };
+            }
+            return post;
+          })
         );
       }
     } catch (error) {
-      console.error("Error liking post", error);
+      console.error("Error liking/unliking post", error);
     }
   };
+
+  const LikeButton = ({ post, onClick }) => (
+    <motion.button
+      onClick={onClick}
+      className={`flex items-center space-x-2 transition duration-300 ${
+        post.hasLiked ? 'text-red-600' : 'text-gray-500 hover:text-purple-600'
+      }`}
+      whileTap={{ scale: 0.95 }}
+    >
+      <motion.div
+        initial={{ scale: 1 }}
+        animate={{ scale: post.hasLiked ? [1, 1.2, 1] : 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Heart size={16} fill={post.hasLiked ? "currentColor" : "none"} />
+      </motion.div>
+      <span>{post.likes.length} {post.likes.length == 1 ? 'Likes' : 'Likes'}
+      </span>
+    </motion.button>
+  );
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -65,7 +111,7 @@ const CommunityHome = () => {
           <div key={post._id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition duration-300">
             <div className="flex items-center space-x-4 mb-4">
               <img
-                src={`${post.author.profilePicture}`}
+                src={post.author.profilePicture}
                 alt="User Avatar"
                 className="rounded-full h-10 w-10"
               />
@@ -108,13 +154,7 @@ const CommunityHome = () => {
             </div>
             <div className="flex items-center justify-between text-sm text-gray-500">
               <div className="flex items-center space-x-6">
-                <button
-                  onClick={handleLikePost(post._id)}
-                  className="flex items-center space-x-2 hover:text-purple-600 transition duration-300"
-                >
-                  <Heart size={16} />
-                  <span>{post.likes} Likes</span>
-                </button>
+                <LikeButton post={post} onClick={handleLikePost(post._id, post.hasLiked)} /> 
                 <button className="flex items-center space-x-2 hover:text-purple-600 transition duration-300">
                   <MessageCircle size={16} />
                   <span>{post.messages.length} Replies</span>

@@ -72,7 +72,7 @@ const PostByCategories = () => {
                   <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                   <div className="flex items-center space-x-4">
                     <span className="flex items-center"><Eye size={16} className="mr-1" /> {post.views || 0}</span>
-                    <span className="flex items-center"><ThumbsUp size={16} className="mr-1" /> {post.likes}</span>
+                    <span className="flex items-center"><ThumbsUp size={16} className="mr-1" /> {post.likes.length}</span>
                     <span className="flex items-center"><MessageSquare size={16} className="mr-1" /> {post.comments?.length || 0}</span>
                   </div>
                 </div>

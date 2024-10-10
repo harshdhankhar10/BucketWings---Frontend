@@ -6,7 +6,7 @@ import {
 import { FaGithub as Github } from "react-icons/fa";
 import { FaTwitter as Twitter } from 'react-icons/fa';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const CommunityForumUserProfile = () => {
   const [user, setUser] = useState(null);
@@ -14,6 +14,15 @@ const CommunityForumUserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { username } = useParams();
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -56,15 +65,8 @@ const CommunityForumUserProfile = () => {
             <p className="text-gray-600">{user.username}</p>
           </div>
           <div className="mt-4 flex justify-between items-center">
-            <p className="text-gray-600 max-w-xl">{user.bio}</p>
-            <div className="flex space-x-2">
-              <button className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300">
-                Follow
-              </button>
-              <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition duration-300">
-                Message
-              </button>
-            </div>
+            <p className="text-gray-600 max-w-xl pt-6">{user.bio}</p>
+           
           </div>
         </div>
       </div>
@@ -87,32 +89,18 @@ const CommunityForumUserProfile = () => {
         <h2 className="text-xl font-semibold mb-4">User Information</h2>
         <div className="grid grid-cols-2 gap-4">
           <InfoItem icon={<Mail size={18} />} text={user.email} />
-          <InfoItem icon={<Calendar size={18} />} text={`Joined ${user.joined}`} />
-          <InfoItem icon={<MapPin size={18} />} text={user.location} />
-          <InfoItem icon={<LinkIcon size={18} />} text={user.website} isLink />
+          <InfoItem icon={<Calendar size={18} />} text={`Joined:  ${formatDate(user.createdAt)}`} />
         </div>
       </div>
 
-      {/* Social Links */}
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Social Links</h2>
-        <div className="flex space-x-4">
-          <SocialLink href="#" icon={<Github size={24} />} />
-          <SocialLink href="#" icon={<Twitter size={24} />} />
-          <SocialLink href="#" icon={<Linkedin size={24} />} />
-          <SocialLink href="#" icon={<Facebook size={24} />} />
-        </div>
-      </div>
 
       {/* Badges */}
       <div className="bg-white shadow-md rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-4">Badges</h2>
         <div className="flex flex-wrap gap-2">
-          {/* {user?.badges.map((badge, index) => (
-            <span key={index} className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm flex items-center">
-              <Award size={14} className="mr-1" /> {badge}
-            </span>
-          ))} */}
+         <h1 className="text-xm font-bold text-gray-500">
+          Currently No Badges
+         </h1>
         </div>
       </div>
 
@@ -137,12 +125,14 @@ const CommunityForumUserProfile = () => {
         <div className="space-y-6">
           {posts.map((post, index) => (
             <div key={index} className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
-              <h3 className="text-lg font-semibold mb-2 hover:text-blue-600 cursor-pointer">{post.title}</h3>
+              <h3 className="text-lg text-gray-700 font-semibold mb-2 hover:text-purple-600 cursor-pointer">
+                <Link to={`/community/view-post/${post.slug}`}>{post.title}</Link>
+              </h3>
               <div className="flex justify-between text-sm text-gray-500">
                 <span>{post.date}</span>
                 <div className="flex space-x-4">
                   <span className="flex items-center"><MessageSquare size={16} className="mr-1" /> {post.comments}</span>
-                  <span className="flex items-center"><ThumbsUp size={16} className="mr-1" /> {post.likes}</span>
+                  <span className="flex items-center"><ThumbsUp size={16} className="mr-1" /> {post.likes.length}</span>
                 </div>
               </div>
             </div>

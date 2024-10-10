@@ -58,7 +58,7 @@ const ViewPost = () => {
         <div className="flex space-x-4 text-sm text-gray-500">
           <button className="flex items-center space-x-1 hover:text-blue-600 transition duration-300">
             <Heart size={18} className="text-red-500" />
-            <span>{post.likes} Likes</span>
+            <span>{post.likes.length}</span>
           </button>
           <button className="flex items-center space-x-1 hover:text-blue-600 transition duration-300">
             <MessageCircle size={18} />

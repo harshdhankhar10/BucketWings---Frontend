@@ -25,7 +25,14 @@ const ForumPage = () => {
     fetchContributors();
 
   },[])
-  console.log(contributors)
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
 
 
   const handleSearch = (e) => {
@@ -71,19 +78,22 @@ const ForumPage = () => {
                     <span className="text-gray-600">Reputation:</span><span className="font-semibold">4,567</span>
                   </p>
                   <p className="flex justify-between">
-                    <span className="text-gray-600">Joined:</span><span className="font-semibold">Jan 2022</span>
+                    <span className="text-gray-600">Joined:</span><span className="font-semibold">{formatDate(user?.createdAt)}</span>
                   </p>
                 </div>
               </div>
             ) : (
               <div className="bg-white rounded-lg shadow-sm p-4">
                 <h3 className="font-semibold text-gray-800 mb-2">Login to participate in the forum</h3>
+                <Link to="/login">
                 <button className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition duration-300">
                   Sign In
                 </button>
+                </Link>
               </div>
             )}
 
+           {user && (
             <nav className="bg-white rounded-lg shadow-sm p-4">
               <ul className="space-y-2">
                 <li><NavLink to="/community" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300"><Home size={18} /><span>Dashboard</span></NavLink></li>
@@ -94,6 +104,7 @@ const ForumPage = () => {
                 <li><NavLink to="/community/settings" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300"><Settings size={18} /><span>Settings</span></NavLink></li>
               </ul>
             </nav>
+           )}
           </aside>
 
           {/* Main Content */}
