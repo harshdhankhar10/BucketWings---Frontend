@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { UserCircle, Mail, Calendar, Shield, Clock, FileText, User, Home, Settings, Bell, LogOut, Users } from 'lucide-react';
 import NavBar from '../components/Navbar';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
 const ProfileItem = ({ icon, label, value }) => (
   <div className="flex items-center space-x-2 mb-4">
@@ -50,6 +51,10 @@ const MyProfile = () => {
 
   return (
  <>
+    <Helmet>
+      <title>{user ? `${user.fullName}'s Profile | BucketWing` : "User Profile"}</title>
+    </Helmet>
+
     <NavBar />
      <div className="min-h-screen bg-gray-100">
     

@@ -1,8 +1,13 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 
 const Messages = () => {
   return (
-    <div>Messages</div>
+    <>
+      <Helmet>
+        <title>Messages - Community Forum | BucketWing</title>
+      </Helmet>
+    </>
   )
 }
 

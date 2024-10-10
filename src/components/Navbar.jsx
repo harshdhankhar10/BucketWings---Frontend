@@ -100,7 +100,7 @@ const ProfileDropdown = ({ auth, setAuth }) => {
             <Link to={`/user/${auth.username}`}  className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
               Your Profile
             </Link>
-            <Link to={`/dashboard/${auth.role}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+            <Link to={`dashboard/${auth.role}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
               Settings
             </Link>
             <button
@@ -129,10 +129,7 @@ const NavBar = () => {
     { icon: <PlusCircle size={20} />, text: 'Create Goal', path: '/create-goal' },
     { icon: <Milestone size={20} />, text: 'Milestones', path: '/milestones' },
     { icon: <MdOutlineMarkUnreadChatAlt size={20} />, text: 'Community Forum', path: '/community' },
-    { icon: <Bell size={20} />, text: 'Notifications', path: '/notifications' },
-    { icon: <Settings size={20} />, text: 'Settings', path: '/settings' },
-    { icon: <Info size={20} />, text: 'About Us', path: '/about' },
-    { icon: <HelpCircle size={20} />, text: 'Help/Support', path: '/help' },
+    { icon: <User size={20} />, text: 'Profile', path: '/profile' }
   ];
 
   return (

@@ -1,8 +1,15 @@
 import React from 'react'
-
+import { Helmet } from 'react-helmet'
 const Bookmarks = () => {
   return (
-    <div>Bookmarks</div>
+    <>
+    <Helmet>
+      <title>Bookmarks - Community Forum | BucketWing</title>
+    </Helmet>
+
+
+
+    </>
   )
 }
 

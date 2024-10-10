@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MessageSquare, ThumbsUp, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Helmet } from 'react-helmet';
 
 const API_BASE_URL = import.meta.env.VITE_REACT_APP_API;
 
@@ -48,7 +49,11 @@ const PostByTags = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+  <>
+  <Helmet>
+    <title>{tag} Posts - Community Forum | BucketWings</title>
+  </Helmet>
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
       <h1 className="text-3xl font-bold text-center mb-6 text-gray-600">Posts in <span className='text-purple-500'>#{tag}</span></h1>
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -98,6 +103,7 @@ const PostByTags = () => {
         </>
       )}
     </div>
+  </>
   );
 };
 

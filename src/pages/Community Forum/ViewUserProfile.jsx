@@ -7,6 +7,7 @@ import { FaGithub as Github } from "react-icons/fa";
 import { FaTwitter as Twitter } from 'react-icons/fa';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const CommunityForumUserProfile = () => {
   const [user, setUser] = useState(null);
@@ -50,7 +51,11 @@ const CommunityForumUserProfile = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+<>
+<Helmet>
+  <title>{ `${user.fullName} - Community Forum | BucketWings `}</title>
+</Helmet>
+<div className="max-w-4xl mx-auto p-6 space-y-6">
       {/* Profile Header */}
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="h-40 bg-gradient-to-r from-blue-500 to-purple-600"></div>
@@ -140,6 +145,7 @@ const CommunityForumUserProfile = () => {
         </div>
       </div>
     </div>
+</>
   );
 };
 

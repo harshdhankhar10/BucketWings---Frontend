@@ -1,4 +1,5 @@
 import React from 'react'
+import {Helmet} from "react-helmet";
 
 
 import NavBar from '../components/Navbar'
@@ -15,6 +16,11 @@ import Footer from '../components/HomePage/Footer'
 const Homepage = () => {
   return (
       <>
+      <Helmet>
+        <title>BucketWing | Goal Tracking, Task Management, and Community Support</title>
+      </Helmet>
+
+
       <main className='px-2 bg-[#FDFDFD]'>
       <NavBar />
       <HeroSection />

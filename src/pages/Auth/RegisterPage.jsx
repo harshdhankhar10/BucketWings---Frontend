@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from '../../components/Navbar';
 import { toast } from 'react-toastify';
 import {useNavigate, Link} from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 const SignupForm = () => {
   // Separate individual fields using useState
   const [fullName, setFullName] = useState('');
@@ -116,6 +117,10 @@ const SignupForm = () => {
 
   return (
     <>
+    <Helmet>
+      <title>Sign Up | BucketWings</title>
+    </Helmet>
+
       <NavBar />
       <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center p-4">
         <motion.div

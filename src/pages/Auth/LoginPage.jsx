@@ -4,8 +4,9 @@ import { Mail, Lock, ArrowRight } from 'lucide-react';
 import NavBar from '../../components/Navbar';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { Helmet } from 'react-helmet';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -53,6 +54,9 @@ const LoginPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Login | BucketWings</title>
+      </Helmet>
       <NavBar />
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -137,7 +141,8 @@ const LoginPage = () => {
             </div>
 
             <div>
-              <motion.button
+            <Link to="/register">
+            <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
@@ -149,6 +154,7 @@ const LoginPage = () => {
                 Sign in
                 <ArrowRight className="ml-2 h-5 w-5" />
               </motion.button>
+            </Link>
             </div>
           </form>
           <div className="text-center">

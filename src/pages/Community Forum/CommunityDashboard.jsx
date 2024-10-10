@@ -7,6 +7,7 @@ import NavBar from '../../components/Navbar';
 import "../../App.css";
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
 const ForumPage = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
@@ -55,7 +56,11 @@ const ForumPage = () => {
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <>
+    <Helmet>
+        <title>Community Forum | BucketWings</title>
+    </Helmet>
+      <div className="bg-gray-100 min-h-screen">
       <NavBar />
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex space-x-6">
@@ -174,6 +179,7 @@ const ForumPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

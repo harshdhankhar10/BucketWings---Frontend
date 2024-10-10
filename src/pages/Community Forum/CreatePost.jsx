@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { Helmet } from 'react-helmet';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -94,7 +95,11 @@ const CreatePost = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto  p-6 bg-white rounded-lg shadow-lg">
+   <>
+   <Helmet>
+        <title>Create Post - Community Forum | BucketWings</title>
+   </Helmet>
+     <div className="max-w-4xl mx-auto  p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Create a New Post</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -221,6 +226,7 @@ const CreatePost = () => {
         </div>
       </form>
     </div>
+   </>
   );
 };
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Heart, MessageCircle, Share2 } from 'lucide-react';
 import moment from 'moment';
+import { Helmet } from 'react-helmet';
 
 const ViewPost = () => {
   const [post, setPost] = useState(null);
@@ -29,7 +30,11 @@ const ViewPost = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto my-8 p-6 bg-gray-50 rounded-lg shadow-lg">
+    <>
+    <Helmet>
+      <title>{post.title} - Community Forum | BucketWings</title>
+    </Helmet>
+       <div className="max-w-2xl mx-auto my-8 p-6 bg-gray-50 rounded-lg shadow-lg">
       {/* Post Header */}
       <header className="mb-4">
         <h1 className="text-3xl font-bold text-gray-800">{post.title}</h1>
@@ -85,6 +90,7 @@ const ViewPost = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

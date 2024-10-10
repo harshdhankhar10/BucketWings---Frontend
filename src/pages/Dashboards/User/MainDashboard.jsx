@@ -13,10 +13,14 @@ import MotivationalQuote from "./Homepage Components/MotivationalQuote";
 import RecentActivity from "./Homepage Components/RecentActivity";
 import ResourceHighlights from "./Homepage Components/ResourceHighlights";
 import UpcomingDeadlines from "./Homepage Components/UpcomingDeadlines";
-
+import { Helmet } from 'react-helmet';
 const MainDashboard = () => {
   return (
-    <div className="bg-gray-100 min-h-screen p-8">
+      <>
+      <Helmet>
+        <title>Dashboard - BucketWing</title>
+      </Helmet>
+        <div className="bg-gray-100 min-h-screen p-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-12 gap-6">
           {/* Header Section */}
@@ -88,6 +92,7 @@ const MainDashboard = () => {
         </div>
       </div>
     </div>
+      </>
   );
 };
 

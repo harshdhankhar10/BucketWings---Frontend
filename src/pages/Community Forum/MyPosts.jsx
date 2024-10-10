@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { Edit, Trash } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const MyPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -36,7 +37,11 @@ const MyPosts = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+   <>
+   <Helmet>
+        <title>My Posts - Community Forum | BucketWings</title>
+   </Helmet>
+      <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">My Posts</h1>
       {posts.length === 0 ? (
         <p className="text-gray-500">You have not created any posts yet.</p>
@@ -65,6 +70,7 @@ const MyPosts = () => {
         </div>
       )}
     </div>
+   </>
   );
 };
 
