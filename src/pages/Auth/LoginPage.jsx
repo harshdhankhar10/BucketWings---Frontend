@@ -141,7 +141,7 @@ const LoginPage = () => {
             </div>
 
             <div>
-            <Link to="/register">
+           
             <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -154,15 +154,14 @@ const LoginPage = () => {
                 Sign in
                 <ArrowRight className="ml-2 h-5 w-5" />
               </motion.button>
-            </Link>
             </div>
           </form>
           <div className="text-center">
             <p className="mt-2 text-sm text-gray-600">
               Don't have an account?{' '}
-              <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
+              <Link to="/register" className="font-medium text-purple-600 hover:text-purple-500">
                 Sign up here
-              </a>
+              </Link>
             </p>
           </div>
         </motion.div>
