@@ -120,15 +120,15 @@ const DashboardLayout = () => {
         { title: "Privacy", link: "/dashboard/user/privacy" },
       ],
     },
-    {
-      title: "Community",
-      icon: FiUsers,
-      submenus: [
-        { title: "Forums", link: "/dashboard/user/forums" },
-        { title: "Chat with Mentors", link: "/dashboard/user/chat-mentors" },
-        { title: "Leaderboard", link: "/dashboard/user/leaderboard" },
-      ],
-    },
+    // {
+    //   title: "Community",
+    //   icon: FiUsers,
+    //   submenus: [
+    //     { title: "Forums", link: "/dashboard/user/forums" },
+    //     { title: "Chat with Mentors", link: "/dashboard/user/chat-mentors" },
+    //     { title: "Leaderboard", link: "/dashboard/user/leaderboard" },
+    //   ],
+    // },
     {
       title: "Resources",
       icon: FiBook,
@@ -165,7 +165,7 @@ const DashboardLayout = () => {
         <FiMenu className="h-6 w-6" />
       </button>
     )}
-    <div className="flex items-center">
+    <div className="flex items-center pl-3">
       <img
         src="../../../../public/assets/images/webLogo.png"
         alt="BucketWings Logo"

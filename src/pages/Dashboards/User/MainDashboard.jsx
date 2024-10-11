@@ -29,7 +29,7 @@ const MainDashboard = () => {
           </div>
 
           {/* Quick Stats */}
-          <div className="col-span-12 lg:col-span-8 bg-white rounded-lg shadow-md p-3">
+          <div className="col-span-12 lg:col-span-12 bg-white rounded-lg shadow-md p-3">
             <QuickStats />
           </div>
 
