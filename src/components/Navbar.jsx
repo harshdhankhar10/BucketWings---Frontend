@@ -124,14 +124,56 @@ const NavBar = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const navItems = [
-    { icon: <Home size={20} />, text: 'Home', path: '/' },
-    { icon: <Target size={20} />, text: 'My Goals', path: '/goals' },
-    { icon: <PlusCircle size={20} />, text: 'Create Goal', path: '/create-goal' },
-    { icon: <Milestone size={20} />, text: 'Milestones', path: '/milestones' },
-    { icon: <MdOutlineMarkUnreadChatAlt size={20} />, text: 'Community Forum', path: '/community' },
-    { icon: <User size={20} />, text: 'Profile', path: '/profile' }
+    { 
+      icon: <Home size={24} className="text-purple-600" />, 
+      text: 'Home', 
+      path: '/', 
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-100 transition-colors duration-300'
+    },
+    { 
+      icon: <Target size={24} className="text-green-600" />, 
+      text: 'My Goals', 
+      path: '/goals', 
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-green-100 transition-colors duration-300'
+    },
+    { 
+      icon: <PlusCircle size={24} className="text-blue-600" />, 
+      text: 'Create Goal', 
+      path: '/create-goal', 
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-100 transition-colors duration-300'
+    },
+    { 
+      icon: <Milestone size={24} className="text-orange-600" />, 
+      text: 'Milestones', 
+      path: '/milestones', 
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-100 transition-colors duration-300'
+    },
+    { 
+      icon: <MdOutlineMarkUnreadChatAlt size={24} className="text-pink-600" />, 
+      text: 'Community Forum', 
+      path: '/community', 
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-pink-100 transition-colors duration-300'
+    },
+    auth ? { 
+      icon: <User size={24} className="text-purple-600" />, 
+      text: (
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center space-x-3 text-purple-600 hover:text-white bg-white hover:bg-purple-600 py-2 px-4 rounded-lg transition-all duration-300 shadow-md"
+        >
+          <span>Go To Dashboard</span>
+        </motion.button>
+      ), 
+      path: `/user/${auth.username}` 
+    } : { 
+      icon: <User size={24} className="text-red-600" />, 
+      text: 'Login', 
+      path: '/login',
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-red-100 transition-colors duration-300'
+    }
   ];
-
+  
   return (
     <nav className="bg-white backdrop-blur-md bg-opacity-70 shadow-lg z-50">
       <div className=" mx-auto px-4 sm:px-6 ">
