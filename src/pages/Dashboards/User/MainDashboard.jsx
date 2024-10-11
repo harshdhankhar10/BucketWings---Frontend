@@ -20,73 +20,73 @@ const MainDashboard = () => {
       <Helmet>
         <title>Dashboard - BucketWing</title>
       </Helmet>
-        <div className="bg-gray-100 min-h-screen p-8">
+        <div className=" min-h-screen">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-12 gap-6">
           {/* Header Section */}
-          <div className="col-span-12 bg-white rounded-lg shadow-md p-6">
+          <div className="col-span-12 bg-white rounded-lg shadow-md p-2">
             <WelcomeMessage />
           </div>
 
           {/* Quick Stats */}
-          <div className="col-span-12 lg:col-span-8 bg-white rounded-lg shadow-md p-6">
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-lg shadow-md p-3">
             <QuickStats />
           </div>
 
           {/* Notifications */}
-          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-6">
+          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
             <Notifications />
           </div>
 
           {/* Main Content */}
           <div className="col-span-12 lg:col-span-8 space-y-6">
             {/* Your Tasks and Goals */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="bg-white rounded-lg shadow-md p-3">
                 <YourTasks />
               </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-md p-3">
                 <YourGoals />
               </div>
             </div>
 
             {/* Milestones */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-3">
               <Milestones />
             </div>
 
             {/* Reports and Analytics */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-3">
               <ReportsAnalytics />
             </div>
           </div>
 
           {/* Sidebar */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-3">
               <UpcomingDeadlines />
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-3">
               <Calendar />
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-3">
               <RecentMessages />
             </div>
           </div>
 
           {/* Bottom Section */}
-          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-6">
+          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
             <CommunityHighlight />
           </div>
-          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-6">
+          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
             <RecentActivity />
           </div>
-          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-6">
+          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
             <ResourceHighlights />
           </div>
 
           {/* Motivational Quote */}
-          <div className="col-span-12 bg-white rounded-lg shadow-md p-6">
+          <div className="col-span-12 bg-white rounded-lg shadow-md p-3">
             <MotivationalQuote />
           </div>
         </div>
