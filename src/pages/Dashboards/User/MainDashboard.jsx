@@ -35,18 +35,20 @@ const MainDashboard = () => {
 
           {/* Notifications */}
           <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
-            <Notifications />
+            <YourGoals />
           </div>
+
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-lg shadow-md p-3">
+                <YourTasks />
+              </div>
 
           {/* Main Content */}
           <div className="col-span-12 lg:col-span-8 space-y-6">
             {/* Your Tasks and Goals */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+             
               <div className="bg-white rounded-lg shadow-md p-3">
-                <YourTasks />
-              </div>
-              <div className="bg-white rounded-lg shadow-md p-3">
-                <YourGoals />
+                <Notifications />
               </div>
             </div>
 

@@ -18,6 +18,11 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { MdOutlineMarkUnreadChatAlt } from "react-icons/md";
+import { MdAutoStories } from "react-icons/md";
+import { MdOutlineAddTask } from "react-icons/md";
+import { FaTasks } from "react-icons/fa";
+
+
 import { toast } from 'react-toastify';
 import { NavLink, Link } from 'react-router-dom';
 
@@ -125,36 +130,36 @@ const NavBar = () => {
 
   const navItems = [
     { 
-      icon: <Home size={24} className="text-purple-600" />, 
+      icon: <Home size={24} className="text-indigo-600" />, 
       text: 'Home', 
       path: '/', 
-      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-purple-100 transition-colors duration-300'
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-100 transition-colors duration-300'
     },
     { 
-      icon: <Target size={24} className="text-green-600" />, 
-      text: 'My Goals', 
-      path: '/goals', 
-      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-green-100 transition-colors duration-300'
-    },
+      icon: auth ? <Target size={24} className="text-teal-600" /> : <PlusCircle size={24} className="text-cyan-600" />, 
+      text: auth ? 'My Goals' : 'Create Goal', 
+      path: auth ? `/dashboard/${auth.role}/myGoals` : '/login',
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-teal-100 transition-colors duration-300'
+    },  
     { 
-      icon: <PlusCircle size={24} className="text-blue-600" />, 
-      text: 'Create Goal', 
-      path: '/create-goal', 
-      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-100 transition-colors duration-300'
-    },
-    { 
-      icon: <Milestone size={24} className="text-orange-600" />, 
-      text: 'Milestones', 
-      path: '/milestones', 
+      icon: auth ? <MdAutoStories size={24} className="text-orange-600" /> : <MdAutoStories size={24} className="text-yellow-600" />, 
+      text: auth ? 'My Stories' : 'Create Story', 
+      path: auth ? `/dashboard/${auth.role}/myStories` : '/login',
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-100 transition-colors duration-300'
+    },  
+    {
+      icon: auth ? <MdOutlineAddTask size={24} className="text-emerald-600" /> : <MdOutlineAddTask size={24} className="text-lime-600" />,
+      text: auth ? 'My Tasks' : 'Create Task',
+      path: auth ? `/dashboard/${auth.role}/task-dashboard` : '/login',
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-emerald-100 transition-colors duration-300'
     },
     { 
-      icon: <MdOutlineMarkUnreadChatAlt size={24} className="text-pink-600" />, 
+      icon: <MdOutlineMarkUnreadChatAlt size={24} className="text-rose-600" />, 
       text: 'Community Forum', 
       path: '/community', 
-      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-pink-100 transition-colors duration-300'
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-rose-100 transition-colors duration-300'
     },
-    auth ? { 
+      auth ? { 
       icon: <User size={24} className="text-purple-600" />, 
       text: (
         <motion.button
