@@ -21,6 +21,8 @@ import { MdOutlineMarkUnreadChatAlt } from "react-icons/md";
 import { MdAutoStories } from "react-icons/md";
 import { MdOutlineAddTask } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
+import { FaBlog } from 'react-icons/fa';
+
 
 
 import { toast } from 'react-toastify';
@@ -153,6 +155,13 @@ const NavBar = () => {
       path: auth ? `/dashboard/${auth.role}/task-dashboard` : '/login',
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-emerald-100 transition-colors duration-300'
     },
+    {
+      icon: <FaBlog size={24} className="text-blue-600" />,
+      text: 'Blogs',
+      path: '/blogs',
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-100 transition-colors duration-300'
+
+    },
     { 
       icon: <MdOutlineMarkUnreadChatAlt size={24} className="text-rose-600" />, 
       text: 'Community Forum', 
@@ -191,8 +200,8 @@ const NavBar = () => {
             <Link to="/">BucketWings</Link>
           </motion.div>
           
-          <div className="hidden lg:flex items-center space-x-8">
-            {navItems.slice(0, 5).map((item, index) => (
+          <div className="hidden lg:flex items-center space-x-10">
+            {navItems.slice(0, 6).map((item, index) => (
               <NavItem 
                 key={index} 
                 icon={item.icon} 
@@ -205,16 +214,7 @@ const NavBar = () => {
           </div>
           
           <div className="hidden md:flex items-center space-x-4">
-            <motion.div className="relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-gray-100 rounded-full py-2 px-4 pl-10 w-64 lg:w-80 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            </motion.div>
+          
             
             {auth ? (
               <ProfileDropdown auth={auth} setAuth={setAuth} />

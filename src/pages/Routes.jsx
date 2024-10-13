@@ -27,6 +27,11 @@ import ViewPost from './Community Forum/ViewPost'
 import PostByCategory from './Community Forum/PostByCategories'
 import PostByTags from './Community Forum/PostByTags'
 
+// Homepage Blogs related pages
+import ViewHomeBlog from './Blog/ViewHomeBlog'
+import Blogs from './Blog/Blogs'
+import CategoryBasedBlogs from './Blog/CategoryBasedBlogs'
+import TagBasedBlogs from './Blog/TagBasedBlogs'
 
 
 // User Dashboard Pages
@@ -69,6 +74,11 @@ import SentMessages from './Dashboards/User/Messages Management/SentMessages'
 import SendMessage from './Dashboards/User/Messages Management/SendMessage'
 import ViewMessage from './Dashboards/User/Messages Management/ViewMessage'
 
+import MyBlogDashboard from "./Dashboards/User/Blog Management/MyBlogDashboard"
+import CreateBlog from "./Dashboards/User/Blog Management/CreateBlog"
+import UpdateBlog from "./Dashboards/User/Blog Management/UpdateBlog"
+import MyBlogs from "./Dashboards/User/Blog Management/MyBlogs"
+import ViewBlog from './Dashboards/User/Blog Management/ViewBlog'
 
 // Admin Dashboard Pages
 import AdminHomepage from './Dashboards/Admin/AdminHomepage'
@@ -98,6 +108,12 @@ const RoutesPath = () => {
           <Route path="tag/:tag" element={<PostByTags />} />
           
         </Route>
+
+        {/* Homepage Blogs Routes */}
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blogs/category/:category" element={<CategoryBasedBlogs />} />
+        <Route path="/blogs/tag/:tag" element={<TagBasedBlogs />} />
+        <Route path="/blog/:slug" element={<ViewHomeBlog />} />
 
 
       {/* Private Routes */}
@@ -141,6 +157,13 @@ const RoutesPath = () => {
           <Route path="messages/sent" element={<SentMessages />} />
           <Route path="messages/send" element={<SendMessage />} />
           <Route path="messages/view/:id" element={<ViewMessage />} />
+
+          <Route path="blog/dashabord" element={<MyBlogDashboard />} />
+          <Route path="blog/create-blog" element={<CreateBlog />} />
+          <Route path="blog/update-blog/:id" element={<UpdateBlog />} />
+          <Route path="blog/my-blogs" element={<MyBlogs />} />
+          <Route path="blog/view-blog/:slug" element={<ViewBlog />} />
+          
           
          
 

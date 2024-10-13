@@ -17,6 +17,7 @@ import {
 } from "react-icons/fi";
 import { TbBrandStorytel } from "react-icons/tb";
 import { VscMilestone } from "react-icons/vsc";
+import { GrBlog } from "react-icons/gr";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Outlet, Link, useLocation } from "react-router-dom";
@@ -85,13 +86,12 @@ const DashboardLayout = () => {
       ],
     },
     {
-      title: "Milestones",
-      icon: VscMilestone,
+      title: "Blog",
+      icon: GrBlog,
       submenus: [
-        { title: "View All Milestones", link: "/dashboard/user/milestones" },
-        { title: "Create New Milestone", link: "/dashboard/user/create-milestone" },
-        { title: "Pending Milestones", link: "/dashboard/user/pending-milestones" },
-        { title: "Completed Milestones", link: "/dashboard/user/completed-milestones" },
+        { title: "My Dashabord", link: "/dashboard/user/blog/dashabord" },
+        { title: "Create New Blog", link: "/dashboard/user/blog/create-blog" },
+        { title: "My Blogs", link: "/dashboard/user/blog/my-blogs" },
       ],
     },
     {
