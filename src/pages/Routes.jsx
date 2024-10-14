@@ -111,8 +111,8 @@ const RoutesPath = () => {
 
         {/* Homepage Blogs Routes */}
         <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blogs/category/:category" element={<CategoryBasedBlogs />} />
-        <Route path="/blogs/tag/:tag" element={<TagBasedBlogs />} />
+        <Route path="/blog/category/:category" element={<CategoryBasedBlogs />} />
+        <Route path="/blog/tag/:tag" element={<TagBasedBlogs />} />
         <Route path="/blog/:slug" element={<ViewHomeBlog />} />
 
 
