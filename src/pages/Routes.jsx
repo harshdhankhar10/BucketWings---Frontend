@@ -29,6 +29,7 @@ import PostByTags from './Community Forum/PostByTags'
 
 import Sitemap from "../../public/sitemap.xml"
 import Robots from "../../public/robots.txt"
+import ErrorPage from './ErrorPage404.jsx'
 
 // Homepage Blogs related pages
 import ViewHomeBlog from './Blog/ViewHomeBlog'
@@ -196,6 +197,8 @@ const RoutesPath = () => {
       <Route path="/dashboard/admin" element={<AdminPrivateRoute />}>
         <Route path="" element={<AdminHomepage />} />
       </Route>
+
+      <Route path="*" element={<ErrorPage />} />
 
       </Routes>
 
