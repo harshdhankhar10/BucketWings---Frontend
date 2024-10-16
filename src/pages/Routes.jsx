@@ -27,6 +27,9 @@ import ViewPost from './Community Forum/ViewPost'
 import PostByCategory from './Community Forum/PostByCategories'
 import PostByTags from './Community Forum/PostByTags'
 
+import Sitemap from "../../public/sitemap.xml"
+import Robots from "../../public/robots.txt"
+
 // Homepage Blogs related pages
 import ViewHomeBlog from './Blog/ViewHomeBlog'
 import Blogs from './Blog/Blogs'
@@ -98,6 +101,9 @@ const RoutesPath = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/user/:username" element={<MyProfile />} />
         <Route path="/spinner" element={<Spinner />} />
+
+        <Route path="/sitemap.xml" element={<Sitemap />} />
+        <Route path="/robots.txt" element={<Robots />} />
 
         {/* Community Forum Routes */}
         <Route path="/community" element={<CommunityDashboard />} >
