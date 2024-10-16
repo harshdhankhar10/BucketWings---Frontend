@@ -89,10 +89,10 @@ const QuickStats = () => {
   }
 
   const achievementsData = [
-    { name: 'Featured', value: data.achievements.featuredAchievements },
-    { name: 'Non-Featured', value: data.achievements.nonFeaturedAchievements },
-    { name: 'Private', value: data.achievements.privateAchievements },
-    { name: 'Public', value: data.achievements.publicAchievements }
+    // { name: 'Featured', value: data.achievements.featuredAchievements },
+    // { name: 'Non-Featured', value: data.achievements.nonFeaturedAchievements },
+    // { name: 'Private', value: data.achievements.privateAchievements },
+    // { name: 'Public', value: data.achievements.publicAchievements }
   ];
 
   const goalsData = [

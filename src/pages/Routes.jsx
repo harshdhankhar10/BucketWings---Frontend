@@ -80,6 +80,12 @@ import UpdateBlog from "./Dashboards/User/Blog Management/UpdateBlog"
 import MyBlogs from "./Dashboards/User/Blog Management/MyBlogs"
 import ViewBlog from './Dashboards/User/Blog Management/ViewBlog'
 
+import CreateAchievement from './Dashboards/User/Achievement Management/CreateAchievement'
+import AllAchievements from './Dashboards/User/Achievement Management/AllAchievements'
+import AchievementDashboard from './Dashboards/User/Achievement Management/AchievementDashboard'
+import UpdateAchievement from './Dashboards/User/Achievement Management/UpdateAchievement'
+import ViewAchievement from './Dashboards/User/Achievement Management/ViewAchievement'
+
 // Admin Dashboard Pages
 import AdminHomepage from './Dashboards/Admin/AdminHomepage'
 
@@ -163,6 +169,12 @@ const RoutesPath = () => {
           <Route path="blog/update-blog/:id" element={<UpdateBlog />} />
           <Route path="blog/my-blogs" element={<MyBlogs />} />
           <Route path="blog/view-blog/:slug" element={<ViewBlog />} />
+
+          <Route path="achievement/create" element={<CreateAchievement />} />
+          <Route path="achievement/all" element={<AllAchievements />} />
+          <Route path="achievement/dashboard" element={<AchievementDashboard />} />
+          <Route path="achievement/update/:id" element={<UpdateAchievement />} />
+          <Route path="achievement/view/:id" element={<ViewAchievement />} />
           
           
          

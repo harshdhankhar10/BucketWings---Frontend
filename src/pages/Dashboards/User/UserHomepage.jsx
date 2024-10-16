@@ -15,6 +15,7 @@ import {
   FiSearch,
   FiBell
 } from "react-icons/fi";
+import { GiAchievement } from "react-icons/gi";
 import { TbBrandStorytel } from "react-icons/tb";
 import { VscMilestone } from "react-icons/vsc";
 import { GrBlog } from "react-icons/gr";
@@ -83,6 +84,14 @@ const DashboardLayout = () => {
         { title: "View All Tasks", link: "/dashboard/user/my-tasks" },
         { title: "Create New Task", link: "/dashboard/user/create-task" },
         { title: "Filter Tasks", link: "/dashboard/user/filter-tasks" },
+      ],
+    },{
+      title: "Achievements",
+      icon: GiAchievement,
+      submenus: [
+        { title : "Achievement Dashboard", link: "/dashboard/user/achievement/dashboard" },
+        { title: "Create New Achievement", link: "/dashboard/user/achievement/create" },
+        { title: "View All Achievements", link: "/dashboard/user/achievement/all" },
       ],
     },
     {
@@ -167,7 +176,7 @@ const DashboardLayout = () => {
     )}
     <div className="flex items-center pl-3">
       <img
-        src="../../../../public/assets/images/webLogo.png"
+        src="https://i.postimg.cc/1zRqmjj9/webLogo.png"
         alt="BucketWings Logo"
         className="h-12 w-12 rounded-xl"
       />
