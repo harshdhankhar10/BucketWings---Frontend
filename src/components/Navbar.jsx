@@ -17,6 +17,9 @@ import {
   X,
   ChevronDown
 } from 'lucide-react';
+import { GiAchievement } from "react-icons/gi";
+import { GrAchievement } from "react-icons/gr";
+
 import { MdOutlineMarkUnreadChatAlt } from "react-icons/md";
 import { MdAutoStories } from "react-icons/md";
 import { MdOutlineAddTask } from "react-icons/md";
@@ -140,20 +143,25 @@ const NavBar = () => {
     { 
       icon: auth ? <Target size={24} className="text-teal-600" /> : <PlusCircle size={24} className="text-cyan-600" />, 
       text: auth ? 'My Goals' : 'Create Goal', 
-      path: auth ? `/dashboard/${auth.role}/myGoals` : '/login',
+      path: auth ? `/dashboard/${auth.role}/myGoals` : '/goals',
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-teal-100 transition-colors duration-300'
     },  
     { 
       icon: auth ? <MdAutoStories size={24} className="text-orange-600" /> : <MdAutoStories size={24} className="text-yellow-600" />, 
       text: auth ? 'My Stories' : 'Create Story', 
-      path: auth ? `/dashboard/${auth.role}/myStories` : '/login',
+      path: auth ? `/dashboard/${auth.role}/myStories` : '/stories',
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-100 transition-colors duration-300'
     },  
     {
       icon: auth ? <MdOutlineAddTask size={24} className="text-emerald-600" /> : <MdOutlineAddTask size={24} className="text-lime-600" />,
       text: auth ? 'My Tasks' : 'Create Task',
-      path: auth ? `/dashboard/${auth.role}/task-dashboard` : '/login',
+      path: auth ? `/dashboard/${auth.role}/task-dashboard` : '/tasks',
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-emerald-100 transition-colors duration-300'
+    },{
+      icon: auth ? <GiAchievement size={24} className="text-blue-600" /> : <GrAchievement size={24} className="text-blue-600" />,
+      text: auth ? 'My Achievements' : 'Achievements',
+      path: auth ? `/dashboard/${auth.role}/achievement/all` : '/achievements',
+      className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-100 transition-colors duration-300'
     },
     {
       icon: <FaBlog size={24} className="text-blue-600" />,
@@ -200,8 +208,8 @@ const NavBar = () => {
             <Link to="/">BucketWings</Link>
           </motion.div>
           
-          <div className="hidden lg:flex items-center space-x-10">
-            {navItems.slice(0, 6).map((item, index) => (
+          <div className="hidden lg:flex items-center space-x-8">
+            {navItems.slice(0, 7).map((item, index) => (
               <NavItem 
                 key={index} 
                 icon={item.icon} 

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { FiArrowUpRight, FiChevronDown, FiChevronUp, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 export const HeroSection = () => {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -67,9 +68,11 @@ export const HeroSection = () => {
               <p className="text-xl md:text-2xl max-w-2xl mx-auto mb-8">
                 {features[activeFeature].content}
               </p>
-              <button className="bg-white text-purple-900 px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-100 transition-colors inline-flex items-center">
+            <Link to="/register">
+            <button className="bg-white text-purple-900 px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-100 transition-colors inline-flex items-center">
                 Start Your Journey <FiArrowUpRight className="ml-2" />
               </button>
+              </Link>
             </motion.div>
           </AnimatePresence>
         </div>

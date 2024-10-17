@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const CTASection = () => {
   return (
@@ -38,15 +39,18 @@ const CTASection = () => {
             ))}
           </ul>
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <motion.button
+           <Link to="/register">
+           <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-indigo-600 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-indigo-700 transition duration-300 w-full sm:w-auto"
             >
               Lets Get Started
             </motion.button>
-            <motion.a
-              href="#learn-more"
+            </Link>
+          
+           <motion.a
+              href="/about"
               whileHover={{ x: 5 }}
               className="text-indigo-600 font-semibold flex items-center justify-center text-lg w-full sm:w-auto"
             >

@@ -7,6 +7,7 @@ import Homepage from "./Homepage"
 import MyProfile from './MyProfile'
 import Spinner from '../components/Spinner'
 import FAQSection from '../components/HomePage/Faq'
+import Aboutus from '../pages/Homepage/Aboutus'
 
 
 import AdminPrivateRoute from './AdminPrivateRoute'
@@ -30,6 +31,11 @@ import PostByTags from './Community Forum/PostByTags'
 import Sitemap from "../../public/sitemap.xml"
 import Robots from "../../public/robots.txt"
 import ErrorPage from './ErrorPage404.jsx'
+
+import GoalsHomepage from './Homepage/GoalsHomepage.jsx'
+import StoriesHomepage from './Homepage/StoriesHomepage.jsx'
+import AchievementHomepage from './Homepage/AchievementHomepage.jsx'
+import TaskHomepage from './Homepage/TaskHomepage.jsx'
 
 // Homepage Blogs related pages
 import ViewHomeBlog from './Blog/ViewHomeBlog'
@@ -102,9 +108,15 @@ const RoutesPath = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/user/:username" element={<MyProfile />} />
         <Route path="/spinner" element={<Spinner />} />
+        <Route path="/about" element={<Aboutus />} />
 
         <Route path="/sitemap.xml" element={<Sitemap />} />
         <Route path="/robots.txt" element={<Robots />} />
+
+        <Route path="/goals" element={<GoalsHomepage />} />
+        <Route path="/stories" element={<StoriesHomepage />} />
+        <Route path="/achievements" element={<AchievementHomepage />} />
+        <Route path="/tasks" element={<TaskHomepage />} />
 
         {/* Community Forum Routes */}
         <Route path="/community" element={<CommunityDashboard />} >
@@ -128,6 +140,7 @@ const RoutesPath = () => {
         <Route path="/blog/tag/:tag" element={<TagBasedBlogs />} />
         <Route path="/blog/:slug" element={<ViewHomeBlog />} />
 
+       
 
       {/* Private Routes */}
       <Route path="/dashboard/" element={<PrivateRoute />}>
