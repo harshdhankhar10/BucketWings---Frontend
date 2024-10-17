@@ -47,35 +47,6 @@ const Footer = () => {
   return (
     <footer className="relative bg-gradient-to-b from-white to-purple-50">
       <div className="mx-auto px-4 pt-2 pb-8 sm:px-6 lg:px-6">
-        {/* Newsletter Section */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 p-6 shadow-2xl">
-          <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,transparent)]"></div>
-          <div className="relative flex flex-col items-center gap-8 sm:flex-row sm:justify-between">
-            <div className="max-w-md text-center sm:text-left">
-              <h3 className="text-3xl font-bold text-white mb-3">
-                Join Our Newsletter
-              </h3>
-              <p className="text-purple-100 text-xm">
-                Get weekly insights on goal achievement and personal growth
-              </p>
-            </div>
-
-            <form className="flex w-full sm:w-auto flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full sm:w-96 px-6 py-4 text-gray-600 bg-white/95 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 focus:ring-offset-purple-500 transition-all duration-300"
-              />
-              <button
-                type="submit"
-                className="px-8 py-4 text-white bg-purple-900/20 backdrop-blur-sm rounded-xl hover:bg-purple-900/30 focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 focus:ring-offset-purple-500 transition-all duration-300 font-medium text-lg"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </div>
-
         {/* Links Section */}
         <div className="mt-16 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* About Us */}

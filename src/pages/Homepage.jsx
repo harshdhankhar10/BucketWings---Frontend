@@ -17,7 +17,7 @@ const Homepage = () => {
   return (
       <>
       <Helmet>
-        <title>BucketWing | Goal Tracking, Task Management, and Community Support</title>
+        <title>BucketWing | Goal Tracking, Task Management,Share Stories and Community Support</title>
       </Helmet>
 
 

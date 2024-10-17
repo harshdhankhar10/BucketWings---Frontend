@@ -3,6 +3,7 @@ import {Routes, Route} from 'react-router-dom'
 
 import LoginPage from './Auth/LoginPage'
 import RegisterPage from './Auth/RegisterPage'
+import ResetPassword from './Auth/ResetPassword.jsx'
 import Homepage from "./Homepage"
 import MyProfile from './MyProfile'
 import Spinner from '../components/Spinner'
@@ -106,6 +107,7 @@ const RoutesPath = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/user/:username" element={<MyProfile />} />
         <Route path="/spinner" element={<Spinner />} />
         <Route path="/about" element={<Aboutus />} />
