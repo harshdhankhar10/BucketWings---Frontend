@@ -447,7 +447,7 @@ const UpdateProfile = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <StatsCard
             title="Member Since"
             value={new Date(user.createdAt).toLocaleDateString()}
@@ -475,15 +475,7 @@ const UpdateProfile = () => {
               </svg>
             }
           />
-          <StatsCard
-            title="Profile Completion"
-            value={calculateProfileCompletion(formData) + '%'}
-            icon={
-              <svg className="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-            }
-          />
+       
         </div>
       </div>
 
@@ -539,14 +531,5 @@ const StatsCard = ({ title, value, icon }) => (
   </div>
 );
 
-const calculateProfileCompletion = (formData) => {
-  const fields = Object.keys(formData).filter(key => {
-    if (typeof formData[key] === '') {
-      return Object.keys(formData[key]).some(k => !!formData[key][k]);
-    }
-    return !!formData[key];
-  });
-  return ((fields.length / 100) * 100).toFixed(2);
-}
 
 export default UpdateProfile;
