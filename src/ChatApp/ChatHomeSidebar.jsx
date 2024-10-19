@@ -1,119 +1,135 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Settings, MessageCircle, LogOut } from 'lucide-react';
+import axios from 'axios';
+import { IoSearchSharp } from "react-icons/io5";
 
 const ChatHomeSidebar = () => {
-  const users = [
-    {
-      id: 1,
-      name: "Sarah Wilson",
-      avatar: "https://img.freepik.com/free-photo/portrait-handsome-smiling-stylish-young-man-model-dressed-red-checkered-shirt-fashion-man-posing_158538-4914.jpg?t=st=1729319200~exp=1729322800~hmac=51b931b8a8a9aa8db8b066d115cebe31944f6ed27ce2b047833b84fce7fe92d0&w=740",
-      status: "online",
-      lastMessage: "Hey, how are you?",
-      time: "2m ago"
-    },
-    {
-      id: 2,
-      name: "James Miller",
-      avatar: "https://t3.ftcdn.net/jpg/02/58/89/90/240_F_258899001_68CalsKTRk6PZQgWH9JhR4heBlncCko9.jpg",
-      status: "offline",
-      lastMessage: "The project looks great!",
-      time: "1h ago"
-    },
-    {
-      id: 3,
-      name: "Emma Davis",
-      avatar: "https://img.freepik.com/free-photo/young-couple-love-love-story-autumn-forest-park_1328-1983.jpg?t=st=1729319418~exp=1729323018~hmac=8bb724b8d146fe5b9a72f12655313cb6566acfbdba249f6abe49eae52bb8d75c&w=360",
-      status: "online",
-      lastMessage: "Can we meet tomorrow?",
-      time: "3h ago"
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  const handleSearch = async (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    
+    if (value.length === 0) {
+      setUsers([]);
+      return;
     }
-  ];
+
+    try {
+      setLoading(true);
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/chat/user/search?username=${value}`);
+      
+      if (response.data.success && response.data.user) {
+        setUsers([response.data.user]);
+      } else {
+        setUsers([]);
+      }
+    } catch (error) {
+      console.error(error);
+      setUsers([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="h-screen w-80 bg-white border-r border-gray-200 flex flex-col">
+    <div className="h-screen w-80 bg-gradient-to-b from-white to-purple-50 border-r border-gray-200 flex flex-col">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-purple-600">BucketTalk</h1>
-          <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-            <MessageCircle size={20} className="text-purple-600" />
-          </div>
-        </div>
-        <div className="flex items-center space-x-3">
-          <img
-            src="https://i.postimg.cc/Fs0J49Kz/pixelcut-export-2.png"
-            alt="Profile"
-            className="h-10 w-10 rounded-full object-cover"
-          />
-          <div>
-            <h2 className="font-semibold text-gray-800">Harsh</h2>
-            <p className="text-sm text-gray-500">Available</p>
+      <div className="pt-5 pl-6 border-b border-gray-200 bg-white shadow-sm">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center justify-between  space-x-2">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 text-transparent bg-clip-text">
+              BucketTalk
+            </h1>
+          <button>
+           <img src="https://i.postimg.cc/Fs0J49Kz/pixelcut-export-2.png" alt="Profile"
+            className=" relative left-16 h-10 w-10 rounded-full object-cover ring-2 ring-purple-300 ring-offset-2" />
+          </button>
           </div>
         </div>
       </div>
 
       {/* Search */}
       <div className="p-4">
-        <div className="relative">
+        <div className="relative group">
           <input
             type="text"
-            placeholder="Search conversations..."
-            className="w-full px-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+            placeholder="Search using username"
+            className="w-full px-5 py-3 bg-white rounded-xl shadow-sm border border-gray-200 
+                     focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
+                     text-sm transition-all duration-300"
+            value={username}
+            onChange={handleSearch}
           />
-        </div>
-      </div>
-
-      {/* Chat List */}
-      <div className="flex-1 overflow-y-auto">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors"
-          >
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <img
-                  src={user.avatar}
-                  alt={user.name}
-                  className="h-10 w-10 rounded-full"
-                />
-                <span
-                  className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
-                    user.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                  }`}
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-baseline">
-                    <Link to={`/chat/messages/132`}>
-                    <h3 className="text-sm font-semibold text-gray-800 truncate">
-                    {user.name}
-                  </h3>
-                    </Link>
-                  <span className="text-xs text-gray-500">{user.time}</span>
-                </div>
-                <p className="text-sm text-gray-500 truncate">{user.lastMessage}</p>
-              </div>
-            </div>
+          <div className="absolute top-1/2 transform -translate-y-1/2 right-4 
+                        text-gray-400 group-hover:text-purple-500 transition-colors duration-300">
+            <IoSearchSharp size={20} />
           </div>
-        ))}
-      </div>
-
-      {/* Footer */}
-      <div className="p-4 border-t border-gray-200">
-        <div className="flex justify-around">
-          <button className="p-2 text-gray-500 hover:text-purple-600 transition-colors">
-            <Users size={20} />
-          </button>
-          <button className="p-2 text-gray-500 hover:text-purple-600 transition-colors">
-            <Settings size={20} />
-          </button>
-          <button className="p-2 text-gray-500 hover:text-purple-600 transition-colors">
-            <LogOut size={20} />
-          </button>
         </div>
       </div>
+
+      {/* User List */}
+      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-200 scrollbar-track-transparent">
+        {loading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+          </div>
+        )}
+        
+        {!loading && users.length > 0 && (
+          <div className="mt-2 px-2">
+            {users.map((user) => (
+              <Link 
+                to={`/chat/messages/${user._id}`} 
+                key={user._id}
+                className="block"
+              >
+                <div className="flex items-center p-4 mb-2 rounded-xl hover:bg-white hover:shadow-md
+                              transform transition-all duration-300 hover:-translate-y-1">
+                  <div className="relative">
+                    <img
+                      src={user.profilePicture}
+                      alt={user.fullName}
+                      className="h-14 w-14 rounded-full object-cover ring-2 ring-purple-200"
+                    />
+                    {user.isVerified && (
+                      <div className="absolute -right-1 -bottom-1 bg-blue-500 p-1 rounded-full">
+                        <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                  <div className="ml-4 flex-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold text-gray-900">{user.username}</p>
+                      <p className="text-xs text-gray-400">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <p className="text-sm text-gray-600 font-medium">{user.fullName}</p>
+                    {user.bio && (
+                      <p className="text-xs text-gray-400 mt-1 line-clamp-1">{user.bio}</p>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {!loading && username && users.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-12">
+            <Users size={48} className="text-gray-300 mb-4" />
+            <p className="text-gray-400 text-sm">No users found</p>
+          </div>
+        )}
+      </div>
+
+     
     </div>
   );
 };
