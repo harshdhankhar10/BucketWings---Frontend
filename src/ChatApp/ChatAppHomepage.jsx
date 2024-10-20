@@ -20,26 +20,7 @@ const ChatAppHomepage = () => {
 
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col">
-          {/* Welcome Screen / Empty State */}
-          {!Outlet ? (
-            <div className="h-full flex items-center justify-center bg-white">
-              <div className="text-center space-y-4 max-w-md mx-auto p-6">
-                <div className="w-24 h-24 mx-auto bg-purple-100 rounded-full flex items-center justify-center">
-                  <MessageCircle size={40} className="text-purple-600" />
-                </div>
-                <h1 className="text-2xl font-bold text-gray-900">Welcome to BucketTalk</h1>
-                <p className="text-gray-500">
-                  Select a conversation to start chatting or create a new one to connect with others.
-                </p>
-                <button className="inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                  <Plus size={20} className="mr-2" />
-                  Start New Chat
-                </button>
-              </div>
-            </div>
-          ) : (
             <Outlet />
-          )}
         </div>
 
         {/* Optional: Info Panel (can be toggled) */}

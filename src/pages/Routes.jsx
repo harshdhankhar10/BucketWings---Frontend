@@ -209,10 +209,12 @@ const RoutesPath = () => {
       </Route>
 
       {/* Chat App Routes */}
-      <Route path="/chat" element={<ChatAppHomepage />} >
-      <Route path="messages/:id" element={<LiveChatMessaging />} />
-      
 
+      <Route path="/live-chat" element={<PrivateRoute />} >
+      <Route path="" element={<ChatAppHomepage />} >
+        <Route path="messages/:id" element={<LiveChatMessaging />} />
+
+      </Route>       
       </Route>
 
       {/* Admin Private Routes */}\
