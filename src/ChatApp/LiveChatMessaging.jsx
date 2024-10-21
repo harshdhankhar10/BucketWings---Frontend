@@ -9,6 +9,8 @@ import axios from 'axios';
 import { storage } from '../Firebase/Firebase';
 import { toast } from 'react-toastify';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useSocketContext } from '../context/SocketContext';
+import notify from "../assets/NotificationSound.mp3"
 
 const LiveChatMessaging = () => {
   const [inputMessage, setInputMessage] = useState('');
@@ -24,6 +26,20 @@ const LiveChatMessaging = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const {socket} = useSocketContext();
+
+
+  useEffect(()=>{
+    socket?.on('newMessage', (newMessage) => {
+      const sound = new Audio(notify);
+      sound.play();
+      setMessage([...messages, newMessage]);
+    });
+    return () => socket?.off('newMessage');
+
+  }, [socket, setMessage, messages]);
+
+
 
   useEffect(() => {
     const fetchMessages = async () => {
