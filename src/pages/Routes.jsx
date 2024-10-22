@@ -101,10 +101,6 @@ import ViewAchievement from './Dashboards/User/Achievement Management/ViewAchiev
 import AdminHomepage from './Dashboards/Admin/AdminHomepage'
 
 
-// Chat App All Pages
-
-import ChatAppHomepage from '../ChatApp/ChatAppHomepage.jsx'
-import LiveChatMessaging from '../ChatApp/LiveChatMessaging.jsx'
 
 const RoutesPath = () => {
   return (
@@ -208,14 +204,8 @@ const RoutesPath = () => {
        
       </Route>
 
-      {/* Chat App Routes */}
 
-      <Route path="/live-chat" element={<PrivateRoute />} >
-      <Route path="" element={<ChatAppHomepage />} >
-        <Route path="messages/:id" element={<LiveChatMessaging />} />
-
-      </Route>       
-      </Route>
+     
 
       {/* Admin Private Routes */}\
       <Route path="/dashboard/admin" element={<AdminPrivateRoute />}>
