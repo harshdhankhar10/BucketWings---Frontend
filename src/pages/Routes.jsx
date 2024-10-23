@@ -97,6 +97,15 @@ import AchievementDashboard from './Dashboards/User/Achievement Management/Achie
 import UpdateAchievement from './Dashboards/User/Achievement Management/UpdateAchievement'
 import ViewAchievement from './Dashboards/User/Achievement Management/ViewAchievement'
 
+
+// Live Chatapp Pages
+import ChatHomePage from '../ChatApp/ChatHomePage.jsx'
+import LiveChatMessagingContainer from '../ChatApp/LiveChatMessagingContainer.jsx'
+
+
+
+
+
 // Admin Dashboard Pages
 import AdminHomepage from './Dashboards/Admin/AdminHomepage'
 
@@ -202,6 +211,11 @@ const RoutesPath = () => {
           
         </Route>
        
+      </Route>
+
+      {/* Live Chat App */}
+      <Route path="/live-chat" element={<ChatHomePage />} >
+        <Route path="messages/:id" element={<LiveChatMessagingContainer />} />
       </Route>
 
 

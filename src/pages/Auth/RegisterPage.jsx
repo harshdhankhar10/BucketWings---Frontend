@@ -6,8 +6,12 @@ import NavBar from '../../components/Navbar';
 import { toast } from 'react-toastify';
 import {useNavigate, Link} from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+
+
+
+
 const SignupForm = () => {
-  // Separate individual fields using useState
+
   const [fullName, setFullName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -85,37 +89,48 @@ const SignupForm = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
       return;
     }
+  
+    if (!fullName || !userName || !email || !password) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+  
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/auth/register`, {
         fullName,
-        username : userName,
+        username: userName,
         email,
         password,
         dateOfBirth,
         language,
         subscribeNewsletter,
-        profilePicture
+        profilePicture,
       });
-
-
       if (response.data.success) {
         toast.success(response.data.message);
         navigate('/login');
-        
       } else {
         toast.error(response.data.message);
       }
+  
     } catch (error) {
+      if (error.response) {
+        toast.error(`Error: ${error.response.data.message || 'Registration failed'}`);
+      } else if (error.request) {
+        toast.error('No response from server. Please try again later.');
+      } else {
+        toast.error(`Error: ${error.message}`);
+      }
+      
       console.error('Error signing up:', error);
-      toast.error('Something went wrong. Please try again.');
     }
   };
-
-  return (
+    return (
     <>
     <Helmet>
       <title>Sign Up | BucketWings</title>

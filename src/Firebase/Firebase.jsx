@@ -1,22 +1,24 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getStorage } from 'firebase/storage';
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAaS0fiT5-ZaV4ALuZlUNAv51czUsGYO4I",
-  authDomain: "buckettalk-3f64d.firebaseapp.com",
-  projectId: "buckettalk-3f64d",
-  storageBucket: "buckettalk-3f64d.appspot.com",
-  messagingSenderId: "659568725504",
-  appId: "1:659568725504:web:d77936d7e60f92ca7ad2e5",
-  measurementId: "G-L2KX2EFF14"
+  apiKey: "AIzaSyCJzrd4RcbAM9mNMtqyuDoaMVwKK_ZA5PY",
+  authDomain: "buckettalk-ff0b3.firebaseapp.com",
+  projectId: "buckettalk-ff0b3",
+  storageBucket: "buckettalk-ff0b3.appspot.com",
+  messagingSenderId: "811070514736",
+  appId: "1:811070514736:web:dd95897d6990af19efeff5",
+  measurementId: "G-QEP0T4CFEF"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 const storage = getStorage(app);
-
-export {storage};
+export { db, auth, storage };

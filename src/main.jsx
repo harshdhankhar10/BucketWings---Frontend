@@ -10,7 +10,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <AuthProvider>
-          <App />
+            <App />         
       </AuthProvider>
       <ToastContainer />
     </BrowserRouter>
