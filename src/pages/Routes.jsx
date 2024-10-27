@@ -14,6 +14,11 @@ import Aboutus from '../pages/Homepage/Aboutus'
 import AdminPrivateRoute from './AdminPrivateRoute'
 import PrivateRoute from './PrivateRoute'
 
+// AI Chat Pages
+import AIChatHomePage from '../AI Chat/AIChatHomePage.jsx'
+import AIChatSidebar from '../AI Chat/AIChatSidebar.jsx'
+import AiChatMessaging from '../AI Chat/AiChatMessaging.jsx'
+
 
 // Community Forum Pages
 import CommunityDashboard from './Community Forum/CommunityDashboard'
@@ -98,10 +103,6 @@ import UpdateAchievement from './Dashboards/User/Achievement Management/UpdateAc
 import ViewAchievement from './Dashboards/User/Achievement Management/ViewAchievement'
 
 
-// Live Chatapp Pages
-import ChatHomePage from '../ChatApp/ChatHomePage.jsx'
-import LiveChatMessagingContainer from '../ChatApp/LiveChatMessagingContainer.jsx'
-
 
 
 
@@ -153,6 +154,12 @@ const RoutesPath = () => {
         <Route path="/blog/tag/:tag" element={<TagBasedBlogs />} />
         <Route path="/blog/:slug" element={<ViewHomeBlog />} />
 
+        {/* AI Chat Routes */}
+        <Route path="/ai-chat" element={<AIChatHomePage />} >
+          <Route path="" element={<AIChatSidebar />} />
+          <Route path="chat/:id" element={<AiChatMessaging />} />
+
+        </Route>
        
 
       {/* Private Routes */}
@@ -212,13 +219,6 @@ const RoutesPath = () => {
         </Route>
        
       </Route>
-
-      {/* Live Chat App */}
-      <Route path="/live-chat" element={<ChatHomePage />} >
-        <Route path="messages/:id" element={<LiveChatMessagingContainer />} />
-      </Route>
-
-
      
 
       {/* Admin Private Routes */}\
