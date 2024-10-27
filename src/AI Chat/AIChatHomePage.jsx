@@ -35,13 +35,7 @@ const AIChatHomePage = () => {
 
         {/* Messaging Section */}
         <main className="hidden md:flex flex-1 flex-col bg-gray-100">
-           {chats.length > 0 ? (
             <AIChatMessaging />
-          ) : (
-            <div className="flex items-center justify-center h-full">
-              <p className="text-gray-500">No chats available</p>
-            </div>
-          )}
         </main>
       </div>
       )}

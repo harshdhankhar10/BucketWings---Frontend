@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { toast } from 'react-toastify';
 
 const ChatContext = createContext();
@@ -10,60 +10,49 @@ const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 export const ChatProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [prompt, setPrompt] = useState("");
-  const [newRequestLoading, setNewRequestLoading] = useState(false);
+  const [isRequestLoading, setIsRequestLoading] = useState(false);
   const [chats, setChats] = useState([]);
-  const [selected, setSelected] = useState(null);
-  const [createLod, setCreateLod] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [selectedChat, setSelectedChat] = useState(null);
+  const [isCreatingChat, setIsCreatingChat] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
   const token = JSON.parse(localStorage.getItem("auth"))?.token;
 
   const fetchResponse = async () => {
-    if (!prompt) {
-      return toast.error("Please enter a prompt");
+    if (!prompt.trim()) {
+      return toast.error("Please enter a valid prompt.");
     }
-    
-    setNewRequestLoading(true);
-    const originalPrompt = prompt;
+
+    setIsRequestLoading(true);
+    const userPrompt = prompt;
     setPrompt("");
 
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
-        {
-          contents: [{ parts: [{ text: originalPrompt }] }],
-        }
+        { contents: [{ parts: [{ text: userPrompt }] }] }
       );
 
-      const message = {
-        question: originalPrompt,
-        answer: response.data.candidates[0]?.content?.parts[0]?.text || "No answer received",
-      };
+      const answer = data?.candidates[0]?.content?.parts[0]?.text || "No answer received";
+      const newMessage = { question: userPrompt, answer };
 
-      setMessages(prev => [...prev, message]);
+      setMessages((prev) => [...prev, newMessage]);
 
       await axios.post(
-        `${server}/api/v1/aiChat/${selected}`,
-        {
-          question: originalPrompt,
-          answer: message.answer,
-        },
+        `${server}/api/v1/aiChat/${selectedChat}`,
+        newMessage,
         { headers: { Authorization: token } }
       );
-
     } catch (error) {
       console.error("Error fetching response:", error);
-      toast.error("Something went wrong");
+      toast.error("Something went wrong while fetching the response.");
     } finally {
-      setNewRequestLoading(false);
+      setIsRequestLoading(false);
     }
   };
 
   const fetchChats = async () => {
-    if (!token) {
-      console.error("No token found, cannot fetch chats.");
-      return;
-    }
+    if (!token) return console.error("No token found, cannot fetch chats.");
 
     try {
       const { data } = await axios.get(`${server}/api/v1/aiChat/all`, {
@@ -71,16 +60,17 @@ export const ChatProvider = ({ children }) => {
       });
 
       setChats(data);
-      if (data.length > 0) {
-        setSelected(data[0]._id); // Select the first chat if available
+      if (data.length) {
+        setSelectedChat(data[0]._id); // Select the first chat if available
       }
     } catch (error) {
       console.error("Error fetching chats:", error);
+      toast.error("Failed to load chats.");
     }
   };
 
   const createChat = async () => {
-    setCreateLod(true);
+    setIsCreatingChat(true);
     try {
       await axios.post(
         `${server}/api/v1/aiChat/new`,
@@ -92,25 +82,26 @@ export const ChatProvider = ({ children }) => {
       await fetchChats();
     } catch (error) {
       console.error("Error creating chat:", error);
-      toast.error("Something went wrong");
+      toast.error("Failed to create a new chat.");
     } finally {
-      setCreateLod(false);
+      setIsCreatingChat(false);
     }
   };
 
   const fetchMessages = async () => {
-    if (!selected) return;
+    if (!selectedChat) return;
 
-    setLoading(true);
+    setIsLoadingMessages(true);
     try {
-      const { data } = await axios.get(`${server}/api/v1/aiChat/${selected}`, {
+      const { data } = await axios.get(`${server}/api/v1/aiChat/${selectedChat}`, {
         headers: { Authorization: token },
       });
       setMessages(data);
     } catch (error) {
       console.error("Error fetching messages:", error);
+      toast.error("Failed to load messages.");
     } finally {
-      setLoading(false);
+      setIsLoadingMessages(false);
     }
   };
 
@@ -123,7 +114,7 @@ export const ChatProvider = ({ children }) => {
       await fetchChats();
     } catch (error) {
       console.error("Error deleting chat:", error);
-      toast.error("Something went wrong");
+      toast.error("Failed to delete the chat.");
     }
   };
 
@@ -133,25 +124,28 @@ export const ChatProvider = ({ children }) => {
 
   useEffect(() => {
     fetchMessages();
-  }, [selected]);
+  }, [selectedChat]);
+
+  const contextValue = useMemo(() => ({
+    fetchResponse,
+    messages,
+    prompt,
+    setPrompt,
+    isRequestLoading,
+    chats,
+    createChat,
+    isCreatingChat,
+    selectedChat,
+    setSelectedChat,
+    isLoadingMessages,
+    deleteChat,
+  }), [
+    fetchResponse, messages, prompt, isRequestLoading, chats, createChat,
+    isCreatingChat, selectedChat, isLoadingMessages, deleteChat,
+  ]);
 
   return (
-    <ChatContext.Provider
-      value={{
-        fetchResponse,
-        messages,
-        prompt,
-        setPrompt,
-        newRequestLoading,
-        chats,
-        createChat,
-        createLod,
-        selected,
-        setSelected,
-        loading,
-        deleteChat,
-      }}
-    >
+    <ChatContext.Provider value={contextValue}>
       {children}
     </ChatContext.Provider>
   );

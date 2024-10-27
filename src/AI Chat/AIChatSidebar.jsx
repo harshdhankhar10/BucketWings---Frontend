@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Settings, LogOut } from 'lucide-react'; // Ensure you're importing MdDelete
+import { Search, Plus, Settings, LogOut } from 'lucide-react'; 
 import Swal from 'sweetalert2';
 import { useChat } from '../context/AIChatContext';
 import { MdDelete } from 'react-icons/md';
 
+
 const ElegantAIChatSidebar = () => {
   const [user] = useState(JSON.parse(localStorage.getItem("auth"))?.user);
   const [searchQuery, setSearchQuery] = useState('');
-  const { chats, createChat, setSelected, deleteChat, loading } = useChat(); // Assuming loading is managed in your context
+  const { chats, createChat, setSelected, deleteChat, loading } = useChat();
 
    const clickEvent = (id) => {
     setSelected(id);
