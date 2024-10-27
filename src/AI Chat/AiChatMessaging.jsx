@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {  Bot, MoreVertical, UserCircle2, Loader } from 'lucide-react';
-import { chatData } from '../context/AIChatContext';
+import { useChat } from '../context/AIChatContext';
 import { LuSendHorizonal } from "react-icons/lu";
 
 
 const ModernAIChatMessaging = () => {
-  const { fetchResponse, messages, prompt, setPrompt, newRequestLoading, loading, chats } = chatData();
+  const { fetchResponse, messages, prompt, setPrompt, newRequestLoading, loading, chats } = useChat();
   const messageContainerRef = useRef();
 
   useEffect(() => {
