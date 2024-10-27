@@ -8,6 +8,7 @@ const Inbox = () => {
   const [messages, setMessages] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
+  console.log(messages);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -27,6 +28,7 @@ const Inbox = () => {
               isRead: msg.status === 'read',
             }));
           setMessages(mappedMessages);
+          setSenderInfo(response.data.senderInfo);
         }
       } catch (error) {
         console.error('Error fetching messages:', error);
@@ -146,7 +148,7 @@ const Inbox = () => {
               <div className="flex items-center p-4">
                 {/* Profile picture and message content are wrapped inside Link */}
                 <Link to={`/dashboard/user/messages/view/${message.id}`} className="flex-grow flex items-center min-w-0">
-                  <img src={user.profilePicture} alt={user.fullName} className="w-10 h-10 rounded-full mr-4" />
+                  <img src={messages.sender?.profilePicture || "https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg"} alt={user.fullName} className="w-10 h-10 rounded-full mr-4" />
                   <div className="flex-grow min-w-0">
                     <div className="flex items-center mb-1">
                       <h3 className="font-semibold text-gray-800 truncate mr-2">{message.sender}</h3>

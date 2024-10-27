@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CalendarIcon, CheckCircleIcon, XCircleIcon } from 'lucide-react';
+import { CalendarIcon, CheckCircleIcon, Link, XCircleIcon } from 'lucide-react';
 import "../../styles.css"
+import {Link as LinkRoute} from "react-router-dom";
 
 const YourTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -40,7 +41,7 @@ const YourTasks = () => {
 
   if (loading) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-md animate-pulse">
+      <div className="bg-white  rounded-lg shadow-md animate-pulse">
         <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
         {[1, 2, 3].map((i) => (
           <div key={i} className="h-16 bg-gray-100 rounded mb-3"></div>
@@ -60,7 +61,12 @@ const YourTasks = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Your Tasks</h2>
+    <span className="flex items-center justify-between">
+    <h2 className="text-2xl font-bold mb-4">Your Tasks</h2>
+    <span>
+      <LinkRoute to="/dashboard/user/task-dashboard" className="text-blue-500 hover:underline">View All</LinkRoute>
+    </span>
+    </span>
       {tasks.length === 0 ? (
         <p className="text-gray-500">No tasks found. Enjoy your free time!</p>
       ) : (
@@ -79,7 +85,6 @@ const YourTasks = () => {
                   )}
                   <div>
                     <h3 className="text-lg font-semibold">{task.title}</h3>
-                    <p className="text-sm text-gray-600">{task.description}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">

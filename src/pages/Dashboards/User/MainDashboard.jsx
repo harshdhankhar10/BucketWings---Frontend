@@ -32,45 +32,36 @@ const MainDashboard = () => {
           <div className="col-span-12 lg:col-span-12 bg-white rounded-lg shadow-md p-3">
             <QuickStats />
           </div>
-
-          {/* Notifications */}
-          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
-            <YourGoals />
-          </div>
-
-          <div className="col-span-12 lg:col-span-8 bg-white rounded-lg shadow-md p-3">
+          <div className="col-span-12 lg:col-span-12 bg-white rounded-lg shadow-md p-3">
                 <YourTasks />
               </div>
 
-          {/* Main Content */}
-          <div className="col-span-12 lg:col-span-8 space-y-6">
-            {/* Your Tasks and Goals */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-             
-              <div className="bg-white rounded-lg shadow-md p-3">
+          {/* Notifications */}
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-lg shadow-md p-3">
+            <YourGoals />
+          </div>
+          <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
+              <Calendar />
+            </div>
+
+       
+
+            <div className= "col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
                 <Notifications />
               </div>
-            </div>
-
-            {/* Milestones */}
-            <div className="bg-white rounded-lg shadow-md p-3">
+              <div className="col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
               <Milestones />
             </div>
-
-            {/* Reports and Analytics */}
-            <div className="bg-white rounded-lg shadow-md p-3">
+            <div className=" col-span-12 lg:col-span-4 bg-white rounded-lg shadow-md p-3">
               <ReportsAnalytics />
             </div>
-          </div>
 
-          {/* Sidebar */}
+
           <div className="col-span-12 lg:col-span-4 space-y-6">
             <div className="bg-white rounded-lg shadow-md p-3">
               <UpcomingDeadlines />
             </div>
-            <div className="bg-white rounded-lg shadow-md p-3">
-              <Calendar />
-            </div>
+           
             <div className="bg-white rounded-lg shadow-md p-3">
               <RecentMessages />
             </div>

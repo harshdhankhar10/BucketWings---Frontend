@@ -71,6 +71,7 @@ const MyProfile = () => {
     <>
       <Helmet>
         <title>{user ? `${user.fullName}'s Profile | BucketWing` : "User Profile"}</title>
+        <meta name="description" content={user ? `View ${user.fullName}'s profile on BucketWing` : "User Profile"} />
       </Helmet>
 
       <NavBar />
@@ -80,7 +81,7 @@ const MyProfile = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white shadow-lg rounded-lg overflow-hidden"
+            className=" shadow-lg rounded-lg overflow-hidden"
           >
             {loading ? (
               <div className="flex justify-center items-center h-64">

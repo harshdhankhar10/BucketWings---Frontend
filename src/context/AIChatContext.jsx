@@ -65,7 +65,6 @@ export const ChatProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error fetching chats:", error);
-      toast.error("Failed to load chats.");
     }
   };
 

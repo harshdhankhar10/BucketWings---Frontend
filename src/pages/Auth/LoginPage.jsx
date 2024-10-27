@@ -17,14 +17,6 @@ const LoginPage = () => {
   const [resetEmail, setResetEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    const storedAuth = JSON.parse(localStorage.getItem('auth'));
-    if (storedAuth?.user) {
-      setIsLoggedIn(true);
-      toast.success('You are already logged in.');
-      navigate(`/user/${storedAuth.user.username}`);
-    }
-  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
