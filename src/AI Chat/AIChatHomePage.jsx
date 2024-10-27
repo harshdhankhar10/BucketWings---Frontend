@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { Helmet } from 'react-helmet';
 import AIChatSidebar from './AIChatSidebar';
 import Swal from 'sweetalert2';
-import { ChatData } from '../context/AIChatContext';
+import { useChat } from '../context/AIChatContext';
 import AIChatMessaging from './AiChatMessaging';
 
 const AIChatHomePage = () => {
     const [auth, setAuth] = useState(JSON.parse(localStorage.getItem("auth")));
-    const {chats} = ChatData();
+    const {chats} = useChat();
     
     useEffect(() => {
     if (!auth) {
