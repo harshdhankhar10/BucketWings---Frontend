@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { AlertTriangle, Check, ChevronDown, Paperclip } from 'lucide-react';
+import {db, storage} from "../../../../Firebase/Firebase";
+import { collection, addDoc } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import {toast} from "react-toastify";
+ 
 
 const ReportIssue = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -21,17 +27,66 @@ const ReportIssue = () => {
   };
 
   const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
     setFormData(prevData => ({
       ...prevData,
-      attachments: [...e.target.files]
+      attachments: prevData.attachments.concat(files)
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Submitted data:', formData);
-    setIsSubmitted(true);
+
+    if (!formData.title || !formData.description || !formData.type || !formData.priority) {
+      toast.error('All fields are required');
+      return;
+    }
+
+    const uploadFiles = async () => {
+      const promises = formData.attachments.map(async (file) => {
+        const storageRef = ref(storage, `issue_attachments/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        return new Promise((resolve, reject) => {
+          uploadTask.on('state_changed', null, reject, () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+              resolve({
+                name: file.name,
+                url
+              });
+            });
+          });
+        });
+      });
+
+      return Promise.all(promises);
+    };
+
+    uploadFiles().then((attachments) => {
+      addDoc(collection(db, "Reported_Issues"), {
+        user_id: user.id,
+        username : user.username,
+        email: user.email,
+        title: formData.title,
+        description: formData.description,
+        type: formData.type,
+        priority: formData.priority,
+        attachments,
+        created_at: new Date().toISOString()
+      });
+
+      toast.success('Issue reported successfully');
+      setFormData({
+        title: '',
+        description: '',
+        type: '',
+        priority: '',
+        attachments: []
+      });
+
+      setIsSubmitted(true);
+    });
+
   };
 
   const issueTypes = ['Bug', 'Feature Request', 'Performance Issue', 'Security Concern', 'Other'];
@@ -137,7 +192,7 @@ const ReportIssue = () => {
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <Paperclip className="w-8 h-8 mb-3 text-gray-400" />
                     <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                    <p className="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 10MB)</p>
+                    <p className="text-xs text-gray-500">All file types accepted</p>
                   </div>
                   <input
                     id="attachments"

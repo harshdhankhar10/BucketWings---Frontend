@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Send, Phone, Mail, MessageSquare } from 'lucide-react';
+import {toast} from "react-toastify"
+import {db} from "../../../../Firebase/Firebase";
+import { collection, addDoc } from 'firebase/firestore';
 
 const ContactSupport = () => {
   const [formData, setFormData] = useState({
@@ -14,9 +17,22 @@ const ContactSupport = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+  e.preventDefault();
+  addDoc(collection(db, "contacts"), {
+    name: formData.name,
+    email: formData.email,
+    subject: formData.subject,
+    message: formData.message
+  })
+  .then(() => {
+    toast.success("Message sent successfully!")
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    });
+  })
   };
 
   return (

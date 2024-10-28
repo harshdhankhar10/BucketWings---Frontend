@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Paperclip, Send, X, Check, Mail, Calendar, User } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import {storage} from "../../../../Firebase/Firebase";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -52,26 +54,21 @@ const SendMessage = () => {
   };
 
   const handleAttachment = async (e) => {
-    try {
-      const file = e.target.files[0]; 
-      const formDataImage = new FormData();
-      formDataImage.append('image', file);
-      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/upload`, formDataImage, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+    const file = e.target.files[0];
+    const storageRef = ref(storage, `attachments/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
 
-      if (response.data.success) {
-        setAttachment(response.data.imageUrl);
-        toast.success('Attachement uploaded successfully');
-      } else {
-        toast.error('Attachement upload failed');
-      }
-    } catch (error) {
-      console.error('Error uploading Attachement:', error);
-      toast.error('An error occurred during the upload');
-    }
+    uploadTask.on('state_changed', (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(`Upload is ${progress}% done`);
+    }, (error) => {
+      console.error(error);
+      toast.error('An error occurred while uploading the attachment');
+    }, () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setAttachment(downloadURL);
+      });
+    });
   };
   const removeAttachment = () => {
     setAttachment(null);
@@ -159,10 +156,11 @@ const SendMessage = () => {
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center space-x-4">
                   <input type="file" id="attachment" className="hidden" onChange={handleAttachment}
-                    accept='image/*'
+                    accept='*'
                    />
                   <label htmlFor="attachment" className="cursor-pointer text-indigo-600 hover:text-indigo-500 transition duration-200 flex items-center px-4 py-2 bg-indigo-100 rounded-md hover:bg-indigo-200">
-                    <Paperclip className="mr-2" size={18} /> Attach file
+                    <Paperclip className="mr-2" size={18} /> 
+                    {attachment ? 'Change Attachment' : 'Attach File'}
                   </label>
                   {attachment && (
                     <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full">

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { X, Upload } from 'lucide-react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import {storage} from "../../../../Firebase/Firebase";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+
 import {toast} from 'react-toastify';
 
 const AchievementForm = () => {
@@ -14,6 +17,7 @@ const AchievementForm = () => {
   const [status, setStatus] = useState('public');
   const [media, setMedia] = useState(null);
   const [imagePreview, setImagePreview] = useState(null)
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const handleAddTag = (e) => {
     e.preventDefault();
@@ -28,29 +32,27 @@ const AchievementForm = () => {
   };
 
 
-  const handleImageChange = async (e) => {
-    try {
-      const file = e.target.files[0]; 
-      const formDataImage = new FormData();
-      formDataImage.append('image', file);
-      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/upload`, formDataImage, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    const storageRef = ref(storage, `achievements/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
 
-      if (response.data.success) {
-        setMedia(response.data.imageUrl);
-        setImagePreview(URL.createObjectURL(file)); 
-        toast.success('Media uploaded successfully');
-      } else {
-        toast.error('Media upload failed');
+    uploadTask.on('state_changed', 
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      }, 
+      (error) => {
+        console.log(error);
+      }, 
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        setMedia(downloadURL);
+        setImagePreview(URL.createObjectURL(file));
+
       }
-    } catch (error) {
-      console.error('Error uploading Media:', error);
-      toast.error('An error occurred during the upload');
-    }
-  };
+    );
+  }
 
 
 
@@ -189,7 +191,7 @@ const AchievementForm = () => {
           </div>
 
           <div>
-            <label htmlFor="media" className="block text-sm font-medium text-gray-700 mb-1">Media (Images only)</label>
+            <label htmlFor="media" className="block text-sm font-medium text-gray-700 mb-1">Media </label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
                 <Upload className="mx-auto h-12 w-12 text-gray-400" />
@@ -200,22 +202,32 @@ const AchievementForm = () => {
                       id="media"
                       name="media"
                       type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImageChange(e) }
+                      accept="*"
+                      onChange={(e) => handleFileChange(e) }
                       className="sr-only"
                     />
                   </label>
                   <span className="pl-1 text-gray-500">or drag and drop</span>
                 </div>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs text-gray-500">
+                  All files formats accepted</p>
               </div>
             </div>
           </div>
-          {imagePreview && (
-            <div className="mt-4">
-              <img src={imagePreview} alt="Media Preview" className="w-full h-48 object-cover rounded-md" />
+         {uploadProgress && <div className="flex items-center justify-between">
+            <div className="flex-1 flex items-center">
+              <div className="w-0 flex-1 flex items-center">
+                <div className="relative w-full bg-blue-200 rounded-md">
+                  <div className={`overflow-hidden h-2 text-xs flex rounded-md ${uploadProgress === 100 ? 'bg-green-500' : 'bg-blue-500'}`} style={{width: `${uploadProgress}%`}}>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
+            <div className="ml-4 text-xs text-gray-500">
+             {uploadProgress === 100 ? 'File Uploaded Successfully' : `Uploading ${uploadProgress}%`}
+            </div>
+          </div>}
+
 
           <div>
             <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
