@@ -49,6 +49,10 @@ import Blogs from './Blog/Blogs'
 import CategoryBasedBlogs from './Blog/CategoryBasedBlogs'
 import TagBasedBlogs from './Blog/TagBasedBlogs'
 
+// Live Chat Pages
+import LiveChatHomepage from '../Live Chat/LiveChatHomepage.jsx'
+import LiveChatSidebar from '../Live Chat/LiveChatSidebar.jsx'
+import LiveChatMessagingContainer from '../Live Chat/LiveChatMessagingContainer.jsx'
 
 // User Dashboard Pages
 import UserHomepage from './Dashboards/User/UserHomepage'
@@ -158,7 +162,12 @@ const RoutesPath = () => {
         <Route path="/ai-chat" element={<AIChatHomePage />} >
           <Route path="" element={<AIChatSidebar />} />
           <Route path="chat/:id" element={<AiChatMessaging />} />
+        </Route>
 
+        {/* Live Chat Routes */}
+        <Route path="/live-chat" element={<LiveChatHomepage />} >
+          <Route path="" element={<LiveChatSidebar />} />
+          <Route path="messages/:id" element={<LiveChatMessagingContainer />} />
         </Route>
        
 

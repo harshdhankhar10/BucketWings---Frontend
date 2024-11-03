@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Plus, Image as ImageIcon, Check } from 'lucide-react';
 import ReactQuill from 'react-quill'; 
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet';
+import {useAuth} from '../../context/AuthContext';
+import {useNavigate} from 'react-router-dom';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -15,6 +17,14 @@ const CreatePost = () => {
   const [pollQuestion, setPollQuestion] = useState('');
   const [pollOptions, setPollOptions] = useState(['', '', '', '']);
   const [correctOption, setCorrectOption] = useState(null);
+  const [auth, setAuth] = useAuth();  
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth.user) {
+      navigate('/community');
+    }
+  }, [auth.user]);
 
   const handleAddTag = (event) => {
     if (event.key === 'Enter' && event.target.value) {
@@ -38,14 +48,15 @@ const CreatePost = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/create-post`, {
         title,
-        content,
         tags,
         category,
         image,
         pollQuestion,
         pollOptions,
         correctOption,
-      })
+        content: content.replace(/<[^>]*>?/gm, '')
+    });
+    
       if(response.data.success){
         Swal.fire({
           icon: 'success',
@@ -217,12 +228,9 @@ const CreatePost = () => {
         </div>
 
         <div>
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-          >
-            Create Post
-          </button>
+         {auth.user ? <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 focus:ring-offset-white">Create Post</button> : <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 focus:ring-offset-white" disabled>
+          Login to Create Post
+          </button>}
         </div>
       </form>
     </div>

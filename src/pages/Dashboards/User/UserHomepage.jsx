@@ -27,6 +27,7 @@ const DashboardLayout = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
   const [expandedMenu, setExpandedMenu] = useState(null);
+
   const [messageLength, setMessageLength] = useState(0);
   const location = useLocation();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("auth"))?.user);
@@ -58,6 +59,11 @@ const DashboardLayout = () => {
 
     fetchMessagesLength();
   }, []);
+
+  const toggleHeaderSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
 
   const menuItems = [
     {
@@ -158,68 +164,63 @@ const DashboardLayout = () => {
     },
   ];
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
-
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 h-16 flex items-center justify-between px-4">
-  {/* Left Section: Logo and Mobile Menu Button */}
-  <div className="flex items-center">
-    {isMobile && (
-      <button
-        onClick={toggleSidebar}
-        className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 mr-4"
-      >
-        <FiMenu className="h-6 w-6" />
-      </button>
-    )}
-    <div className="flex items-center pl-3">
-      <img
-        src="https://i.postimg.cc/1zRqmjj9/webLogo.png"
-        alt="BucketWings Logo"
-        className="h-12 w-12 rounded-xl"
-      />
-      <span className="ml-2 text-2xl font-bold text-purple-600">BucketWings</span>
-    </div>
-  </div>
+      {/* Left Section: Logo and Mobile Menu Button */}
+      <div className="flex items-center">
+        {isMobile && (
+          <button
+            onClick={toggleHeaderSidebar}
+            className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 mr-4"
+          >
+            <FiMenu className="h-6 w-6" />
+          </button>
+        )}
+        <div className="flex items-center pl-3">
+          <img
+            src="https://i.postimg.cc/1zRqmjj9/webLogo.png"
+            alt="BucketWings Logo"
+            className="h-12 w-12 rounded-xl"
+          />
+          <span className="ml-2 text-2xl font-bold text-purple-600 hidden sm:inline">
+            BucketWings
+          </span>
+        </div>
+      </div>
 
-  {/* Right Section: Search, Notifications, and Profile */}
-  <div className="flex items-center space-x-6">
-    {/* Search Bar */}
-    <div className="relative">
-      <input
-        type="text"
-        placeholder="Search..."
-        className="px-4 py-2 w-72 bg-gray-100 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
-      />
-      <FiSearch className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500" />
-    </div>
-
-    {/* Notification Icon */}
-    <button className="relative text-gray-600 hover:text-purple-600">
-      <FiBell className="h-6 w-6" />
-      <span className="absolute top-0 right-0 inline-block w-2.5 h-2.5 bg-red-600 rounded-full"></span>
-    </button>
-
-    {/* Profile Dropdown */}
-    <div className="relative">
-    <Link to="/dashboard/user/update-profile">
-      <button className="flex items-center space-x-2 focus:outline-none">
-        <img
-          src={user.profilePicture}
-          alt="Profile Avatar"
-          className="h-10 w-10 rounded-full"
-        />
-        <span className="text-gray-600 font-medium">{user.fullName}</span>
-      </button>
-      </Link>
-    </div>
-  </div>
-</header>
+      <div className="flex items-center space-x-4 md:space-x-6">
+        <div className="md:block relative">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="px-4 py-2 w-56 lg:w-72 bg-gray-100 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
 
 
-    {/* Sidebar */}
+        <button className="relative text-gray-600 hover:text-purple-600">
+          <FiBell className="h-6 w-6" />
+          <span className="absolute top-0 right-0 inline-block w-2.5 h-2.5 bg-red-600 rounded-full"></span>
+        </button>
+
+        <div className="relative">
+          <button className="flex items-center space-x-2 focus:outline-none">
+            <img
+              src={user.profilePicture}
+              alt="Profile Avatar"
+              className="h-8 w-8 md:h-10 md:w-10 rounded-full"
+            />
+            <span className="hidden md:inline text-gray-600 font-medium">
+              {user.fullName}
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+
 <AnimatePresence>
   {sidebarOpen && (
     <motion.nav
@@ -232,7 +233,6 @@ const DashboardLayout = () => {
       }`}
     >
       <div className="p-4 space-y-4">
-        {/* Dashboard Link */}
         <Link
           to="/dashboard/user"
           className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md hover:shadow-lg transform transition-all duration-300 hover:scale-105"
