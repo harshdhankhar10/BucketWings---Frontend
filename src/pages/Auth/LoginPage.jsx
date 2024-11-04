@@ -29,7 +29,7 @@ const LoginPage = () => {
         toast.success(response.data.message);
         localStorage.setItem('auth', JSON.stringify(response.data));
         setIsLoggedIn(true);
-        navigate(`/user/${response.data.user.username}`);
+        window.location.href = `/user/${response.data.user.username}`;
       }
     } catch (error) {
       toast.error('Invalid credentials. Please try again.');

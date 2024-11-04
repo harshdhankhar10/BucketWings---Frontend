@@ -95,7 +95,7 @@ const ProfileDropdown = ({ auth, setAuth }) => {
         className="flex items-center space-x-2 p-2 rounded-md text-purple-600 hover:text-white hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 transition-colors duration-200"
       >
         <User size={20} />
-        <Link to={`/user/${auth.username}`} className="hidden md:inline">{auth.fullName}</Link>
+        <a href={`/user/${auth.username}`} className="hidden md:inline">{auth.fullName}</a>
         <ChevronDown size={16} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </motion.button>
       
@@ -107,9 +107,9 @@ const ProfileDropdown = ({ auth, setAuth }) => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
             className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
-            <Link to={`/user/${auth.username}`}  className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
+            <a href={`/user/${auth.username}`}  className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
               Your Profile
-            </Link>
+            </a>
             <Link to={`dashboard/${auth.role}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100">
               Settings
             </Link>
