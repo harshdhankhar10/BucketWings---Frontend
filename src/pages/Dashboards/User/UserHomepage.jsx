@@ -15,6 +15,7 @@ import {
   FiSearch,
   FiBell
 } from "react-icons/fi";
+import { AiOutlineFileText } from "react-icons/ai";
 import { GiAchievement } from "react-icons/gi";
 import { TbBrandStorytel } from "react-icons/tb";
 import { VscMilestone } from "react-icons/vsc";
@@ -66,6 +67,15 @@ const DashboardLayout = () => {
 
 
   const menuItems = [
+    {
+      title : "Quick Notes",
+      icon : AiOutlineFileText,
+      submenus : [
+        { title : "View All Notes", link : "/dashboard/user/quick-notes/all" },
+        { title : "Create New Note", link : "/dashboard/user/quick-notes/create" },
+        { title : "Archived Notes", link : "/dashboard/user/quick-notes/archived" }
+      ]
+    },
     {
       title: "Goals",
       icon: FiTarget,

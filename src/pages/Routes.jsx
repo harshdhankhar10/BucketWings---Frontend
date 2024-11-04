@@ -106,6 +106,12 @@ import AchievementDashboard from './Dashboards/User/Achievement Management/Achie
 import UpdateAchievement from './Dashboards/User/Achievement Management/UpdateAchievement'
 import ViewAchievement from './Dashboards/User/Achievement Management/ViewAchievement'
 
+import AllNotes from "./Dashboards/User/QuickNotes Management/AllNotes"
+import CreateNewNote from "./Dashboards/User/QuickNotes Management/CreateNewNote"
+import UpdateNote from "./Dashboards/User/QuickNotes Management/UpdateNote"
+import ArchiveNotes from "./Dashboards/User/QuickNotes Management/ArchiveNotes"
+import ViewNote from './Dashboards/User/QuickNotes Management/ViewNote.jsx'
+
 
 
 
@@ -224,6 +230,12 @@ const RoutesPath = () => {
           <Route path="achievement/dashboard" element={<AchievementDashboard />} />
           <Route path="achievement/update/:id" element={<UpdateAchievement />} />
           <Route path="achievement/view/:id" element={<ViewAchievement />} />
+
+          <Route path="quick-notes/all" element={<AllNotes />} />
+          <Route path="quick-notes/create" element={<CreateNewNote />} />
+          <Route path="quick-notes/update/:id" element={<UpdateNote />} />
+          <Route path="quick-notes/archived" element={<ArchiveNotes />} />
+          <Route path="quick-notes/view/:id" element={<ViewNote />} />
           
         </Route>
        
