@@ -1,158 +1,82 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoTrashOutline } from 'react-icons/io5';
 import { FaArchive } from 'react-icons/fa';
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { motion, AnimatePresence } from 'framer-motion';
 import CreateNote from './CreateNewNote';
 import { MdOutlineClose } from "react-icons/md";
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 
 const AllNotes = () => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [notes, setNotes] = useState([
-    {
-      "id": 1,
-      "title": "Project Planning",
-      "description": "Outline key milestones and tasks for the upcoming project, ensuring resource allocation is managed effectively. Review with the team on Monday.",
-      "date": "2023-09-15",
-      "tags": ["project", "planning", "milestones"]
-    },
-    {
-      "id": 2,
-      "title": "Meeting Notes - Client A",
-      "description": "Discussed project timelines, deliverables, and budget. Agreed on weekly updates and priority on feature X. Action items assigned to team members.",
-      "date": "2023-09-18",
-      "tags": ["meeting", "client", "notes"]
-    },
-    {
-      "id": 3,
-      "title": "UI/UX Design Ideas",
-      "description": "Inspiration for clean and modern UI elements. Consider integrating rounded buttons and minimalist navigation. Emphasis on user flow and accessibility.",
-      "date": "2023-09-20",
-      "tags": ["design", "UI/UX", "inspiration"]
-    },
-    {
-      "id": 4,
-      "title": "Market Research Summary",
-      "description": "Summarized findings on current market trends, competitive analysis, and target demographics for Q3 product release.",
-      "date": "2023-09-22",
-      "tags": ["research", "market", "summary"]
-    },
-    {
-      "id": 5,
-      "title": "Code Review Checklist",
-      "description": "Ensure code consistency, avoid magic numbers, check for responsive design compliance, and run unit tests. Share feedback in GitHub pull requests.",
-      "date": "2023-09-25",
-      "tags": ["code review", "development", "best practices"]
-    },
-    {
-      "id": 6,
-      "title": "Workshop Ideas",
-      "description": "Brainstormed interactive workshop sessions for the annual tech conference, focusing on hands-on experience with new tech stacks.",
-      "date": "2023-09-28",
-      "tags": ["workshop", "conference", "ideas"]
-    },
-    {
-      "id": 7,
-      "title": "Daily Standup",
-      "description": "Update on progress for each team member, blockers discussed, and re-aligned priorities. Keep updates concise and focused.",
-      "date": "2023-09-29",
-      "tags": ["standup", "team", "updates"]
-    },
-    {
-      "id": 8,
-      "title": "Client Feedback",
-      "description": "Feedback on recent deliverables: positive reception overall, minor adjustments required on the dashboard's UI and color scheme.",
-      "date": "2023-10-01",
-      "tags": ["feedback", "client", "UI"]
-    },
-    {
-      "id": 9,
-      "title": "Server Migration Plan",
-      "description": "Plan for migrating the application to the new server. Prepare backups, ensure data integrity, and perform tests post-migration.",
-      "date": "2023-10-03",
-      "tags": ["migration", "server", "plan"]
-    },
-    {
-      "id": 10,
-      "title": "Feature Wishlist",
-      "description": "List of features to consider for future updates: dark mode, notification center, custom user profiles, and admin analytics.",
-      "date": "2023-10-05",
-      "tags": ["features", "wishlist", "future"]
-    },
-    {
-      "id": 11,
-      "title": "Performance Metrics",
-      "description": "Review application performance data: page load times, server response times, and identify bottlenecks. Schedule optimization tasks.",
-      "date": "2023-10-07",
-      "tags": ["performance", "metrics", "optimization"]
-    },
-    {
-      "id": 12,
-      "title": "Content Calendar",
-      "description": "Plan out content for the blog and social media channels. Assign writers and set deadlines for each post.",
-      "date": "2023-10-09",
-      "tags": ["content", "calendar", "social media"]
-    },
-    {
-      "id": 13,
-      "title": "New Feature Specifications",
-      "description": "Outline specifications for the new feature 'Quick View' for products. Include design mockups, flow diagrams, and backend requirements.",
-      "date": "2023-10-11",
-      "tags": ["feature", "specifications", "design"]
-    },
-    {
-      "id": 14,
-      "title": "User Testing Feedback",
-      "description": "Collate feedback from user testing sessions, focusing on usability, functionality, and design adjustments. High-priority issues flagged.",
-      "date": "2023-10-13",
-      "tags": ["testing", "user feedback", "usability"]
-    },
-    {
-      "id": 15,
-      "title": "Backend API Updates",
-      "description": "Details on recent updates to the backend API, including new endpoints for user management and product listings.",
-      "date": "2023-10-15",
-      "tags": ["API", "backend", "updates"]
-    },
-    {
-      "id": 16,
-      "title": "Budget Planning",
-      "description": "Breakdown of estimated costs for Q4, including software licenses, hardware upgrades, and team training resources.",
-      "date": "2023-10-17",
-      "tags": ["budget", "planning", "resources"]
-    },
-    {
-      "id": 17,
-      "title": "Security Checklist",
-      "description": "Review and update security protocols, focusing on data encryption, access control, and regular audits. Ensure compliance with standards.",
-      "date": "2023-10-19",
-      "tags": ["security", "protocols", "compliance"]
-    },
-    {
-      "id": 18,
-      "title": "Customer Survey Results",
-      "description": "Summarize key insights from the latest customer survey. Highlight areas of improvement and positive feedback on recent features.",
-      "date": "2023-10-21",
-      "tags": ["survey", "customer", "feedback"]
-    },
-    {
-      "id": 19,
-      "title": "Roadmap Update",
-      "description": "Update the project roadmap with recent changes, including delayed tasks and new feature prioritization for the next quarter.",
-      "date": "2023-10-23",
-      "tags": ["roadmap", "project", "updates"]
-    },
-    {
-      "id": 20,
-      "title": "Resource Allocation",
-      "description": "Allocate team resources based on project priorities, adjusting timelines as needed to meet deadlines and maintain quality.",
-      "date": "2023-10-25",
-      "tags": ["resources", "allocation", "priorities"]
+  const [notes, setNotes] = useState([]);
+
+  useEffect(()=>{
+    const fetchNotes = async () => {
+      setLoading(true);
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/notes/all`);
+      console.log(response)
+      setNotes(response.data.notes);
+      setLoading(false);
     }
-  ]
-  );
+    fetchNotes();
+  }, []);
+
+  const formatDate = (date) => { 
+
+    const newDate = new Date(date).toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+
+    return newDate;
+  }
+
+  const handleDelete = async (id) => {
+    try {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this note!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await axios.delete(`${import.meta.env.VITE_REACT_APP_API}/api/v1/notes/delete/${id}`);
+          if (response.data.success) {
+            Swal.fire('Deleted!', 'Your note has been deleted.', 'success');
+            setNotes(notes.filter((note) => note._id !== id));
+          }
+        }
+        else{
+          Swal.fire('Cancelled', 'Your note is safe :)', 'error');
+        }
+      });
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleArchive = async (id) => {
+    try {
+      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_API}/api/v1/notes/archive/${id}`);
+      if (response.data.success) {
+        Swal.fire('Archived!', 'Your note has been archived.', 'success');
+        setNotes(notes.map((note) => note._id === id ? { ...note, isArchived: true } : note));
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen py-12">
@@ -170,6 +94,7 @@ const AllNotes = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {notes.map((note) => (
+            note.isArchived === false &&
             <motion.div
               key={note.id}
               initial={{ opacity: 0, y: 20 }}
@@ -180,11 +105,12 @@ const AllNotes = () => {
               <div className="flex items-start justify-between mb-4">
                 <h2 className="text-xl font-semibold text-purple-700">{note.title}</h2>
                 <div className="flex space-x-3">
-                  <button  onClick={() => handleDelete(note.id)}
+                  <button  onClick={() => handleDelete(note._id)}
                   className="text-gray-500 hover:text-red-600 transition-colors">
                     <IoTrashOutline size={20} />
                   </button>
-                  <button className="text-gray-500 hover:text-blue-600 transition-colors">
+                  <button onClick={() => handleArchive(note._id)}
+                    className="text-gray-500 hover:text-blue-600 transition-colors">
                     <FaArchive size={20} />
                   </button>
                   <button className="text-gray-500 hover:text-green-600 transition-colors">
@@ -192,18 +118,18 @@ const AllNotes = () => {
                   </button>
                 </div>
               </div>
-              <p className="text-gray-700 mb-4">{note.description.substring(0, 80)}...</p>
+              <p className="text-gray-700 mb-4">{note.content.substring(0, 80)}...</p>
               <div className="flex items-center justify-between text-sm text-gray-500">
-                <span>{note.date}</span>
+                <span>{formatDate(note.createdAt)}</span>
                 <div className="flex space-x-2">
-                  {note.tags.map((tag, index) => (
+                  {note.tags.length > 0 ? note.tags.map((tag, index) => (
                     <span
                       key={index}
                       className="px-2 py-1 bg-purple-100 text-purple-600 rounded-full text-xs"
                     >
                       {tag}
                     </span>
-                  ))}
+                  )) : null}
                 </div>
               </div>
             </motion.div>
