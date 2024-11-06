@@ -8,6 +8,7 @@ import { MdOutlineClose } from "react-icons/md";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { RiInboxUnarchiveLine } from "react-icons/ri";
+import { Link } from 'react-router-dom';
 
 
 
@@ -20,7 +21,6 @@ const ArchiveNotes = () => {
     const fetchNotes = async () => {
       setLoading(true);
       const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/notes/all`);
-      console.log(response)
       setNotes(response.data.notes);
       setLoading(false);
     }
@@ -98,8 +98,9 @@ const ArchiveNotes = () => {
               className="bg-white border border-gray-200 rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
-                <h2 className="text-xl font-semibold text-purple-700">{note.title}</h2>
-                <div className="flex space-x-3">
+              <h2 className="text-xl font-semibold text-purple-700 hover:text-purple-800">
+                  <Link to={`/dashboard/user/quick-notes/view/${note._id}`}>{note.title}</Link>
+                </h2>                <div className="flex space-x-3">
                   <button  onClick={() => handleDelete(note._id)}
                   className="text-gray-500 hover:text-red-600 transition-colors">
                     <IoTrashOutline size={20} />
@@ -108,9 +109,7 @@ const ArchiveNotes = () => {
                     className="text-gray-500 hover:text-blue-600 transition-colors">
                     <RiInboxUnarchiveLine size={20} />
                   </button>
-                  <button className="text-gray-500 hover:text-green-600 transition-colors">
-                    <FaRegShareFromSquare size={20} />
-                  </button>
+                
                 </div>
               </div>
               <p className="text-gray-700 mb-4">{note.content.substring(0, 80)}...</p>
