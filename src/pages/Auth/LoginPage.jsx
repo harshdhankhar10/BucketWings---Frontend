@@ -16,11 +16,13 @@ const LoginPage = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/auth/login`, {
         email,
         password,
@@ -28,11 +30,13 @@ const LoginPage = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         localStorage.setItem('auth', JSON.stringify(response.data));
+        setLoading(false);
         setIsLoggedIn(true);
         window.location.href = `/user/${response.data.user.username}`;
       }
     } catch (error) {
-      toast.error('Invalid credentials. Please try again.');
+      setLoading(false);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -63,7 +67,8 @@ const LoginPage = () => {
       setShowForgotPassword(false);
       setResetEmail('');
     } catch (error) {
-      toast.error('Failed to send reset instructions. Please try again.');
+
+      toast.error(error.response.data.message);
     }
     setIsSubmitting(false);
   };
@@ -156,7 +161,7 @@ const LoginPage = () => {
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <Lock className="h-5 w-5 text-purple-300 group-hover:text-purple-200" aria-hidden="true" />
               </span>
-              Sign in
+              {loading ? "Signing in..." : "Sign in"}
               <ArrowRight className="ml-2 h-5 w-5" />
             </motion.button>
           </form>
@@ -209,12 +214,7 @@ const LoginPage = () => {
                       className="w-full flex items-center justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
                     >
                       {isSubmitting ? (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        >
-                          <Mail className="h-5 w-5" />
-                        </motion.div>
+                        "Sending..."
                       ) : (
                         <>
                           <Send className="h-5 w-5 mr-2" />

@@ -16,6 +16,7 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const checkPasswordStrength = (pass) => {
     let strength = 0;
@@ -53,12 +54,14 @@ const ResetPassword = () => {
   };
 
   const resetPasswordHandler = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const response = await axios.put(`${import.meta.env.VITE_REACT_APP_API}/api/v1/reset-password/${token}`, {
         password
       });
       if (response.data.success) {
+        setLoading(false);
         Swal.fire({
           title: 'Password Reset Successful',
           text: 'Please login with your new password.',
@@ -69,6 +72,7 @@ const ResetPassword = () => {
           navigate('/login');
         }, 2000);
       }else{
+        setLoading(false);
         Swal.fire({
           title: 'Password Reset Failed',
           text: response.data.message,
@@ -77,7 +81,8 @@ const ResetPassword = () => {
         });
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again.');
+      setLoading(false);
+      toast.error(error.response.data.message);
     }
   }
 
@@ -213,7 +218,7 @@ const ResetPassword = () => {
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <Lock className="h-5 w-5 text-purple-300 group-hover:text-purple-200" aria-hidden="true" />
               </span>
-              Reset Password
+              {loading ? 'Resetting Password...' : 'Reset Password'}
               <ArrowRight className="ml-2 h-5 w-5" />
             </motion.button>
 

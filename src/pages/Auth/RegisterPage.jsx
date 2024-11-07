@@ -22,6 +22,7 @@ const SignupForm = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [subscribeNewsletter, setSubscribeNewsletter] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -62,6 +63,7 @@ const SignupForm = () => {
   };
 
   const handleFileChange = async (e) => {
+    setLoading(true);
     const file = e.target.files[0];
     
     if (!file) return;
@@ -78,24 +80,29 @@ const SignupForm = () => {
       if (response.data.success) {
         setProfilePicture(response.data.imageUrl); 
         toast.success(response.data.message);
+        setLoading(false);
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
+      setLoading(false);
       console.error('Error uploading file:', error);
       toast.error('Error uploading file.');
     }
   };
   
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
   
     if (password !== confirmPassword) {
+      setLoading(false);
       toast.error('Passwords do not match');
       return;
     }
   
     if (!fullName || !userName || !email || !password) {
+      setLoading(false);
       toast.error('Please fill in all required fields');
       return;
     }
@@ -112,6 +119,7 @@ const SignupForm = () => {
         profilePicture,
       });
       if (response.data.success) {
+        setLoading(false);
         toast.success(response.data.message);
         navigate('/login');
       } else {
@@ -119,6 +127,7 @@ const SignupForm = () => {
       }
   
     } catch (error) {
+      setLoading(false);
       if (error.response) {
         toast.error(`Error: ${error.response.data.message || 'Registration failed'}`);
       } else if (error.request) {
@@ -256,6 +265,7 @@ const SignupForm = () => {
                     className="pl-10 w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
                     accept="image/*"
                     required
+                    
                   />
                 </div>
                 {profilePicture && (
@@ -316,7 +326,7 @@ const SignupForm = () => {
               type="submit"
               className="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-md transition duration-300"
             >
-              Sign Up
+              {loading ? 'Processing...' : 'Sign Up'}
             </button>
           </form>
         </motion.div>
