@@ -6,6 +6,7 @@ import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from 're
 import { Heart, Share2, Calendar, Tag, User, Facebook, Twitter, MessageCircle, Eye, ThumbsUp, Bookmark } from 'lucide-react';
 import { toast } from 'react-toastify';
 import NavBar from '../../components/Navbar';
+import { useAuth } from '../../context/AuthContext';
 
 const ViewHomeBlog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,8 +15,12 @@ const ViewHomeBlog = () => {
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [commentContent, setCommentContent] = useState('');
+  const [comments, setComments] = useState([]);
   const { slug } = useParams();
+  const [auth, setAuth] = useAuth();  // eslint-disable-line no-unused-vars
   const navigate = useNavigate();
+  const postType = "Blog";
 
   useEffect(() => {
     const fetchBlogAndRelated = async () => {
@@ -87,6 +92,44 @@ const ViewHomeBlog = () => {
       toast.info('Web Share API not supported. Please use the social media buttons to share this post.');
     }
   }
+
+  useEffect(()=>{
+    const fetchComments = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/comment/${blog._id}/${postType}`);
+        setComments(response.data.comments);
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
+
+    fetchComments();
+  }, [blog, postType]);
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!commentContent.trim()) {
+      toast.error('Please write something to comment');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API}/api/v1/comment/create/${blog._id}`,
+        { content: commentContent, postType }
+      );
+
+      if (response.data.success) {
+        toast.success('Comment posted successfully');
+        setCommentContent('');
+        
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to post comment");
+    }
+  };
+
 
   if (loading) {
     return (
@@ -203,6 +246,69 @@ const ViewHomeBlog = () => {
                 )}
               </div>
             </article>
+            
+            {/* comment system */}
+            <div className="mt-12 bg-gray-50 p-6 rounded-lg shadow-md">
+  <h3 className="text-2xl font-semibold mb-4 flex items-center text-gray-800">
+    <MessageCircle className="w-6 h-6 mr-2 text-purple-600" />
+    Comments
+  </h3>
+  <div className="flex items-center mb-6">
+    <img 
+      src={blog.author.profilePicture} 
+      alt={blog.author.fullName} 
+      className="w-12 h-12 rounded-full mr-4 border border-gray-200 shadow-sm"
+    />
+    <form className="flex items-center w-full" onSubmit={handleCommentSubmit}>
+      <input
+        type="text"
+        placeholder="Write a comment..."
+        value={commentContent}
+        onChange={(e) => setCommentContent(e.target.value)}
+        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm"
+      />
+      <button
+        type={auth.user ? 'submit' : 'button'}
+        className={`bg-purple-500 text-white px-4 py-2 ml-2 rounded-lg hover:bg-purple-600 transition duration-300
+         ${auth.user ? '' : 'cursor-not-allowed opacity-50'}`}
+      >
+        {loading ? 'Posting...' : (auth.user ? 'Post' : 'Login Required')}
+      </button>
+    </form>
+  </div>
+  {comments.length === 0 ? (
+    <p className="text-gray-600 text-center">No comments yet. Be the first to comment!</p>
+  ) : (
+    <div className="space-y-4 h-64 overflow-y-auto pr-2">
+      {comments.map((comment) => (
+        <div key={comment._id} className="flex space-x-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+          <img 
+            src={comment.author.profilePicture || '/default-avatar.png'} 
+            alt={comment.author.username} 
+            className="w-12 h-12 rounded-full border border-gray-200 shadow-sm"
+          />
+          <div className="flex-grow">
+            <div className="bg-gray-100 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-gray-800">{comment.author.username}</h4>
+                <div className="flex items-center space-x-3">
+                  <button className="text-gray-500 hover:text-purple-600 transition-colors duration-200">
+                    <ThumbsUp className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+              <p className="text-gray-700 text-sm leading-relaxed">{comment.content}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+
+
+
 
             <div className="mt-12 bg-gray-100 p-6 rounded-lg">
               <h3 className="text-2xl font-semibold mb-4 flex items-center">
