@@ -16,10 +16,12 @@ const SendMessage = () => {
   const [message, setMessage] = useState(state?.content || '');
   const [attachment, setAttachment] = useState(state?.attachment || null);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
+        setLoading(true);
     const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/send`, {
         receiverEmail,
         subject,
@@ -27,6 +29,7 @@ const SendMessage = () => {
         attachment,
     });
     if (response.data.success) {
+        setLoading(false);
         Swal.fire({
             icon: 'success',
             title: 'Message Sent',
@@ -39,6 +42,7 @@ const SendMessage = () => {
         setAttachment(null);
         navigate('/dashboard/user/messages/sent');
     }else{
+        setLoading(false);
         Swal.fire({
             icon: 'error',
             title: response.data.message,
@@ -49,7 +53,7 @@ const SendMessage = () => {
         
     } catch (error) {
         console.error(error);
-        toast.error('An error occurred while sending the message');
+        toast.error(error.response.data.message);
     }
   };
 
@@ -75,7 +79,7 @@ const SendMessage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8 flex items-center justify-center">
+    <div className="min-h-screen  p-4 sm:p-6 md:p-8 flex items-center justify-center">
       <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
           {/* Left sidebar with user info */}
@@ -175,7 +179,7 @@ const SendMessage = () => {
                   type="submit"
                   className="bg-indigo-600 text-white rounded-md py-2 px-6 hover:bg-indigo-700 transition duration-300 flex items-center justify-center"
                 >
-                  <Send className="mr-2" size={18} /> Send Message
+                  <Send className="mr-2" size={18} /> {loading ? 'Sending...' : 'Send Message'}
                 </button>
               </div>
             </form>

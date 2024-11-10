@@ -23,6 +23,7 @@ import { GrBlog } from "react-icons/gr";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Outlet, Link, useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const DashboardLayout = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -174,6 +175,46 @@ const DashboardLayout = () => {
     },
   ];
 
+  const handleLogout = async () => {
+    try {
+      Swal .fire({
+        title : "Enter Username to Confirm",
+        input : "text",
+        showCancelButton : true,
+        confirmButtonText : "Logout",
+        cancelButtonText : "Cancel",
+        confirmButtonColor : "#f87171",
+        cancelButtonColor : "#60a5fa",
+        inputValidator : (value) => {
+          if (!value) {
+            return "Username is Required";
+          }
+        },
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          if(result.value === JSON.parse(localStorage.getItem("auth")).user.username){ {
+            localStorage.removeItem("auth");
+            window.location.href = "/login";
+          }}
+          else{
+            Swal.fire({
+              icon : "error",
+              title : "Invalid Username",
+              text : "Please Enter Correct Username to Logout",
+              confirmButtonColor : "#f87171",
+            });
+          }
+        }
+      });
+
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
+
+
+
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Header */}
@@ -264,7 +305,7 @@ const DashboardLayout = () => {
         ))}
 
         {/* Sign Out Button */}
-        <button onClick={()=> {localStorage.removeItem("auth"); window.location.href="/login"}}
+        <button onClick ={handleLogout}
           className="flex items-center p-3 rounded-lg w-full bg-gray-100 text-gray-600 hover:bg-red-100 hover:text-red-600 shadow-sm transform transition-all duration-300 hover:scale-105"
         >
           <FiLogOut className="w-5 h-5" />
