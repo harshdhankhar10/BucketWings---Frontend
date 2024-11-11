@@ -64,16 +64,16 @@ const Inbox = () => {
   }, []);
 
   const handleSearch = async (e) => {
-    const searchTerm = e.target.value;
-    setSearchTerm(searchTerm);
-
-    if (!searchTerm.trim()) {
-      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/inbox`);
-      if (response.data.success) {
-        const mappedMessages = response.data.messages
-          .filter((msg) => !msg.isDeleted)
-          .map((msg) => ({
-            id: msg._id,
+    setSearchTerm(e.target.value);
+      try {
+        setIsLoading(true);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/search-inbox?query=${e.target.value}`);
+        if (response.data.success) {
+          setIsLoading(false);
+          const mappedMessages = response.data.messages
+            .filter((msg) => !msg.isDeleted)
+            .map((msg) => ({
+              id: msg._id,
               sender : msg.senderID,
               subject: msg.subject,
               preview: msg.content,
@@ -82,34 +82,14 @@ const Inbox = () => {
               attachment: !!msg.attachment,
               isStarred: msg.status === 'starred',
               isRead: msg.status === 'read',
-          }));
-        setMessages(mappedMessages);
-        return;
+            }));
+          setMessages(mappedMessages);
+        }
+      } catch (error) {
+        setIsLoading(false);
+        console.error('Error searching messages:', error);
+        
       }
-    }
-
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_API}/api/v1/messages/search?query=${searchTerm}`
-      );
-      if (response.data.success) {
-        const mappedMessages = response.data.messages.map((msg) => ({
-          id: msg._id,
-          sender: msg.email,
-          subject: msg.subject,
-          preview: msg.content,
-          date: new Date(msg.sentAt).toLocaleDateString(),
-          time: new Date(msg.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          attachment: !!msg.attachment,
-          isStarred: msg.status === 'starred',
-          isRead: msg.status === 'read',
-        }));
-        setMessages(mappedMessages);
-      }
-    } catch (error) {
-      console.error('Error searching messages:', error);
-      toast.error('Search failed');
-    }
   };
 
   const handleDeleteMessage = async (id) => {

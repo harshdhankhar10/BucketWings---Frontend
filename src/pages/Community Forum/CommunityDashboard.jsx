@@ -14,6 +14,8 @@ const ForumPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [contributors, setContributors] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [completePostsInfo, setCompletePostsInfo] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(()=>{
     const fetchContributors = async () => {
@@ -26,6 +28,30 @@ const ForumPage = () => {
     };
     fetchContributors();
   },[]);
+
+  useEffect(() => {
+    const fetchCompleteInfo = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/complete-info`);
+        setCompletePostsInfo(response.data.posts);
+      } catch (error) {
+        console.error("Error fetching complete posts info", error);
+      }
+    };
+    fetchCompleteInfo();
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/all-categories`);
+        setCategories(response.data.categories);
+      } catch (error) {
+        console.error("Error fetching categories", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -52,12 +78,6 @@ const ForumPage = () => {
     console.log('Searching for:', searchQuery);
   };
 
-  const CategoryCard = ({ icon: Icon, title, bgColor, textColor }) => (
-    <div className={`flex flex-col items-center p-3 ${bgColor} rounded-lg transition duration-300 hover:shadow-md cursor-pointer`}>
-      <Icon size={24} className={`${textColor} mb-1`} />
-      <span className={`text-sm font-medium ${textColor}`}>{title}</span>
-    </div>
-  );
   
   const Tag = ({ name, color }) => (
     <span className={`bg-${color}-100 text-${color}-800 text-xs font-medium px-2 py-1 rounded-full hover:bg-${color}-200 transition duration-300 cursor-pointer`}>
@@ -89,12 +109,9 @@ const ForumPage = () => {
                 </div>
               </div>
               <div className="space-y-2 text-xs">
-                <p className="flex justify-between">
-                  <span className="text-gray-600">Posts:</span><span className="font-semibold">1,234</span>
-                </p>
-                <p className="flex justify-between">
-                  <span className="text-gray-600">Reputation:</span><span className="font-semibold">4,567</span>
-                </p>
+              <p className="flex justify-between">
+                      <span className="text-gray-600">Posts:</span><span className="font-semibold">{completePostsInfo.length}</span>
+                    </p>
                 <p className="flex justify-between">
                   <span className="text-gray-600">Joined:</span><span className="font-semibold">{formatDate(user?.createdAt)}</span>
                 </p>
@@ -117,13 +134,14 @@ const ForumPage = () => {
               <ul className="space-y-2">
                 <li><NavLink to="/community" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300" onClick={() => setIsMobileMenuOpen(false)}><Home size={18} /><span>Dashboard</span></NavLink></li>
                 <li><NavLink to="/community/my-posts" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300" onClick={() => setIsMobileMenuOpen(false)}><FileText size={18} /><span>My Posts</span></NavLink></li>
-                <li><NavLink to="/community/messages" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300" onClick={() => setIsMobileMenuOpen(false)}><MessageSquare size={18} /><span>Messages</span></NavLink></li>
                 <li><NavLink to="/community/bookmarks" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300" onClick={() => setIsMobileMenuOpen(false)}><BookOpen size={18} /><span>Bookmarks</span></NavLink></li>
-                <li><NavLink to="/community/my-network" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300" onClick={() => setIsMobileMenuOpen(false)}><Users size={18} /><span>My Network</span></NavLink></li>
-                <li><NavLink to="/community/settings" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300" onClick={() => setIsMobileMenuOpen(false)}><Settings size={18} /><span>Settings</span></NavLink></li>
               </ul>
+              
             </nav>
           )}
+
+          {/* Categories */}
+        
 
           {/* Top Contributors */}
           <div className="border-b pb-4">
@@ -177,9 +195,9 @@ const ForumPage = () => {
           {/* Mobile Menu */}
           <MobileMenu />
 
-          <div className="flex space-x-6">
+          <div className="flex space-x-6 ">
             {/* Left Sidebar - Hidden on mobile */}
-            <aside className="hidden lg:block w-64 space-y-6">
+            <aside className="hidden lg:block w-64 space-y-6 ">
               {/* Original left sidebar content */}
               {user ? (
                 <div className="bg-white rounded-lg shadow-sm p-4">
@@ -192,11 +210,9 @@ const ForumPage = () => {
                   </div>
                   <div className="space-y-2 text-xs">
                     <p className="flex justify-between">
-                      <span className="text-gray-600">Posts:</span><span className="font-semibold">1,234</span>
+                      <span className="text-gray-600">Posts:</span><span className="font-semibold">{completePostsInfo.length}</span>
                     </p>
-                    <p className="flex justify-between">
-                      <span className="text-gray-600">Reputation:</span><span className="font-semibold">4,567</span>
-                    </p>
+                 
                     <p className="flex justify-between">
                       <span className="text-gray-600">Joined:</span><span className="font-semibold">{formatDate(user?.createdAt)}</span>
                     </p>
@@ -218,13 +234,22 @@ const ForumPage = () => {
                   <ul className="space-y-2">
                     <li><NavLink to="/community" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300"><Home size={18} /><span>Dashboard</span></NavLink></li>
                     <li><NavLink to="/community/my-posts" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300"><FileText size={18} /><span>My Posts</span></NavLink></li>
-                    <li><NavLink to="/community/messages" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300"><MessageSquare size={18} /><span>Messages</span></NavLink></li>
                     <li><NavLink to="/community/bookmarks" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300"><BookOpen size={18} /><span>Bookmarks</span></NavLink></li>
-                    <li><NavLink to="/community/my-network" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300"><Users size={18} /><span>My Network</span></NavLink></li>
-                    <li><NavLink to="/community/settings" className="flex items-center space-x-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 p-2 rounded-md transition duration-300"><Settings size={18} /><span>Settings</span></NavLink></li>
                   </ul>
                 </nav>
               )}
+
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h3 className="font-semibold text-lg mb-4 text-gray-800">Popular Categories</h3>
+                <div className=" flex flex-col gap-3">
+                  {categories.map((category, index) => (
+                    <Link key={index} to={`/community/category/${category}`} className=" bg-purple-100 w-full text-purple-800 text-sm font-medium px-3 py-2 rounded-lg hover:bg-purple-200 transition duration-300 text-center">
+                      {category}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
             </aside>
 
             {/* Main Content */}
@@ -233,16 +258,7 @@ const ForumPage = () => {
                 <Outlet />
               </div>
 
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h3 className="font-semibold text-lg mb-4 text-gray-800">Popular Categories</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  <CategoryCard icon={Star} title="Technology" bgColor="bg-blue-100" textColor="text-blue-800" />
-                  <CategoryCard icon={Zap} title="Programming" bgColor="bg-green-100" textColor="text-green-800" />
-                  <CategoryCard icon={Filter} title="AI" bgColor="bg-yellow-100" textColor="text-yellow-800" />
-                  <CategoryCard icon={Share2} title="Web Dev" bgColor="bg-purple-100" textColor="text-purple-800" />
-                  <CategoryCard icon={Heart} title="Health" bgColor="bg-red-100" textColor="text-red-800" />
-                </div>
-              </div>
+            
             </main>
           </div>
         </div>

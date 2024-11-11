@@ -7,16 +7,19 @@ import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet';
 import {useAuth} from '../../context/AuthContext';
 import {useNavigate} from 'react-router-dom';
+import {storage}  from  "../../Firebase/Firebase"
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { toast } from 'react-toastify';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
+  const [attachment, setAttachment] = useState(null);
   const [category, setCategory] = useState('');
-  const [image, setImage] = useState(null);
   const [pollQuestion, setPollQuestion] = useState('');
-  const [pollOptions, setPollOptions] = useState(['', '', '', '']);
-  const [correctOption, setCorrectOption] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useAuth();  
   const navigate = useNavigate();
 
@@ -37,27 +40,21 @@ const CreatePost = () => {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
-  const handlePollOptionChange = (index, value) => {
-    const updatedOptions = [...pollOptions];
-    updatedOptions[index] = value;
-    setPollOptions(updatedOptions);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/create-post`, {
         title,
         tags,
         category,
-        image,
-        pollQuestion,
-        pollOptions,
-        correctOption,
+        attachment,
         content: content.replace(/<[^>]*>?/gm, '')
     });
     
       if(response.data.success){
+        setLoading(false);
         Swal.fire({
           icon: 'success',
           title: 'Post Created Successfully',
@@ -69,11 +66,9 @@ const CreatePost = () => {
         setTags([]);
         setCategory('');
         setImage(null);
-        setPollQuestion('');
-        setPollOptions(['', '', '', '']);
-        setCorrectOption(null);
       }
       else{
+        setLoading(false);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -86,6 +81,25 @@ const CreatePost = () => {
     }
   
   };
+  const handleAttachment = async (e) => {
+    const file = e.target.files[0];
+    const storageRef = ref(storage, `Community_Forum_attachments/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on('state_changed', (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setUploadProgress(progress);
+    }, (error) => {
+      console.error(error);
+      toast.error('An error occurred while uploading the attachment');
+    }, () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        setAttachment(downloadURL);
+        toast.success('Attachment uploaded successfully');
+      });
+    });
+  };
+
 
   const modules = {
     toolbar: [
@@ -178,59 +192,39 @@ const CreatePost = () => {
         </div>
 
         <div>
-          <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Image</label>
+          <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Attachment (Optional)</label>
           <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md bg-gradient-to-r from-blue-50 to-purple-50">
             <div className="space-y-1 text-center">
               <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
               <div className="flex text-sm text-gray-600">
                 <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-purple-500">
                   <span>Upload a file</span>
-                  <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={(e) => setImage(e.target.files[0])} />
+                  <input id="file-upload" name="file-upload" type="file" className={`sr-only ${attachment ? 'disabled:opacity-0' : ''}`
+
+                  } onChange={handleAttachment}/>
                 </label>
                 <p className="pl-1">or drag and drop</p>
               </div>
-              <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+              <p className="text-xs text-gray-500">All file types accepted</p>
             </div>
           </div>
         </div>
-
-        <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg">
-          <label className="block text-lg font-medium text-gray-700 mb-2">Poll (Optional)</label>
-          <div className="mb-3">
-            <label htmlFor="pollQuestion" className="block text-sm font-medium text-gray-700 mb-1">Question</label>
-            <input
-              id="pollQuestion"
-              type="text"
-              value={pollQuestion}
-              onChange={(e) => setPollQuestion(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"
-              placeholder="Enter your poll question"
-            />
-          </div>
-          {pollOptions.map((option, index) => (
-            <div key={index} className="flex items-center mb-2">
-              <input
-                type="text"
-                value={option}
-                onChange={(e) => handlePollOptionChange(index, e.target.value)}
-                className="flex-grow px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"
-                placeholder={`Option ${index + 1}`}
-              />
-              <button
-                type="button"
-                onClick={() => setCorrectOption(index)}
-                className={`ml-2 p-2 rounded-full ${correctOption === index ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'}`}
-              >
-                <Check size={16} />
-              </button>
+        {
+          uploadProgress > 0  && (
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-gray-700">{uploadProgress}% Uploaded</label>
+              <progress value={uploadProgress} max="100" className="w-full"></progress>
             </div>
-          ))}
-        </div>
+          )
+        }
 
         <div>
-         {auth.user ? <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 focus:ring-offset-white">Create Post</button> : <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 focus:ring-offset-white" disabled>
-          Login to Create Post
-          </button>}
+         {auth.user && (
+            <button type="submit" className="w-full flex items-center justify-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-300">
+              {loading ? 'Creating Post...' : 'Create Post'}
+            </button>
+         )
+         }
         </div>
       </form>
     </div>

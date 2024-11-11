@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Edit, Trash } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import Swal from 'sweetalert2';
 
 const MyPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -20,17 +21,30 @@ const MyPosts = () => {
     fetchPosts();
   }, []);
 
-  const handleEdit = (postId) => {
-    // Handle edit functionality here
-    console.log(`Edit post with ID: ${postId}`);
-  };
 
   const handleDelete = async (postId) => {
-    // Handle delete functionality here
     try {
-      await axios.delete(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/post/${postId}`);
-      setPosts(posts.filter(post => post._id !== postId));
-      alert('Post deleted successfully');
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this post!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await axios.delete(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/delete-post/${postId}`);
+          if (response.data.success) {
+            setPosts(posts.filter(post => post._id !== postId));
+            Swal.fire('Deleted!', 'Your post has been deleted.', 'success');
+          }
+        }else{
+          Swal.fire('Cancelled', 'Your post is safe :)', 'info');
+        }
+      }
+      );
+
+      
     } catch (error) {
       console.error('Error deleting post', error);
     }
@@ -41,7 +55,7 @@ const MyPosts = () => {
    <Helmet>
         <title>My Posts - Community Forum | BucketWings</title>
    </Helmet>
-      <div className="max-w-3xl mx-auto p-6">
+      <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">My Posts</h1>
       {posts.length === 0 ? (
         <p className="text-gray-500">You have not created any posts yet.</p>
