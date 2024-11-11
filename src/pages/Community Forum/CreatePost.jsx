@@ -24,10 +24,12 @@ const CreatePost = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth.user) {
-      navigate('/community');
+    if(JSON.parse(localStorage.getItem('auth'))) {
+      window.location.href = '/community';
     }
-  }, [auth.user]);
+  }, []);
+
+
 
   const handleAddTag = (event) => {
     if (event.key === 'Enter' && event.target.value) {

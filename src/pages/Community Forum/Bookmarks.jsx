@@ -15,6 +15,12 @@ const Bookmarks = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
 
   useEffect(() => {
+    if(JSON.parse(localStorage.getItem('auth'))) {
+      window.location.href = '/community';
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchBookmarks = async () => {
       setLoading(true);
       try {

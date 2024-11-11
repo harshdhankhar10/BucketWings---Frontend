@@ -10,6 +10,14 @@ const MyPosts = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    if(JSON.parse(localStorage.getItem('auth'))) {
+      window.location.href = '/community';
+    }
+  }, []);
+
+
+
+  useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/community/my-posts`);
