@@ -27,7 +27,7 @@ const CreateNote = () => {
    try {
     const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/notes/create`,{
       title,
-      content,
+      content : content.replace(/<[^>]*>?/gm, ''),
       tags
     })
     if(response.data.success){

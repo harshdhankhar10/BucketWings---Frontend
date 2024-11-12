@@ -1,10 +1,29 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import NavBar from '../../components/Navbar';
 import { Helmet } from 'react-helmet';
 import { BookOpen, PenTool, Globe, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { MdAutoStories } from "react-icons/md";
+
 
 const StoriesHomepage = () => {
+  const [stories, setStories] = useState([]);
+  const [shownStories, setShownStories] = useState(3);
+
+  useEffect(() => {
+    const fetchStories = async () => {
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/stories/allPublic`);
+      if (response.data.success) {
+        setStories(response.data.stories);
+      } else {
+        console.log(response.data.message);
+      }
+    };
+
+    fetchStories();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -45,66 +64,42 @@ const StoriesHomepage = () => {
           </div>
         </div>
 
-        {/* Featured Stories Section */}
+       {/* Stories Lists */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Featured Stories</h2>
           <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
-            Read inspiring stories from people who have overcome challenges, achieved their goals, and made a difference.
+            Explore the stories of individuals who have overcome challenges, achieved success, and inspired others.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Example stories */}
-            {[
-              {
-                title: "From Zero to Hero: My Coding Journey",
-                author: "Jane Doe",
-                excerpt: "How I transformed my career and life through coding...",
-                image: "https://via.placeholder.com/150"
-              },
-              {
-                title: "Overcoming Fear: A Personal Growth Story",
-                author: "John Smith",
-                excerpt: "My journey of conquering my biggest fears and finding strength...",
-                image: "https://via.placeholder.com/150"
-              },
-              {
-                title: "Building My Dream Startup",
-                author: "Alice Johnson",
-                excerpt: "The highs and lows of starting my own company from scratch...",
-                image: "https://via.placeholder.com/150"
-              }
-            ].map((story, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
-                <img className="w-full h-40 object-cover rounded-lg mb-4" src={story.image} alt={story.title} />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{story.title}</h3>
-                <p className="text-gray-600 mb-2">{story.excerpt}</p>
-                <p className="text-sm text-gray-500">By {story.author}</p>
+            {stories.slice(0, shownStories).map((story, index) => (
+              <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-md transition-all">
+                 <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-lg flex items-center justify-center mb-6">
+                <MdAutoStories className="w-6 h-6 text-[#4F46E5]" />
               </div>
+              <h3 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-br from-blue-500 to-indigo-600 mb-4 hover:underline">
+                <Link to={`/stories/${story._id}`} >
+                {story.title}
+                </Link>
+              </h3>
+              <p className="text-gray-600">
+                {story.content.substring(0, 100).replace(/<[^>]*>?/gm, '')}...
+              </p>
+            </div>
             ))}
           </div>
+          {shownStories < stories.length && (
+            <div className="text-center mt-8">
+              <button onClick={() => setShownStories(shownStories + 3)} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium">
+                Load More
+              </button>
+            </div>
+          )}
         </div>
 
+       
+
         {/* Story Categories Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Explore by Category</h2>
-          <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
-            Whether you're interested in personal growth, career success, or overcoming adversity, there's a story for everyone.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            {[
-              { icon: BookOpen, title: "Personal Growth" },
-              { icon: PenTool, title: "Creative Journeys" },
-              { icon: Globe, title: "Cultural Experiences" },
-              { icon: Users, title: "Career Success" }
-            ].map((category, index) => (
-              <div key={index} className="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-all">
-                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                  <category.icon className="w-6 h-6 text-indigo-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{category.title}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
+       
 
         {/* Call to Action Section */}
         <div className="bg-white py-24">

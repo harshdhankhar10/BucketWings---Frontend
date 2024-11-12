@@ -48,6 +48,8 @@ import ViewHomeBlog from './Blog/ViewHomeBlog'
 import Blogs from './Blog/Blogs'
 import CategoryBasedBlogs from './Blog/CategoryBasedBlogs'
 import TagBasedBlogs from './Blog/TagBasedBlogs'
+import ViewAchievementHomepage from './Homepage/ViewAchievementHomepage.jsx'
+import ViewStoryHomepage from './Homepage/ViewStoryHomepage.jsx'
 
 // Live Chat Pages
 import LiveChatHomepage from '../Live Chat/LiveChatHomepage.jsx'
@@ -142,6 +144,9 @@ const RoutesPath = () => {
         <Route path="/achievements" element={<AchievementHomepage />} />
         <Route path="/tasks" element={<TaskHomepage />} />
 
+        <Route path="/achievements/:id" element={<ViewAchievementHomepage />} />
+        <Route path="/stories/:id" element={<ViewStoryHomepage />} />
+
         {/* Community Forum Routes */}
         <Route path="/community" element={<CommunityDashboard />} >
           <Route path="" element={<CommunityHome />} />
@@ -155,6 +160,7 @@ const RoutesPath = () => {
           <Route path="user/:username" element={<ViewUserProfile />} />
           <Route path="category/:category" element={<PostByCategory />} />
           <Route path="tag/:tag" element={<PostByTags />} />
+        
           
         </Route>
 

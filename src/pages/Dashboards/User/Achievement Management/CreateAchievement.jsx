@@ -61,7 +61,7 @@ const AchievementForm = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/api/v1/achievements/create`, {
         title,
-        description,
+        description : description.replace(/<[^>]*>?/gm, ''),
         category,
         tags,
         dateOfAchievement,

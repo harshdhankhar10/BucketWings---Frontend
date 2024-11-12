@@ -50,7 +50,7 @@ const CreateBlog = () => {
     const blogData = {
       title,
       shortDescription,
-      description,
+      description: description.replace(/<[^>]*>?/gm, ''),
       imageUrl,
       category,
       tags: tags.split(',').map((tag) => tag.trim()),

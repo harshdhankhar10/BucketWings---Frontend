@@ -1,18 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../../components/Navbar';
 import { Helmet } from 'react-helmet';
 import { Trophy, Star, Medal, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const AchievementHomepage = () => {
+  const [achievements, setAchievements] = useState([]);
+  const [shownAchievements, setShownAchievements] = useState(6);
+
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/achievements/public`);
+      if (response.data.success) {
+        setAchievements(response.data.achievements);
+      } else {
+        console.log(response.data.message);
+      }
+    };
+
+    fetchAchievements();
+  }, []);
+
+  const handleLoadMoreAchievements = () => {
+    setShownAchievements(shownAchievements + 6);
+  };
+
   return (
     <>
       <Helmet>
         <title>Showcase Your Achievements | BucketWings</title>
       </Helmet>
       <NavBar />
-      
-      {/* Hero Section */}
+
       <div className="bg-gradient-to-br from-yellow-50 to-orange-100 min-h-screen">
         <div className="relative overflow-hidden py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,15 +44,15 @@ const AchievementHomepage = () => {
                 Showcase your accomplishments, track your progress, and inspire others to reach their goals.
               </p>
               <div className="flex justify-center gap-4">
-              <Link to="/register">
-              <button className="px-8 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium">
-                  Get Started
-                </button>
+                <Link to="/register">
+                  <button className="px-8 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium">
+                    Get Started
+                  </button>
                 </Link>
-               <Link to="/about">
-               <button className="px-8 py-3 bg-white text-yellow-600 rounded-lg hover:bg-yellow-50 transition-colors font-medium border border-yellow-200">
-                  Learn More
-                </button>
+                <Link to="/about">
+                  <button className="px-8 py-3 bg-white text-yellow-600 rounded-lg hover:bg-yellow-50 transition-colors font-medium border border-yellow-200">
+                    Learn More
+                  </button>
                 </Link>
               </div>
             </div>
@@ -67,6 +87,47 @@ const AchievementHomepage = () => {
               <h3 className="text-xl font-semibold text-gray-900 mt-4">Inspire Others</h3>
               <p className="text-gray-600">Showcase your achievements and encourage others to strive for success.</p>
             </div>
+          </div>
+        </div>
+
+        {/* Achievements Lists */}
+        <div className="bg-white py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Explore Public Achievements
+              </h2>
+              <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                Discover achievements shared by others and get inspired by their success stories.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {achievements.slice(0, shownAchievements).map((achievement, index) => (
+                <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-md transition-all">
+                  <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-6">
+                    <Trophy className="w-6 h-6 text-yellow-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-br from-yellow-500 to-orange-600 mb-4 hover:underline">
+                    <Link to={`/achievements/${achievement._id}`} >
+                      {achievement.title}
+                    </Link>
+                  </h3>
+                  <p className="text-gray-600">
+                    {achievement.description.substring(0, 100)}...
+                  </p>
+                </div>
+              ))}
+            </div>
+            {achievements.length > shownAchievements && (
+              <div className="text-center mt-8">
+                <button
+                  onClick={handleLoadMoreAchievements}
+                  className="px-8 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium"
+                >
+                  Load More Achievements
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -124,7 +185,6 @@ const AchievementHomepage = () => {
           </div>
         </div>
 
-        {/* Call to Action (CTA) Section */}
         <div className="bg-white py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
@@ -134,11 +194,11 @@ const AchievementHomepage = () => {
               <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
                 Begin tracking and celebrating your achievements today. Inspire yourself and others to aim higher!
               </p>
-            <Link to="/register">
-            <button className="px-8 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium">
-                Start Showcasing
-              </button>
-                </Link>
+              <Link to="/register">
+                <button className="px-8 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium">
+                  Start Showcasing
+                </button>
+              </Link>
             </div>
           </div>
         </div>

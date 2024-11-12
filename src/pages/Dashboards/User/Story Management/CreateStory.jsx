@@ -78,7 +78,7 @@ const CreateStory = () => {
     const dateSubmitted = new Date().toISOString();
     const storyData = {
       title,
-      content,
+      content : content.replace(/<[^>]*>?/gm, ''),
       image,
       isPublic,
       dateSubmitted,
