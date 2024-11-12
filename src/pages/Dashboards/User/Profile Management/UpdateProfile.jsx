@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import {storage} from "../../../../Firebase/Firebase"
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 const UpdateProfile = () => {
   const [user, setUser] = useState({});
@@ -31,6 +33,7 @@ const UpdateProfile = () => {
   const [showModal, setShowModal] = useState(false);
   const [otp, setOtp] = useState('');
   const [activeTab, setActiveTab] = useState('basic');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchUserInfo();
@@ -80,37 +83,29 @@ const UpdateProfile = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setImagePreview(URL.createObjectURL(file));
-    const formDataImage = new FormData();
-    formDataImage.append('image', file);
+    const storageRef = ref(storage, `profilePictures/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on('state_changed', (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setUploadProgress(progress);
+    }
+    );
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_REACT_APP_API}/api/v1/upload`,
-        formDataImage,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-          onUploadProgress: (progressEvent) => {
-            const percentCompleted = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            setUploadProgress(percentCompleted);
-          }
-        }
-      );
-      
-      if (response.data.success) {
-        setFormData(prev => ({
-          ...prev,
-          profilePicture: response.data.imageUrl
-        }));
-        setSuccess('Image uploaded successfully');
-        setTimeout(() => setUploadProgress(0), 1000);
-      }
-    } catch (error) {
-      setError('Failed to upload image');
-      setUploadProgress(0);
+      await uploadTask;
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      setFormData(prev => ({
+        ...prev,
+        profilePicture: downloadURL
+      }));
+      setImagePreview(URL.createObjectURL(file));
     }
+    catch (error) {
+      setError('Failed to upload image');
+      setTimeout(() => setError(''), 3000);
+    }
+    
   };
 
   const handleSubmit = async (e) => {
@@ -134,12 +129,14 @@ const UpdateProfile = () => {
   };
 
   const handleVerifyEmail = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_REACT_APP_API}/api/v1/mail/sendVerificationEmail`,
         { email: formData.email }
       );
       if (response.data.success) {
+        setLoading(false);
         setShowModal(true);
         Swal.fire({
           icon: 'success',
@@ -148,17 +145,21 @@ const UpdateProfile = () => {
         });
       }
     } catch (error) {
-      setError('Failed to send verification email');
+      setLoading(false);
+      setError(error.response?.data?.message || 'Failed to send verification code');
     }
   };
 
   const handleOtpSubmit = async () => {
+
     try {
+      setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_REACT_APP_API}/api/v1/mail/verifyEmail`,
         { otp, email: formData.email }
       );
       if (response.data.success) {
+        setLoading(false);
         setShowModal(false);
         setSuccess('Email verified successfully');
         Swal.fire({
@@ -170,7 +171,13 @@ const UpdateProfile = () => {
         window.location.reload();
       }
     } catch (error) {
-      setError('Invalid OTP');
+      setLoading(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid OTP',
+        text: 'Please enter a valid OTP'
+      });
+
     }
   };
 
@@ -387,7 +394,7 @@ const UpdateProfile = () => {
                       onClick={handleVerifyEmail}
                       className="text-sm bg-white/20 hover:bg-white/30 text-white px-4 py-1 rounded-full transition-colors duration-300"
                     >
-                      Verify Email
+                      {loading ? 'Sending...' : 'Verify Email'}
                     </button>
                   )}
                 </p>
@@ -500,7 +507,7 @@ const UpdateProfile = () => {
                   onClick={handleOtpSubmit}
                   className="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors duration-300"
                 >
-                  Verify
+                  {loading ? 'Verifying...' : 'Verify'}
                 </button>
                 <button
                   onClick={() => setShowModal(false)}
