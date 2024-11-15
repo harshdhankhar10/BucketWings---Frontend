@@ -121,8 +121,14 @@ import ViewNote from './Dashboards/User/QuickNotes Management/ViewNote.jsx'
 
 
 // Admin Dashboard Pages
+
 import AdminHomepage from './Dashboards/Admin/AdminHomepage'
 
+// Admin  - User Management
+import AdminUserManagement from './Dashboards/Admin/User Management/AdminUserManagement.jsx'
+import AdminUserActivityLogs from './Dashboards/Admin/User Management/AdminUserActivityLogs.jsx'
+import AdminUserFeedbackReports from './Dashboards/Admin/User Management/AdminUserFeedbackReports.jsx'
+import AdminViewUserInfo from './Dashboards/Admin/User Management/AdminViewUserInfo.jsx'
 
 
 const RoutesPath = () => {
@@ -249,10 +255,19 @@ const RoutesPath = () => {
       </Route>
      
 
-      {/* Admin Private Routes */}\
+      {/* Admin Private Routes */}
       <Route path="/dashboard" element={<AdminPrivateRoutes />}>
         <Route path="admin" element={<AdminHomepage />} >
           <Route path="" element={<AdminMainDashboard />} />
+
+          <Route path="user/user-management" element={<AdminUserManagement />}/>
+          <Route path="user/activity-logs" element={<AdminUserActivityLogs />}/>
+          <Route path="user/feedback-reports" element={<AdminUserFeedbackReports />}/>
+          <Route path="user/user-management/:username" element={<AdminViewUserInfo />} />
+
+
+
+         
         </Route>
       </Route>
 
