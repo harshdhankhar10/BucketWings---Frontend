@@ -16,7 +16,7 @@ const TaskDashboard = () => {
     try {
       setLoading(true);
       const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/tasks/analytics`);
-      setAnalytics(response.data);
+      setAnalytics(response.data.task);
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch analytics. Please try again later.');
@@ -44,14 +44,15 @@ const TaskDashboard = () => {
   }
 
   const pieChartData = [
-    { name: 'Completed', value: analytics.completedTasks.length },
-    { name: 'Pending', value: analytics.pendingTasks.length },
+    { name: 'Total', value: analytics.totalTasks },
+    { name: 'Completed', value: analytics.completedTasks },
+    { name: 'Pending', value: analytics.pendingTasks },
   ];
 
   const barChartData = [
-    { name: 'Total Tasks', value: analytics.totalTasks.length },
-    { name: 'Completed Tasks', value: analytics.completedTasks.length },
-    { name: 'Pending Tasks', value: analytics.pendingTasks.length },
+    { name: 'Total Tasks', value: analytics.totalTasks },
+    { name: 'Completed Tasks', value: analytics.completedTasks },
+    { name: 'Pending Tasks', value: analytics.pendingTasks },
   ];
 
   const COLORS = ['#4CAF50', '#FFC107'];
@@ -70,7 +71,7 @@ const TaskDashboard = () => {
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">Total Tasks</dt>
-                  <dd className="text-3xl font-semibold text-gray-900">{analytics.totalTasks.length}</dd>
+                  <dd className="text-3xl font-semibold text-gray-900">{analytics.totalTasks}</dd>
                 </dl>
               </div>
             </div>
@@ -83,7 +84,7 @@ const TaskDashboard = () => {
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">Completed Tasks</dt>
-                  <dd className="text-3xl font-semibold text-gray-900">{analytics.completedTasks.length}</dd>
+                  <dd className="text-3xl font-semibold text-gray-900">{analytics.completedTasks}</dd>
                 </dl>
               </div>
             </div>
@@ -96,7 +97,7 @@ const TaskDashboard = () => {
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">Pending Tasks</dt>
-                  <dd className="text-3xl font-semibold text-gray-900">{analytics.pendingTasks.length}</dd>
+                  <dd className="text-3xl font-semibold text-gray-900">{analytics.pendingTasks}</dd>
                 </dl>
               </div>
             </div>

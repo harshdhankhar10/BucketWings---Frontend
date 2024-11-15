@@ -35,7 +35,7 @@ const ProgressOverview = () => {
                     achievements: achievementsRes.data.analytics,
                     goals: goalsRes.data.goal,
                     stories: storiesRes.data.story,
-                    tasks: tasksRes.data.tasks
+                    tasks: tasksRes.data.task
                 });
                 setLoading(false);
             } catch (error) {
@@ -48,14 +48,9 @@ const ProgressOverview = () => {
     }, []);
 
     const achievementsData = [
-        // { name: 'Total Achievements', value: 0  },
-        // { name: 'Non-Featured', value: data.achievements.nonFeaturedAchievements },
-        // { name: 'Private', value: data.achievements.privateAchievements },
-        // { name: 'Public', value: data.achievements.publicAchievements },
-        { name: 'Featured', value: 0  },
-        { name: 'Non-Featured', value: 0 },
-        { name: 'Private', value: 0 },
-        { name: 'Public', value: 0 },
+        { name: 'Total Views', value: data.achievements?.totalViews || 0 },
+        { name: 'Private', value: data.achievements?.privateAchievements || 0 },
+        { name: 'Public', value: data.achievements?.publicAchievements || 0 }
     ];
 
     const goalsData = [
@@ -73,6 +68,8 @@ const ProgressOverview = () => {
     const tasksData = [
         { name: 'Completed', value: data.tasks.completedTasks },
         { name: 'Pending', value: data.tasks.pendingTasks },
+        { name: 'In Progress', value: data.tasks.inProgressTasks },
+        { name: 'Overdue', value: data.tasks.overdueTasks },
     ];
 
     if (loading) {
@@ -92,7 +89,7 @@ const ProgressOverview = () => {
                     <Card title="Achievements" value={data.achievements.totalAchievements} color="border-l-blue-500" icon={() => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>}>
                         <p className="text-sm text-gray-600">Total achievements reached</p>
                     </Card>
-                    <Card title="Goals" value={`${data.goals.percentageCompleted}%`} color="border-l-green-500" icon={() => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" /></svg>}>
+                    <Card title="Goals" value={`${data.goals.percentageCompleted.toFixed(2)}%`} color="border-l-green-500" icon={() => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" /></svg>}>
                         <p className="text-sm text-gray-600">Goal completion rate</p>
                     </Card>
                     <Card title="Stories" value={data.stories.totalStories} color="border-l-yellow-500" icon={() => <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg>}>

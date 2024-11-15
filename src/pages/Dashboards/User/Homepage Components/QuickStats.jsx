@@ -2,40 +2,46 @@ import React, { useState, useEffect } from 'react';
 import { Award, Target, BookOpen, CheckSquare } from "lucide-react";
 import {
   PieChart, Pie, Cell,
-  RadialBarChart, RadialBar,
   ResponsiveContainer,
   Legend, Tooltip
 } from 'recharts';
-import axios from 'axios';
 
 const COLORS = {
-  blue: ['#2563eb', '#3b82f6', '#60a5fa', '#93c5fd'],
-  green: ['#16a34a', '#22c55e', '#4ade80', '#86efac'],
-  yellow: ['#ca8a04', '#eab308', '#facc15', '#fde047'],
-  red: ['#dc2626', '#ef4444', '#f87171', '#fca5a5']
+  blue: ['#1d4ed8', '#3b82f6', '#60a5fa', '#93c5fd'],
+  green: ['#15803d', '#22c55e', '#4ade80', '#86efac'],
+  yellow: ['#b45309', '#f59e0b', '#fbbf24', '#fde047'],
+  red: ['#b91c1c', '#ef4444', '#f87171', '#fca5a5']
 };
 
-const Card = ({ children, className }) => (
+const GRADIENTS = {
+  blue: 'from-blue-50 to-blue-100',
+  green: 'from-green-50 to-green-100',
+  yellow: 'from-yellow-50 to-yellow-100',
+  red: 'from-red-50 to-red-100'
+};
 
-  <div className={`bg-gray-50 rounded-xl shadow-lg p-4 ${className}`}>
+const Card = ({ children, gradient }) => (
+  <div className={`bg-gradient-to-br ${gradient} rounded-2xl shadow-xl p-6 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]`}>
     {children}
   </div>
 );
 
-const StatCard = ({ title, icon, data, colorSet }) => {
+const StatCard = ({ title, icon, data, colorSet, gradient }) => {
   const total = data.reduce((acc, item) => acc + item.value, 0);
 
   return (
-    <Card className="flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold flex items-center gap-2">
-          {icon}
+    <Card gradient={gradient}>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-bold flex items-center gap-3">
+          {React.cloneElement(icon, { className: "h-6 w-6" })}
           {title}
         </h3>
-
+        <span className="text-sm font-semibold bg-white bg-opacity-50 px-3 py-1 rounded-full">
+          Total: {total}
+        </span>
       </div>
       
-      <div className="h-64">
+      <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -48,23 +54,42 @@ const StatCard = ({ title, icon, data, colorSet }) => {
               dataKey="value"
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={colorSet[index % colorSet.length]} />
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={colorSet[index % colorSet.length]}
+                  className="transition-all duration-300 hover:opacity-80"
+                />
               ))}
             </Pie>
             <Tooltip 
-              formatter={(value, name) => [`${value} (${((value/total)*100).toFixed(1)}%)`, name]}
+              contentStyle={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderRadius: '8px',
+                border: 'none',
+                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+              }}
+              formatter={(value, name) => [
+                `${value} (${((value/total)*100).toFixed(1)}%)`,
+                name
+              ]}
             />
-            <Legend />
+            <Legend 
+              verticalAlign="bottom" 
+              height={36}
+              formatter={(value) => (
+                <span className="text-sm font-medium">{value}</span>
+              )}
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-4 space-y-2">
+      <div className="mt-6 space-y-3">
         {data.map((item, index) => (
-          <div key={index} className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
+          <div key={index} className="flex justify-between items-center bg-white bg-opacity-60 p-3 rounded-lg">
+            <div className="flex items-center gap-3">
               <div 
-                className="w-3 h-3 rounded-full" 
+                className="w-4 h-4 rounded-full" 
                 style={{ backgroundColor: colorSet[index % colorSet.length] }}
               />
               <span className="text-sm font-medium">{item.name}</span>
@@ -78,82 +103,110 @@ const StatCard = ({ title, icon, data, colorSet }) => {
 };
 
 const QuickStats = () => {
+  const [achievements, setAchievements] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [stories, setStories] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const token =  JSON.parse(localStorage.getItem('auth'))?.token;
 
-  const [data, setData] = useState({
-    achievements: {
-      featuredAchievements: 15,
-      nonFeaturedAchievements: 25,
-      privateAchievements: 8,
-      publicAchievements: 30
-    },
-    goals: {
-      totalCompletedGoals: 15,
-      totalIncompleteGoals: 7
-    },
-    stories: {
-      publicStories: 42,
-      totalStories: 50,
-      totalComments: 128,
-      totalLikes: 256
-    },
-    tasks: {
-      completedTasks: 75,
-      pendingTasks: 25
-    }
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const achievementsRes = await fetch(`${import.meta.env.VITE_REACT_APP_API}/api/v1/achievements/analytics`, {
+          headers: {
+            Authorization: token
+          }
+        });
+        const goalsRes = await fetch(`${import.meta.env.VITE_REACT_APP_API}/api/v1/goals/analytics`,{
+          headers : {
+            Authorization : token
+          }
+        });
+        const storiesRes = await fetch(`${import.meta.env.VITE_REACT_APP_API}/api/v1/stories/analytics`, {
+          headers: {
+            Authorization: token
+          }
+        });
+        const tasksRes = await fetch(`${import.meta.env.VITE_REACT_APP_API}/api/v1/tasks/analytics`, {
+          headers: {
+            Authorization: token
+          }
+        });
+
+        const achievementsData = await achievementsRes.json();
+        const goalsData = await goalsRes.json();
+        const storiesData = await storiesRes.json();
+        const tasksData = await tasksRes.json();
+
+        setAchievements(achievementsData.analytics);
+        setGoals(goalsData.goal);
+        setStories(storiesData.story);
+        setTasks(tasksData.task);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const achievementsData = [
-    { name: 'Featured', value: data.achievements.featuredAchievements },
-    { name: 'Non-Featured', value: data.achievements.nonFeaturedAchievements },
-    { name: 'Private', value: data.achievements.privateAchievements },
-    { name: 'Public', value: data.achievements.publicAchievements }
+    { name: 'Private', value: achievements?.privateAchievements || 0 },
+    { name: 'Public', value: achievements?.publicAchievements || 0 }
   ];
 
+
   const goalsData = [
-    { name: 'Completed', value: data.goals.totalCompletedGoals },
-    { name: 'Incomplete', value: data.goals.totalIncompleteGoals }
+    { name: 'Completed', value: goals?.totalCompletedGoals || 0 },
+    { name: 'Incomplete', value: goals?.totalIncompleteGoals || 0 }
   ];
 
   const storiesData = [
-    { name: 'Public', value: data.stories.publicStories },
-    { name: 'Private', value: data.stories.totalStories - data.stories.publicStories },
-    { name: 'Comments', value: data.stories.totalComments },
-    { name: 'Likes', value: data.stories.totalLikes }
+    { name: 'Public', value: stories?.publicStories || 0 },
+    { name: 'Private', value: (stories?.totalStories || 0) - (stories?.publicStories || 0) },
+    { name: 'Comments', value: stories?.totalComments || 0 },
+    { name: 'Likes', value: stories?.totalLikes || 0 }
   ];
 
   const tasksData = [
-    { name: 'Completed', value: data.tasks.completedTasks },
-    { name: 'Pending', value: data.tasks.pendingTasks }
+    { name: 'Completed', value: tasks?.completedTasks || 0 },
+    { name: 'Pending', value: tasks?.pendingTasks || 0 }
   ];
 
   return (
-    <div className="p-2 ">
-      <div className="mx-auto">
-        <h2 className="text-2xl font-bold mb-6">Glimpse of your activities</h2>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4  ">
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+        </div>
+        
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <StatCard
             title="Achievements"
-            icon={<Award className="h-5 w-5 text-blue-600 " />}
+            icon={<Award />}
             data={achievementsData}
             colorSet={COLORS.blue}
+            gradient={GRADIENTS.blue}
           />
           <StatCard
             title="Goals"
-            icon={<Target className="h-5 w-5 text-green-600" />}
+            icon={<Target />}
             data={goalsData}
             colorSet={COLORS.green}
+            gradient={GRADIENTS.green}
           />
           <StatCard
             title="Stories"
-            icon={<BookOpen className="h-5 w-5 text-yellow-600" />}
+            icon={<BookOpen />}
             data={storiesData}
             colorSet={COLORS.yellow}
+            gradient={GRADIENTS.yellow}
           />
           <StatCard
             title="Tasks"
-            icon={<CheckSquare className="h-5 w-5 text-red-600" />}
+            icon={<CheckSquare />}
             data={tasksData}
             colorSet={COLORS.red}
+            gradient={GRADIENTS.red}
           />
         </div>
       </div>

@@ -40,18 +40,15 @@ const AchievementDashboard = () => {
     );
   }
 
-  // Data for charts
   const barData = [
     { name: 'Achievements', value: analytics.totalAchievements },
     { name: 'Views', value: analytics.totalViews },
     { name: 'Likes', value: analytics.totalLikes },
-    { name: 'Comments', value: analytics.totalComments },
   ];
 
   const pieData = [
     { name: 'Views', value: analytics.totalViews },
     { name: 'Likes', value: analytics.totalLikes },
-    { name: 'Comments', value: analytics.totalComments },
   ];
 
   const COLORS = ['#6366F1', '#10B981', '#F59E0B', '#EF4444'];
@@ -66,9 +63,8 @@ const AchievementDashboard = () => {
       >
         <h1 className="text-4xl font-extrabold text-indigo-900 mb-8 text-center">Achievement Dashboard</h1>
 
-        {/* Stats Summary */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
           initial="hidden"
           animate="visible"
           variants={{
@@ -78,8 +74,7 @@ const AchievementDashboard = () => {
           {[
             { icon: FiAward, title: 'Total Achievements', value: analytics.totalAchievements, color: 'bg-indigo-500' },
             { icon: FiEye, title: 'Total Views', value: analytics.totalViews, color: 'bg-green-500' },
-            { icon: FiThumbsUp, title: 'Total Likes', value: analytics.totalLikes, color: 'bg-yellow-500' },
-            { icon: FiMessageCircle, title: 'Total Comments', value: analytics.totalComments, color: 'bg-red-500' },
+            { icon: FiThumbsUp, title: 'Total Likes', value: analytics?.totalLikes || 0, color: 'bg-yellow-500' },
           ].map((stat, index) => (
             <motion.div
               key={index}
@@ -101,7 +96,6 @@ const AchievementDashboard = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Bar Chart for Total Analytics */}
           <motion.div
             className="bg-white p-6 rounded-xl shadow-lg"
             whileHover={{ scale: 1.02 }}
@@ -123,7 +117,6 @@ const AchievementDashboard = () => {
             </ResponsiveContainer>
           </motion.div>
 
-          {/* Pie Chart for Total Analytics Distribution */}
           <motion.div
             className="bg-white p-6 rounded-xl shadow-lg"
             whileHover={{ scale: 1.02 }}
