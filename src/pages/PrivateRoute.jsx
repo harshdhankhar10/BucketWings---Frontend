@@ -11,7 +11,7 @@ export default function AdminPrivateRoute() {
 
   useEffect(() => {
     const authCheck = async () => {
-      if (!auth?.token && !authLoading) { // Wait for authLoading to be false
+      if (!auth?.token && !authLoading) { 
         console.log("No token found, redirecting to login...");
         navigate('/login');
         return;
@@ -26,7 +26,7 @@ export default function AdminPrivateRoute() {
         setLoading(false);
 
       } catch (error) {
-        console.error('Error during admin authentication check:', error);
+        console.error('Error during  authentication check:', error);
         setLoading(false);
         navigate('/login'); 
       }

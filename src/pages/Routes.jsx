@@ -11,7 +11,8 @@ import FAQSection from '../components/HomePage/Faq'
 import Aboutus from '../pages/Homepage/Aboutus'
 
 
-import AdminPrivateRoute from './AdminPrivateRoute'
+import AdminPrivateRoutes from './AdminPrivateRoutes.jsx'
+import AdminMainDashboard from './Dashboards/Admin/AdminMainDashboard.jsx'
 import PrivateRoute from './PrivateRoute'
 
 // AI Chat Pages
@@ -249,8 +250,10 @@ const RoutesPath = () => {
      
 
       {/* Admin Private Routes */}\
-      <Route path="/dashboard/admin" element={<AdminPrivateRoute />}>
-        <Route path="" element={<AdminHomepage />} />
+      <Route path="/dashboard" element={<AdminPrivateRoutes />}>
+        <Route path="admin" element={<AdminHomepage />} >
+          <Route path="" element={<AdminMainDashboard />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<ErrorPage />} />

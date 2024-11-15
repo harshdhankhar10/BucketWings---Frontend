@@ -3,15 +3,17 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { UserCircle, Mail, Calendar, Shield, Clock, User, Users } from 'lucide-react';
-import NavBar from '../components/Navbar';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
+import Navbar from "../components/Navbar"
 
 const ProfileItem = ({ icon, label, value }) => (
-  <div className="flex items-center space-x-2 mb-4">
+  <div className="flex items-center space-x-4 mb-6">
     {icon}
-    <span className="text-gray-600 font-medium">{label}:</span>
-    <span className="text-gray-800">{value}</span>
+    <div>
+      <h3 className="text-gray-600 font-medium">{label}</h3>
+      <p className="text-gray-800 text-lg">{value}</p>
+    </div>
   </div>
 );
 
@@ -37,7 +39,6 @@ const MyProfile = () => {
     };
     fetchUserData();
   }, [username, auth.id]);
-
 
   const handleShareProfile = async () => {
     try {
@@ -73,15 +74,17 @@ const MyProfile = () => {
         <title>{user ? `${user.fullName}'s Profile | BucketWing` : "User Profile"}</title>
         <meta name="description" content={user ? `View ${user.fullName}'s profile on BucketWing` : "User Profile"} />
       </Helmet>
+      <Navbar />
 
-      <NavBar />
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen bg-gray-100 flex flex-col">
+       
+
         <main className="flex-1 p-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className=" shadow-lg rounded-lg overflow-hidden"
+            className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden"
           >
             {loading ? (
               <div className="flex justify-center items-center h-64">
@@ -89,7 +92,7 @@ const MyProfile = () => {
               </div>
             ) : user ? (
               <div className="md:flex">
-                <div className="md:w-1/3 bg-gradient-to-br from-purple-600 to-blue-500 p-8 text-white">
+                <div className="md:w-1/3 bg-gradient-to-r from-purple-600 to-blue-500 p-8 text-white">
                   <div className="mb-8 relative">
                     <img
                       src={user.profilePicture}
@@ -118,30 +121,34 @@ const MyProfile = () => {
                     </div>
                     <p className="text-center text-sm mt-1">Followers</p>
                   </div>
-                  <div className="space-y-2">
-                    {auth && (
-                      <Link to={`/dashboard/${auth.role}`} className="block w-full">
-                        <button className="w-full bg-white text-purple-600 py-2 rounded-lg hover:bg-purple-100 transition-colors">
-                          Go to Dashboard
-                        </button>
-                      </Link>
-                    )}
-                    <button
-                      onClick={handleShareProfile}
-                      className="w-full bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-800 transition-colors">
-                      Share Profile
-                    </button>
-                  </div>
+                  <button
+                    onClick={handleShareProfile}
+                    className="w-full bg-purple-700 text-white py-3 rounded-lg hover:bg-purple-800 transition-colors flex items-center justify-center space-x-2">
+                    <span>Share Profile</span>
+                    <UserCircle className="text-white" size={20} />
+                  </button>
+                 {
+                    auth && auth.id === user._id && (
+                      <Link
+                      to={`/dashboard/${user.role}`}
+                      className="w-full mt-6 bg-gradient-to-r from-gray-200 to-gray-100 text-gray-700 py-3 rounded-lg shadow-md hover:from-white hover:to-gray-200 transition-all duration-200 transform hover:scale-105 flex items-center justify-center space-x-2"
+                    >
+                      <span className="font-semibold tracking-wide">Go to Dashboard</span>
+                      <UserCircle className="text-gray-700" size={20} />
+                    </Link>
+                    
+                    )
+                 }
                 </div>
                 <div className="md:w-2/3 p-8">
                   <h2 className="text-2xl font-semibold mb-6 text-gray-800">Profile Information</h2>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <ProfileItem icon={<UserCircle className="text-purple-500" size={20} />} label="User ID" value={user._id} />
-                    <ProfileItem icon={<Mail className="text-purple-500" size={20} />} label="Email" value={user.email} />
-                    <ProfileItem icon={<Calendar className="text-purple-500" size={20} />} label="Date of Birth" value={new Date(user.dateOfBirth).toLocaleDateString()} />
-                    <ProfileItem icon={<Shield className="text-purple-500" size={20} />} label="Verification" value={user.isVerified ? "Verified User" : "Not Verified"} />
-                    <ProfileItem icon={<Clock className="text-purple-500" size={20} />} label="Member since" value={new Date(user.createdAt).toLocaleDateString()} />
-                    <ProfileItem icon={<User className="text-purple-500" size={20} />} label="User Status" value={user.status} />
+                  <div className="grid md:grid-cols-2 gap-x-8 gap-y-6">
+                    <ProfileItem icon={<UserCircle className="text-purple-500" size={24} />} label="User ID" value={user._id} />
+                    <ProfileItem icon={<Mail className="text-purple-500" size={24} />} label="Email" value={user.email} />
+                    <ProfileItem icon={<Calendar className="text-purple-500" size={24} />} label="Date of Birth" value={new Date(user.dateOfBirth).toLocaleDateString()} />
+                    <ProfileItem icon={<Shield className="text-purple-500" size={24} />} label="Verification" value={user.isVerified ? "Verified User" : "Not Verified"} />
+                    <ProfileItem icon={<Clock className="text-purple-500" size={24} />} label="Member since" value={new Date(user.createdAt).toLocaleDateString()} />
+                    <ProfileItem icon={<User className="text-purple-500" size={24} />} label="User Status" value={user.status} />
                   </div>
                   <div className="mt-8">
                     <h3 className="text-xl font-semibold mb-4 text-gray-800">Bio</h3>
@@ -154,6 +161,12 @@ const MyProfile = () => {
             )}
           </motion.div>
         </main>
+
+        <footer className="bg-gray-800 text-white py-4">
+          <div className="container mx-auto text-center">
+            &copy; {new Date().getFullYear()} BucketWing. All rights reserved.
+          </div>
+        </footer>
       </div>
     </>
   );
