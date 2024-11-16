@@ -129,6 +129,7 @@ import AdminUserManagement from './Dashboards/Admin/User Management/AdminUserMan
 import AdminUserActivityLogs from './Dashboards/Admin/User Management/AdminUserActivityLogs.jsx'
 import AdminUserFeedbackReports from './Dashboards/Admin/User Management/AdminUserFeedbackReports.jsx'
 import AdminViewUserInfo from './Dashboards/Admin/User Management/AdminViewUserInfo.jsx'
+import AdminUpdateUser from './Dashboards/Admin/User Management/AdminUpdateUserInfo.jsx'
 
 
 const RoutesPath = () => {
@@ -264,6 +265,7 @@ const RoutesPath = () => {
           <Route path="user/activity-logs" element={<AdminUserActivityLogs />}/>
           <Route path="user/feedback-reports" element={<AdminUserFeedbackReports />}/>
           <Route path="user/user-management/:username" element={<AdminViewUserInfo />} />
+          <Route path="user/user-management/update/:id" element={<AdminUpdateUser />} />
 
 
 

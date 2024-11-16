@@ -101,7 +101,7 @@ const EnhancedUserManagement = () => {
                     <Link to={`/dashboard/admin/user/user-management/${user.username}`}  className="text-purple-500 hover:text-purple-600 ">
                       <IoEyeOutline className="h-6 w-6" />
                     </Link>
-                    <Link to="/dashabord/admin/user/usermanag" className="text-purple-500 hover:text-purple-600 ">
+                    <Link to={`/dashboard/admin/user/user-management/update/${user._id}`} className="text-purple-500 hover:text-purple-600 ">
                       <MdEdit className="h-6 w-6" />
                     </Link>
                     

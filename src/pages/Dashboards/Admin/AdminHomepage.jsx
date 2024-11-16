@@ -32,8 +32,8 @@ const Sidebar = () => {
       icon: FiUsers,
       subMenus: [
         { label: 'View Users', link: '/dashboard/admin/user/user-management' },
-        { label: 'Activity Logs', link: '/dashboard/admin/user/activity-logs' },
-        { label: 'Feedback Reports', link: '/dashboard/admin/user/feedback-reports' }
+        // { label: 'Activity Logs', link: '/dashboard/admin/user/activity-logs' },
+        // { label: 'Feedback Reports', link: '/dashboard/admin/user/feedback-reports' }
       ]
     },
     {
