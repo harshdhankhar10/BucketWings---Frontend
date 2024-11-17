@@ -124,12 +124,20 @@ import ViewNote from './Dashboards/User/QuickNotes Management/ViewNote.jsx'
 
 import AdminHomepage from './Dashboards/Admin/AdminHomepage'
 
-// Admin  - User Management
+//  User Management
 import AdminUserManagement from './Dashboards/Admin/User Management/AdminUserManagement.jsx'
 import AdminUserActivityLogs from './Dashboards/Admin/User Management/AdminUserActivityLogs.jsx'
 import AdminUserFeedbackReports from './Dashboards/Admin/User Management/AdminUserFeedbackReports.jsx'
 import AdminViewUserInfo from './Dashboards/Admin/User Management/AdminViewUserInfo.jsx'
 import AdminUpdateUser from './Dashboards/Admin/User Management/AdminUpdateUserInfo.jsx'
+
+//  Content Management
+import AdminBlogsManagement from './Dashboards/Admin/Content Management/AdminBlogsManagement.jsx'
+import AdminAchievementsManagement from './Dashboards/Admin/Content Management/AdminAchievementsManagement.jsx'
+import AdminStoriesManagement from './Dashboards/Admin/Content Management/AdminStoriesManagement.jsx'
+import AdminGoalsManagement from './Dashboards/Admin/Content Management/AdminGoalsManagement.jsx'
+import AdminTasksManagement from './Dashboards/Admin/Content Management/AdminTasksManagement.jsx'
+import AdminNotesManagement from './Dashboards/Admin/Content Management/AdminNotesManagement.jsx'
 
 
 const RoutesPath = () => {
@@ -266,6 +274,14 @@ const RoutesPath = () => {
           <Route path="user/feedback-reports" element={<AdminUserFeedbackReports />}/>
           <Route path="user/user-management/:username" element={<AdminViewUserInfo />} />
           <Route path="user/user-management/update/:id" element={<AdminUpdateUser />} />
+
+          <Route path="content/blogs-management" element={<AdminBlogsManagement />} />
+          <Route path="content/achievements-management" element={<AdminAchievementsManagement />} />
+          <Route path="content/stories-management" element={<AdminStoriesManagement />} />
+          <Route path="content/goals-management" element={<AdminGoalsManagement />} />
+          <Route path="content/tasks-management" element={<AdminTasksManagement />} />
+          <Route path="content/notes-management" element={<AdminNotesManagement />} />
+          
 
 
 

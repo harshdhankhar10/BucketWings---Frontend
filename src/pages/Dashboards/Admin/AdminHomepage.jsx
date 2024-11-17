@@ -40,12 +40,12 @@ const Sidebar = () => {
       label: 'Content Management',
       icon: FiEdit,
       subMenus: [
-        { label: 'Notes', link: '/notes' },
-        { label: 'Goals', link: '/goals' },
-        { label: 'Stories', link: '/stories' },
-        { label: 'Tasks', link: '/tasks' },
-        { label: 'Blogs', link: '/blogs' },
-        { label: 'Achievements', link: '/achievements' }
+        { label: 'Notes', link: '/dashboard/admin/content/notes-management' },
+        { label: 'Goals', link: '/dashboard/admin/content/goals-management' },
+        { label: 'Stories', link: '/dashboard/admin/content/stories-management' },
+        { label: 'Tasks', link: '/dashboard/admin/content/tasks-management' },
+        { label: 'Blogs', link: '/dashboard/admin/content/blogs-management' },
+        { label: 'Achievements', link: '/dashboard/admin/content/achievements-management' },
       ]
     },
     {
