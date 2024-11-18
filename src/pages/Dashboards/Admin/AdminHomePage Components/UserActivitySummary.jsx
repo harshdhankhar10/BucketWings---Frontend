@@ -1,43 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 
 const LatestUserRegistrations = () => {
-  const users = [
-    {
-      username: 'johnsmith',
-      registeredAt: '2023-04-12',
-      email: 'john.smith@example.com',
-      fullName: 'John Smith',
-      profilePicture: 'https://example.com/john-smith.jpg'
-    },
-    {
-      username: 'janedoe',
-      registeredAt: '2023-04-10',
-      email: 'jane.doe@example.com',
-      fullName: 'Jane Doe',
-      profilePicture: 'https://example.com/jane-doe.jpg'
-    },
-    {
-      username: 'bobwilliams',
-      registeredAt: '2023-04-08',
-      email: 'bob.williams@example.com',
-      fullName: 'Bob Williams',
-      profilePicture: 'https://example.com/bob-williams.jpg'
-    },
-    {
-      username: 'sarahjohnson',
-      registeredAt: '2023-04-06',
-      email: 'sarah.johnson@example.com',
-      fullName: 'Sarah Johnson',
-      profilePicture: 'https://example.com/sarah-johnson.jpg'
-    },
-    {
-      username: 'michaelbrown',
-      registeredAt: '2023-04-04',
-      email: 'michael.brown@example.com',
-      fullName: 'Michael Brown',
-      profilePicture: 'https://example.com/michael-brown.jpg'
-    }
-  ];
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => { 
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API}/api/v1/auth/all-users`
+      );
+      setUsers(response.data.users);
+    };
+    fetchUsers();
+  }, []);
+
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString(undefined, options);
+  }
 
   return (
     <div className="p-6 ">
@@ -60,10 +40,10 @@ const LatestUserRegistrations = () => {
                 className={`border-b hover:bg-gray-200 transition-colors duration-300 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
               >
                 <td className="px-4 py-3">
-                  <img src={`https://img.freepik.com/free-photo/charming-long-haired-woman-blowing-kiss-looking-straight-holding-present_176420-8962.jpg?t=st=1731687485~exp=1731691085~hmac=b0f000760a6e8c6066cb78163646fd25f4abdce60e131ba345676d6d96bbf6a5&w=360`} alt={user.fullName} className="w-10 h-10 rounded-full" />
+                  <img src={user.profilePicture} alt={user.fullName} className="w-10 h-10 rounded-full" />
                 </td>
                 <td className="px-4 py-3 font-medium text-gray-900">{user.username}</td>
-                <td className="px-4 py-3 text-gray-700">{user.registeredAt}</td>
+                <td className="px-4 py-3 text-gray-700">{formatDate(user.createdAt)}</td>
                 <td className="px-4 py-3 text-gray-700">{user.email}</td>
                 <td className="px-4 py-3 text-gray-700">{user.fullName}</td>
               </tr>

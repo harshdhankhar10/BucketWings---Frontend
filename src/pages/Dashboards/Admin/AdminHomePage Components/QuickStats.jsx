@@ -1,84 +1,160 @@
-import React from 'react';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Users, Clock, DollarSign, BarChart2, Briefcase, Archive, Star, TrendingUp, ChevronUp, ChevronDown, ArrowUp, ArrowDown } from 'lucide-react';
-
-const data = [
-  { name: 'Jan', users: 5000, retention: 88.2, revenue: 50000, newSignups: 800 },
-  { name: 'Feb', users: 5500, retention: 89.6, revenue: 55000, newSignups: 950 },
-  { name: 'Mar', users: 6000, retention: 92.1, revenue: 60000, newSignups: 1100 },
-  { name: 'Apr', users: 6500, retention: 90.3, revenue: 65000, newSignups: 1200 },
-  { name: 'May', users: 7000, retention: 87.5, revenue: 70000, newSignups: 1300 },
-  { name: 'Jun', users: 7500, retention: 85.4, revenue: 75000, newSignups: 1400 },
-];
+import React, { useEffect, useState } from 'react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
+import axios from 'axios';
+import { Users, TrendingUp, Calendar, UserCheck, Activity } from 'lucide-react';
 
 const UserRetentionDashboard = () => {
+  const [visitorStats, setVisitorStats] = useState({
+    dailyVisitors: 0,
+    weeklyVisitors: 0,
+    monthlyVisitors: 0,
+    totalVisitors: 0,
+  });
+
+  const [graphData, setGraphData] = useState([]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API}/api/v1/visitor/admin/analytics`
+        );
+        if (response.data.success) {
+          const { dailyVisitors, weeklyVisitors, monthlyVisitors, totalVisitors } =
+            response.data.analytics;
+
+          setVisitorStats({ dailyVisitors, weeklyVisitors, monthlyVisitors, totalVisitors });
+
+          setGraphData([
+            { name: 'Daily', visitors: dailyVisitors },
+            { name: 'Weekly', visitors: weeklyVisitors },
+            { name: 'Monthly', visitors: monthlyVisitors },
+            { name: 'Total', visitors: totalVisitors },
+          ]);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  const stats = [
+    {
+      title: "Daily Visitors",
+      value: visitorStats.dailyVisitors,
+      icon: <Users size={24} className="text-blue-500" />,
+      bgColor: "bg-blue-50",
+      textColor: "text-blue-500"
+    },
+    {
+      title: "Weekly Visitors",
+      value: visitorStats.weeklyVisitors,
+      icon: <TrendingUp size={24} className="text-green-500" />,
+      bgColor: "bg-green-50",
+      textColor: "text-green-500"
+    },
+    {
+      title: "Monthly Visitors",
+      value: visitorStats.monthlyVisitors,
+      icon: <Calendar size={24} className="text-yellow-500" />,
+      bgColor: "bg-yellow-50",
+      textColor: "text-yellow-500"
+    },
+    {
+      title: "Total Visitors",
+      value: visitorStats.totalVisitors,
+      icon: <UserCheck size={24} className="text-purple-500" />,
+      bgColor: "bg-purple-50",
+      textColor: "text-purple-500"
+    }
+  ];
+
   return (
-    <div className=" p-8 rounded-lg ">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Vibrant User Retention Dashboard</h1>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2 bg-gray-200 px-4 py-2 rounded-lg">
-            <TrendingUp className="h-5 w-5 text-green-500" />
-            <span className="font-medium">+8.2% YoY</span>
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="flex items-center gap-3 mb-8">
+        <Activity className="text-indigo-600 w-8 h-8" />
+        <h1 className="text-4xl font-bold text-gray-800">
+          Visitors Analytics
+        </h1>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {stats.map((stat, index) => (
+          <div
+            key={index}
+            className={`p-6 rounded-xl shadow-sm border border-gray-100 bg-white hover:shadow-md transition-shadow duration-200`}
+          >
+            <div className="flex justify-between items-start">
+              <div>
+                <p className={`text-sm font-medium ${stat.textColor}`}>{stat.title}</p>
+                <p className="text-3xl font-bold text-gray-800 mt-2">
+                  {stat.value.toLocaleString()}
+                </p>
+              </div>
+              <div className={`${stat.bgColor} p-3 rounded-lg`}>
+                {stat.icon}
+              </div>
+            </div>
           </div>
-          <div className="flex items-center space-x-2 bg-gray-200 px-4 py-2 rounded-lg">
-            <ChevronUp className="h-5 w-5 text-green-500" />
-            <span className="font-medium">+2.1% MoM</span>
-          </div>
-        </div>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <StatCard title="Total Users" value="75,000" icon={<Users className="h-8 w-8 text-blue-300" />} />
-        <StatCard title="Monthly Active Users" value="55,000" icon={<Clock className="h-8 w-8 text-pink-400" />} />
-        <StatCard title="Total Revenue" value="$650,000" icon={<DollarSign className="h-8 w-8 text-yellow-300" />} />
-        <StatCard title="Avg. Retention Rate" value="89.1%" icon={<Star className="h-8 w-8 text-green-400" />} />
-        <StatCard title="New Signups" value="1,250 / 5,000" icon={<Briefcase className="h-8 w-8 text-red-400" />} />
-        <StatCard title="Total Content" value="25,000" icon={<Archive className="h-8 w-8 text-teal-400" />} />
-      </div>
-
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white">
-        <div className=" p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4">User Growth</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data}>
-              <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: '#ccc' }} />
-              <YAxis tickLine={false} axisLine={{ stroke: '#ccc' }} />
-              <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="users" stroke="#3b82f6" />
-            </LineChart>
-          </ResponsiveContainer>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <TrendingUp className="text-indigo-600 w-6 h-6" />
+          <h2 className="text-2xl font-bold text-gray-800">
+            Visitors Overview
+          </h2>
         </div>
-        <div className=" p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4">Retention Rate</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data}>
-              <XAxis dataKey="name" tickLine={false} axisLine={{ stroke: '#ccc' }} />
-              <YAxis domain={[80, 100]} tickLine={false} axisLine={{ stroke: '#ccc' }} />
-              <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="retention" stroke="#22c55e" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart data={graphData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis 
+              dataKey="name"
+              tick={{ fill: '#6B7280' }}
+              axisLine={{ stroke: '#E5E7EB' }}
+            />
+            <YAxis 
+              tick={{ fill: '#6B7280' }}
+              axisLine={{ stroke: '#E5E7EB' }}
+            />
+            <Tooltip 
+              contentStyle={{
+                backgroundColor: 'white',
+                border: '1px solid #E5E7EB',
+                borderRadius: '6px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+              }}
+            />
+            <Legend 
+              wrapperStyle={{
+                paddingTop: '20px'
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="visitors"
+              stroke="#4F46E5"
+              strokeWidth={3}
+              dot={{ fill: '#4F46E5', strokeWidth: 2 }}
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
-
-     
     </div>
   );
 };
-
-const StatCard = ({ title, value, icon }) => (
-  <div className=" p-6 rounded-lg shadow-md">
-    <div className="flex items-center justify-between mb-4">
-      <div className="text-lg font-medium">{title}</div>
-      {icon}
-    </div>
-    <div className="text-4xl font-bold">{value}</div>
-  </div>
-);
 
 export default UserRetentionDashboard;
