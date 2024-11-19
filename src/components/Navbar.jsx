@@ -148,9 +148,9 @@ const NavBar = () => {
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-teal-100 transition-colors duration-300'
     },  
     { 
-      icon: auth ? <MdAutoStories size={24} className="text-orange-600" /> : <MdAutoStories size={24} className="text-yellow-600" />, 
-      text: auth ? 'My Stories' : 'Create Story', 
-      path: auth ? `/dashboard/${auth.role}/myStories` : '/stories',
+      icon: <MdAutoStories size={24} className="text-yellow-600" />, 
+      text: 'Stories', 
+      path: '/stories',
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-100 transition-colors duration-300'
     },  
     {
@@ -159,9 +159,9 @@ const NavBar = () => {
       path: auth ? `/dashboard/${auth.role}/task-dashboard` : '/tasks',
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-emerald-100 transition-colors duration-300'
     },{
-      icon: auth ? <GiAchievement size={24} className="text-blue-600" /> : <GrAchievement size={24} className="text-blue-600" />,
-      text: auth ? 'My Achievements' : 'Achievements',
-      path: auth ? `/dashboard/${auth.role}/achievement/all` : '/achievements',
+      icon:  <GrAchievement size={24} className="text-blue-600" />,
+      text:  'Achievements',
+      path:  '/achievements',
       className: 'flex items-center space-x-3 p-3 rounded-lg hover:bg-blue-100 transition-colors duration-300'
     },
     {
