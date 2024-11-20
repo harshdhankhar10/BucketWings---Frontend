@@ -6,6 +6,8 @@ import {
   FiClipboard, FiBook, FiMessageSquare, FiUser, FiTool, 
   FiMenu, FiBell, FiSearch, FiChevronDown, FiX 
 } from 'react-icons/fi';
+import { BsTicketPerforated } from "react-icons/bs";
+
 import { FiLogOut } from 'react-icons/fi';
 import { useAuth } from '../../../context/AuthContext';
 import '../styles.css';
@@ -65,6 +67,14 @@ const Sidebar = () => {
         { label: 'Inbox', link: '/inbox' },
         { label: 'Announcements', link: '/announcements' },
         { label: 'Automated Messages', link: '/automated-messages' }
+      ]
+    },
+    {
+      label : 'Support Tickets',
+      icon: BsTicketPerforated,
+      subMenus: [
+        { label: 'View Tickets', link: '/dashboard/admin/support-ticket' },
+        { label: 'Solved Tickets', link: '/dashboard/admin/support-ticket/solved' },
       ]
     },
     {

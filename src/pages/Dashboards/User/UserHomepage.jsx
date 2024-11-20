@@ -15,6 +15,8 @@ import {
   FiSearch,
   FiBell
 } from "react-icons/fi";
+import { BsTicketPerforated } from "react-icons/bs";
+
 import { AiOutlineFileText } from "react-icons/ai";
 import { GiAchievement } from "react-icons/gi";
 import { TbBrandStorytel } from "react-icons/tb";
@@ -135,6 +137,14 @@ const DashboardLayout = () => {
         { title: "Inbox", link: "/dashboard/user/messages/inbox" },
         { title: "Sent", link: "/dashboard/user/messages/sent" },
       ],
+    },
+    {
+      title : "Support Tickets",
+      icon : BsTicketPerforated,
+      submenus : [
+        { title : "View All Tickets", link : "/dashboard/user/support-ticket" },
+        { title : "Create New Ticket", link : "/dashboard/user/support-ticket/create" }
+      ]
     },
     {
       title: "Settings",

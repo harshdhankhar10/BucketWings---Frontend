@@ -115,6 +115,10 @@ import UpdateNote from "./Dashboards/User/QuickNotes Management/UpdateNote"
 import ArchiveNotes from "./Dashboards/User/QuickNotes Management/ArchiveNotes"
 import ViewNote from './Dashboards/User/QuickNotes Management/ViewNote.jsx'
 
+import SupportTicketHome from './Dashboards/User/Support Ticket Management/SupportTicketHome.jsx'
+import ViewSupportTicket from './Dashboards/User/Support Ticket Management/ViewSupportTicket.jsx'
+import CreateSupportTicket from './Dashboards/User/Support Ticket Management/CreateSupportTicket.jsx'
+
 
 
 
@@ -138,6 +142,11 @@ import AdminStoriesManagement from './Dashboards/Admin/Content Management/AdminS
 import AdminGoalsManagement from './Dashboards/Admin/Content Management/AdminGoalsManagement.jsx'
 import AdminTasksManagement from './Dashboards/Admin/Content Management/AdminTasksManagement.jsx'
 import AdminNotesManagement from './Dashboards/Admin/Content Management/AdminNotesManagement.jsx'
+
+// Support Ticket Management
+import AdminTicketHomepage from './Dashboards/Admin/SupportTicket Management/AdminTicketHomepage.jsx'
+import AdminViewTicket from './Dashboards/Admin/SupportTicket Management/AdminViewTicket.jsx'
+import AdminSolvedTickets from './Dashboards/Admin/SupportTicket Management/AdminSolvedTickets.jsx'
 
 
 const RoutesPath = () => {
@@ -258,6 +267,10 @@ const RoutesPath = () => {
           <Route path="quick-notes/update/:id" element={<UpdateNote />} />
           <Route path="quick-notes/archived" element={<ArchiveNotes />} />
           <Route path="quick-notes/view/:id" element={<ViewNote />} />
+
+          <Route path="support-ticket" element={<SupportTicketHome />} />
+          <Route path="support-ticket/view/:id" element={<ViewSupportTicket />} />
+          <Route path="support-ticket/create" element={<CreateSupportTicket />} />
           
         </Route>
        
@@ -281,6 +294,10 @@ const RoutesPath = () => {
           <Route path="content/goals-management" element={<AdminGoalsManagement />} />
           <Route path="content/tasks-management" element={<AdminTasksManagement />} />
           <Route path="content/notes-management" element={<AdminNotesManagement />} />
+
+          <Route path="support-ticket" element={<AdminTicketHomepage />} />
+          <Route path="support-ticket/view/:id" element={<AdminViewTicket />} />
+          <Route path="support-ticket/solved" element={<AdminSolvedTickets />} />
           
 
 
