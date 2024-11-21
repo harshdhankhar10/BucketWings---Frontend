@@ -34,6 +34,8 @@ const ReportIssue = () => {
     }));
   };
 
+  const id  = Math.floor(Math.random() * 10000000000000);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -64,6 +66,7 @@ const ReportIssue = () => {
 
     uploadFiles().then((attachments) => {
       addDoc(collection(db, "Reported_Issues"), {
+        id : id,
         user_id: user.id,
         username : user.username,
         email: user.email,

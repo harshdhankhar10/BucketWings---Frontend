@@ -148,6 +148,10 @@ import AdminTicketHomepage from './Dashboards/Admin/SupportTicket Management/Adm
 import AdminViewTicket from './Dashboards/Admin/SupportTicket Management/AdminViewTicket.jsx'
 import AdminSolvedTickets from './Dashboards/Admin/SupportTicket Management/AdminSolvedTickets.jsx'
 
+// Support and Feedback Management
+import ContactUsData from './Dashboards/Admin/SupportAndFeedback Management/ContactUsData.jsx'
+import ReportedIssues from './Dashboards/Admin/SupportAndFeedback Management/RepprtedIssues.jsx'
+
 
 const RoutesPath = () => {
   return (
@@ -298,7 +302,11 @@ const RoutesPath = () => {
           <Route path="support-ticket" element={<AdminTicketHomepage />} />
           <Route path="support-ticket/view/:id" element={<AdminViewTicket />} />
           <Route path="support-ticket/solved" element={<AdminSolvedTickets />} />
-          
+
+
+           <Route path="support/contactUs-data" element={<ContactUsData />} />
+           <Route path="support/reported-issues" element={<ReportedIssues />} />
+
 
 
 

@@ -81,9 +81,8 @@ const Sidebar = () => {
       label: 'Support & Feedback',
       icon: FiMessageSquare,
       subMenus: [
-        { label: 'Support Tickets', link: '/support-tickets' },
-        { label: 'User Feedback', link: '/user-feedback' },
-        { label: 'Issue Tracker', link: '/issue-tracker' }
+        { label: 'ContactUs Data', link: '/dashboard/admin/support/contactUs-data' },
+        { label: 'Reported Issues', link: '/dashboard/admin/support/reported-issues' },
       ]
     },
     {
