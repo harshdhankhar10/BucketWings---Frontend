@@ -6,17 +6,12 @@ import { BrowserRouter } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './context/AuthContext.jsx';
-import {ChatProvider} from './context/AIChatContext.jsx';
 
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
-      <AuthProvider>      
-        <ChatProvider>
-         
+      <AuthProvider>               
             <App />
-         
-        </ChatProvider>
-      </AuthProvider>
+               </AuthProvider>
       <ToastContainer />
     </BrowserRouter>
 )

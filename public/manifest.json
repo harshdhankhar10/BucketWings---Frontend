@@ -1,0 +1,30 @@
+{
+    "short_name": "BucketWings",
+    "name": "BucketWings Online - Goal Tracking, Task Management, and Community Support",
+    "icons": [
+      {
+        "src": "./assets/Logo/webLogo 192X192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "./assets/Logo/webLogo 512x512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      },
+      {
+        "src": "./assets/Logo/webLogo 384x384.png",
+        "type": "image/png",
+        "sizes": "384x384"
+      }
+    ],
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#00A5FF",
+    "background_color": "#F7F9FB",
+    "orientation": "portrait-primary",
+    "description": "Achieve your goals with BucketWings. Manage tasks, track progress,  organize stories, and connect with others through community forums. Gain valuable insights with analytics and stay motivated with personalized recommendations, all within a user-friendly interface.",
+    "lang": "en-US"
+  }
+  

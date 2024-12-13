@@ -141,7 +141,7 @@ const Sidebar = () => {
   }, [location]);
 
   return (
-    <div className="max-h-screen  via-purple-50 to-pink-50 flex">
+    <div className="h-full  via-purple-50 to-pink-50 flex">
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -159,7 +159,7 @@ const Sidebar = () => {
         animate={{
           x: isMobileMenuOpen ? 0 : (window.innerWidth < 1024 ? -300 : 0)
         }}
-        className="fixed lg:relative top-0 left-0 max-h-screen w-[300px] bg-white/90 backdrop-blur-lg shadow-lg z-50"
+        className="fixed lg:relative top-0 left-0 f-full w-[300px] bg-white/90 backdrop-blur-lg shadow-lg z-50"
       >
         <div className="h-full flex flex-col">
           <div className="p-6 flex items-center gap-3">
@@ -296,7 +296,7 @@ const Sidebar = () => {
           </div>
         </header>
 
-        <main className="flex-1 inset-y-0 right-0 overflow-y-auto p-4  max-h-screen scrollbar-hide">
+        <main className="flex-1 inset-y-0 right-0 overflow-y-auto p-4  h-full ">
           <Outlet />
         </main>
       </div>

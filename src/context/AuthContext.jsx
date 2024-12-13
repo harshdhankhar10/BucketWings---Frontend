@@ -2,20 +2,19 @@ import { useState, useEffect, useContext, createContext } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
-
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     user: null,
     token: "",
   });
 
-  const [loading, setLoading] = useState(true); 
-  
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (auth?.token) {
       axios.defaults.headers.common["Authorization"] = `${auth.token}`;
     } else {
-      delete axios.defaults.headers.common["Authorization"]; 
+      delete axios.defaults.headers.common["Authorization"];
     }
   }, [auth?.token]);
 
@@ -28,9 +27,11 @@ const AuthProvider = ({ children }) => {
         token: parsedData.token,
       });
     }
-    setLoading(false); 
+    setLoading(false);
+
     //eslint-disable-next-line
   }, []);
+
 
   return (
     <AuthContext.Provider value={[auth, setAuth, loading]}>

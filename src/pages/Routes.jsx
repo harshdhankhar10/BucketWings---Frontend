@@ -5,7 +5,7 @@ import LoginPage from './Auth/LoginPage'
 import RegisterPage from './Auth/RegisterPage'
 import ResetPassword from './Auth/ResetPassword.jsx'
 import Homepage from "./Homepage"
-import MyProfile from './MyProfile'
+import MyProfile from './User Profile/MyProfile.jsx'
 import Spinner from '../components/Spinner'
 import FAQSection from '../components/HomePage/Faq'
 import Aboutus from '../pages/Homepage/Aboutus'
@@ -14,12 +14,6 @@ import Aboutus from '../pages/Homepage/Aboutus'
 import AdminPrivateRoutes from './AdminPrivateRoutes.jsx'
 import AdminMainDashboard from './Dashboards/Admin/AdminMainDashboard.jsx'
 import PrivateRoute from './PrivateRoute'
-
-// AI Chat Pages
-import AIChatHomePage from '../AI Chat/AIChatHomePage.jsx'
-import AIChatSidebar from '../AI Chat/AIChatSidebar.jsx'
-import AiChatMessaging from '../AI Chat/AiChatMessaging.jsx'
-
 
 // Community Forum Pages
 import CommunityDashboard from './Community Forum/CommunityDashboard'
@@ -35,7 +29,8 @@ import ViewPost from './Community Forum/ViewPost'
 import PostByCategory from './Community Forum/PostByCategories'
 import PostByTags from './Community Forum/PostByTags'
 
-import Sitemap from "../../public/sitemap.xml"
+// import Sitemap from "../../public/sitemap.xml"
+import Sitemap from "../../public/sitemap.jsx"
 import Robots from "../../public/robots.txt"
 import ErrorPage from './ErrorPage404.jsx'
 
@@ -51,11 +46,6 @@ import CategoryBasedBlogs from './Blog/CategoryBasedBlogs'
 import TagBasedBlogs from './Blog/TagBasedBlogs'
 import ViewAchievementHomepage from './Homepage/ViewAchievementHomepage.jsx'
 import ViewStoryHomepage from './Homepage/ViewStoryHomepage.jsx'
-
-// Live Chat Pages
-import LiveChatHomepage from '../Live Chat/LiveChatHomepage.jsx'
-import LiveChatSidebar from '../Live Chat/LiveChatSidebar.jsx'
-import LiveChatMessagingContainer from '../Live Chat/LiveChatMessagingContainer.jsx'
 
 // User Dashboard Pages
 import UserHomepage from './Dashboards/User/UserHomepage'
@@ -197,20 +187,7 @@ const RoutesPath = () => {
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blog/category/:category" element={<CategoryBasedBlogs />} />
         <Route path="/blog/tag/:tag" element={<TagBasedBlogs />} />
-        <Route path="/blog/:slug" element={<ViewHomeBlog />} />
-
-        {/* AI Chat Routes */}
-        <Route path="/ai-chat" element={<AIChatHomePage />} >
-          <Route path="" element={<AIChatSidebar />} />
-          <Route path="chat/:id" element={<AiChatMessaging />} />
-        </Route>
-
-        {/* Live Chat Routes */}
-        <Route path="/live-chat" element={<LiveChatHomepage />} >
-          <Route path="" element={<LiveChatSidebar />} />
-          <Route path="messages/:id" element={<LiveChatMessagingContainer />} />
-        </Route>
-       
+        <Route path="/blog/:slug" element={<ViewHomeBlog />} />       
 
       {/* Private Routes */}
       <Route path="/dashboard/" element={<PrivateRoute />}>
