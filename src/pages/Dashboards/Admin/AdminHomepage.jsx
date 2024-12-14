@@ -54,7 +54,7 @@ const Sidebar = () => {
       label: 'Analytics & Reports',
       icon: FiBarChart,
       subMenus: [
-        { label: 'User Engagement', link: '/user-engagement' },
+        { label: 'Visitors Analytics', link: '/dashboard/admin/analytics/visitors-analytics' },
         { label: 'Feature Usage', link: '/feature-usage' },
         { label: 'Content Trends', link: '/content-trends' },
         { label: 'Growth Reports', link: '/growth-reports' }
@@ -118,7 +118,7 @@ const Sidebar = () => {
       subMenus: [
         { label: 'Activity Logs', link: '/system-logs' },
         { label: 'Error Tracker', link: '/error-tracker' },
-        { label: 'Maintenance Mode', link: '/maintenance-mode' }
+        { label: 'Maintenance Mode', link: '/dashboard/admin/settings/maintainance-mode' }
       ]
     }
   ];

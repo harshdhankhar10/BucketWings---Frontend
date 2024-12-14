@@ -1,142 +1,165 @@
-import React, { useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { FiArrowUpRight, FiChevronDown, FiChevronUp, FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  Rocket, Target, Notebook, 
+  Star, Zap, Clock, Globe,
+  TrendingUp, Heart, Book,
+} from 'lucide-react';
+import { GrAchievement } from "react-icons/gr";
 
-export const HeroSection = () => {
-  const [activeFeature, setActiveFeature] = useState(0);
+
+const HeroSection = () => {
+  const [activeFeature, setActiveFeature] = useState(null);
+
   const features = [
     {
-      imgUrl: "https://images.unsplash.com/photo-1610540604745-3e96fba9ccef?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8R29hbCUyMFNldHRpbmd8ZW58MHx8MHx8fDA%3D",
-      subheading: "Goal Setting",
-      heading: "Dream it, plan it, achieve it",
-      content: "Easily set personal and professional goals with BucketWing. Create actionable plans, track your progress, and stay motivated as you work towards achieving your aspirations.",
+      icon: Target,
+      title: 'Goal Tracking',
+      color: 'text-green-500',
+      description: 'Break down complex goals into actionable steps with our intelligent tracking system.',
     },
     {
-      imgUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Collaboration",
-      heading: "Share your journey",
-      content: "Collaborate with friends and family by sharing your goals. Get support, encouragement, and accountability from your network as you all work towards your individual objectives.",
+      icon: Notebook,
+      title: 'Task Management',
+      color: 'text-blue-500',
+      description: 'Organize, prioritize, and complete tasks with intuitive workflow tools.',
     },
     {
-      imgUrl: "https://plus.unsplash.com/premium_photo-1670213989453-7d03000c3fdf?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Progress Tracking",
-      heading: "Stay on track with ease",
-      content: "Visualize your progress with interactive charts and reminders. BucketWing helps you see how far you've come and what steps you need to take to achieve your goals on time.",
+      icon: Rocket,
+      title: 'Personal Storytelling',
+      color: 'text-purple-500',
+      description: 'Capture your journey, reflect on progress, and share your unique narrative.',
     },
     {
-      imgUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Community Support",
-      heading: "Join a like-minded community",
-      content: "Become part of a vibrant community where you can share experiences, seek advice, and find inspiration. Engage in discussions and learn from others who are on similar journeys.",
-    },
-    {
-      imgUrl: "https://cdn1.expresscomputer.in/wp-content/uploads/2024/02/27105647/EC_Digital_Library_technology_750.jpg",
-      subheading: "Resource Library",
-      heading: "Tools and tips for success",
-      content: "Access a wealth of resources, including articles, videos, and guides designed to help you succeed. Equip yourself with knowledge and strategies to overcome challenges.",
-    },
-    {
-      imgUrl: "https://plus.unsplash.com/premium_photo-1713628398566-12b20ca5b862?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      subheading: "Achievements Showcase",
-      heading: "Celebrate your victories",
-      content: "Document and showcase your achievements as you reach your goals. Share your milestones with your community and receive recognition for your hard work and dedication.",
+      icon: GrAchievement,
+      title: 'Showcase Achievements',
+      color: 'text-orange-500',
+      description: 'Celebrate milestones, share accomplishments, and inspire others with your success.',
     },
   ];
 
+  const additionalFeatures = [
+    { icon: Star, title: 'Goal Management' },
+    { icon: Zap, title: 'Quick Actions' },
+    { icon: Clock, title: 'Time Management' },
+    { icon: Globe, title: 'Collaboration' },
+    { icon: TrendingUp, title: 'Progress Insights' },
+    { icon: Heart, title: 'Wellness Focus' },
+    { icon: Book, title: 'Learning Paths' },
+  ];
+
+
   return (
-    <div className=" bg-gradient-to-b from-purple-900 to-indigo-900 min-h-screen text-white overflow-hidden">
-      <div className="relative h-screen">
-        <ParallaxBackground imgUrl={features[activeFeature].imgUrl} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#E0E7FF] to-transparent " />
-        <div className="absolute inset-0 flex flex-col justify-center items-center px-4 ">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeFeature}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="text-center relative -top-16"
-            >
-              <h2 className="text-2xl md:text-4xl font-semibold mb-2 text-purple-300">
-                {features[activeFeature].subheading}
-              </h2>
-              <h1 className="text-4xl md:text-7xl font-bold mb-6 max-w-4xl mx-auto leading-tight">
-                {features[activeFeature].heading}
-              </h1>
-              <p className="text-xl md:text-2xl max-w-2xl mx-auto mb-8">
-                {features[activeFeature].content}
+    <div className="relative min-h-screen bg-gray-50 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none opacity-5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                strokeDasharray="4 4"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
+
+      <div className="relative z-10 px-6 py-16 grid lg:grid-cols-2 gap-16 items-center">
+        <div className="space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-5xl xl:text-6xl font-extrabold text-gray-900 leading-tight">
+              Transform Your <span className="text-purple-500">Goals</span>, Unleash Your Potential
+            </h1>
+            <p className="mt-6 text-xl text-gray-600">
+            BucketWings is your all-in-one platform for personal and professional growth.
+             Effortlessly track your goals, stay on top of tasks, and craft your unique life story—empowering you to achieve more every day.
               </p>
-            <Link to="/register">
-            <button className="bg-white text-purple-900 px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-100 transition-colors inline-flex items-center">
-                Start Your Journey <FiArrowUpRight className="ml-2" />
-              </button>
-              </Link>
-            </motion.div>
-          </AnimatePresence>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex space-x-4"
+          >
+            <button className="bg-purple-500 text-white px-8 py-4 rounded-full font-bold hover:bg-purple-600 shadow-lg transition">
+              Start Your Journey
+            </button>
+            <button className="border border-gray-300 px-8 py-4 rounded-full text-gray-700 hover:bg-gray-50 transition">
+              Watch Demo
+            </button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex items-center space-x-4 text-gray-600"
+          >
+            <div className="flex -space-x-2">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <img
+                  key={i}
+                  src={`https://via.placeholder.com/40?text=${i}`}
+                  alt="User"
+                  className="w-10 h-10 rounded-full border-2 border-white "
+                />
+              ))}
+            </div>
+            <div>
+              <p className="font-semibold">100K+ Users Trust BucketWings</p>
+              <div className="flex text-yellow-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={20} fill="currentColor" />
+                ))}
+                <span className="text-gray-600 ml-2">(4.9/5)</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
-        <FeatureNavigation
-          activeFeature={activeFeature}
-          setActiveFeature={setActiveFeature}
-          totalFeatures={features.length}
-        />
+
+        <div className="grid grid-cols-2 gap-6">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              onHoverStart={() => setActiveFeature(feature)}
+              onHoverEnd={() => setActiveFeature(null)}
+              className={`bg-white border rounded-xl p-6 text-center shadow-lg transition-all ${
+                activeFeature === feature ? 'ring-2 ring-purple-500' : ''
+              }`}
+            >
+              <feature.icon className={`mx-auto mb-4 ${feature.color}`} size={48} />
+              <h3 className="text-lg font-bold text-gray-800">{feature.title}</h3>
+              <p className="text-sm text-gray-600">{feature.description}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-};
 
-const ParallaxBackground = ({ imgUrl }) => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end start"],
-  });
-
-  const scale = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0.2]);
-
-  return (
-    <motion.div
-      ref={targetRef}
-      style={{
-        backgroundImage: `url(${imgUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        scale,
-        opacity,
-      }}
-      className="absolute inset-0"
-    />
-  );
-};
-
-const FeatureNavigation = ({ activeFeature, setActiveFeature, totalFeatures }) => {
-  return (
-    <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 flex space-x-4">
-      <button
-        onClick={() => setActiveFeature((prev) => (prev - 1 + totalFeatures) % totalFeatures)}
-        className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors"
-      >
-        <FiChevronLeft className="w-6 h-6" />
-      </button>
-      <div className="flex items-center space-x-2">
-        {Array.from({ length: totalFeatures }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveFeature(index)}
-            className={`w-3 h-3 rounded-full transition-colors ${
-              index === activeFeature ? "bg-white" : "bg-white/50 hover:bg-white/80"
-            }`}
-          />
-        ))}
+      <div className="px-6 py-12">
+        <div className="flex flex-wrap gap-4 justify-between">
+          {additionalFeatures.map(({ icon: Icon, title }) => (
+            <div
+              key={title}
+              className="flex items-center space-x-3 bg-white p-4 rounded-lg shadow-md hover:shadow-lg"
+            >
+              <Icon className="text-purple-500" size={24} />
+              <span className="text-gray-800 font-medium">{title}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <button
-        onClick={() => setActiveFeature((prev) => (prev + 1) % totalFeatures)}
-        className="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors"
-      >
-        <FiChevronRight className="w-6 h-6" />
-      </button>
     </div>
   );
 };

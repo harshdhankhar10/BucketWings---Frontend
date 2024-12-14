@@ -9,6 +9,7 @@ import MyProfile from './User Profile/MyProfile.jsx'
 import Spinner from '../components/Spinner'
 import FAQSection from '../components/HomePage/Faq'
 import Aboutus from '../pages/Homepage/Aboutus'
+import MaintenanceModePage from './MaintainanceMode.jsx'
 
 
 import AdminPrivateRoutes from './AdminPrivateRoutes.jsx'
@@ -142,6 +143,13 @@ import AdminSolvedTickets from './Dashboards/Admin/SupportTicket Management/Admi
 import ContactUsData from './Dashboards/Admin/SupportAndFeedback Management/ContactUsData.jsx'
 import ReportedIssues from './Dashboards/Admin/SupportAndFeedback Management/RepprtedIssues.jsx'
 
+// Reports and Analytics
+import VisitorsAnalyticsHomepage from './Dashboards/Admin/Analytics & Reports/Visitors Analytics/VisitorsAnalyticsHomepage.jsx'
+
+
+// Settings
+import MaintainanceMode from './Dashboards/Admin/Settings/MaintainanceMode.jsx'
+
 
 const RoutesPath = () => {
   return (
@@ -154,6 +162,7 @@ const RoutesPath = () => {
         <Route path="/user/:username" element={<MyProfile />} />
         <Route path="/spinner" element={<Spinner />} />
         <Route path="/about" element={<Aboutus />} />
+        <Route path="/maintenance" element={<MaintenanceModePage />} />
 
         <Route path="/sitemap.xml" element={<Sitemap />} />
         <Route path="/robots.txt" element={<Robots />} />
@@ -284,9 +293,11 @@ const RoutesPath = () => {
            <Route path="support/contactUs-data" element={<ContactUsData />} />
            <Route path="support/reported-issues" element={<ReportedIssues />} />
 
+          <Route path="analytics/visitors-analytics" element={<VisitorsAnalyticsHomepage />} />
 
 
 
+        <Route path="settings/maintainance-mode" element={<MaintainanceMode />} />
          
         </Route>
       </Route>

@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from '../components/Navbar';
+import Error404Page from '../assets/Error404Page.svg';
 
 const ErrorPage404 = () => {
   return (
@@ -10,7 +11,7 @@ const ErrorPage404 = () => {
        
         <div className="-mt-36">
           <img 
-            src="https://static.vecteezy.com/system/resources/previews/012/834/852/large_2x/error-404-page-or-file-not-found-with-people-concept-vector.jpg" 
+            src={Error404Page} 
             alt="404 Page Not Found" 
             className="mx-auto w-full max-w-2xl"
           />
