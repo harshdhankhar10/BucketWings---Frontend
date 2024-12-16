@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ChevronRight, ChevronLeft } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
 
 const testimonials = [
   {
@@ -28,14 +27,6 @@ const testimonials = [
     achievement: "Visited 10 countries in a year"
   },
   {
-    name: "Vikram Malhotra",
-    image: "https://img.freepik.com/free-photo/guy-plaid-shirt_158595-125.jpg?t=st=1727771441~exp=1727775041~hmac=23eff2bc310c99bd2eff1cf20aaf0e1a0cc752dce5a1de6f320a7f7894c4e96c&w=360",
-    role: "Software Developer",
-    quote: "BucketWings helped our team crush project deadlines. Great for professional growth too!",
-    rating: 5,
-    achievement: "Increased team productivity by 40%"
-  },
-  {
     name: "Neha Gupta",
     image: "https://img.freepik.com/free-photo/beautiful-girl-with-blue-t-shirt_144627-10309.jpg?t=st=1727771510~exp=1727775110~hmac=7194b8b3ab65bb7d51a80127365cde5f73567d66517942fb185383dab86e3343&w=360",
     role: "Yoga Instructor",
@@ -45,78 +36,59 @@ const testimonials = [
   },
 ];
 
-const TestimonialsGallery = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextTestimonial = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
-  };
-
+const TestimonialSection = () => {
   return (
-    <section className="bg-gradient-to-br bg-[#F3F4F6] py-20 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <h2 className="text-5xl font-bold text-center mb-16 text-[#1E40AF]">Success Stories</h2>
-        <div className="relative">
-          <AnimatePresence mode="wait">
+    <section className="py-24 ">
+      <div className="container mx-auto text-center px-6 md:px-12">
+        <motion.h2
+          className="text-5xl font-extrabold text-gray-100 mb-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          What Our Users Say
+        </motion.h2>
+        <div className="flex flex-wrap justify-center gap-10">
+          {testimonials.map((testimonial, index) => (
             <motion.div
-              key={currentIndex}
+              key={index}
+              className="w-80 p-8 bg-white rounded-3xl shadow-xl transform transition-transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col lg:flex-row items-center justify-center"
+              transition={{ duration: 0.6, delay: index * 0.3 }}
             >
-              <div className="lg:w-1/2 mb-8 lg:mb-0">
-                <motion.img
-                  src={testimonials[currentIndex].image}
-                  alt={testimonials[currentIndex].name}
-                  className="w-64 h-64 object-cover rounded-full border-4 border-white shadow-lg mx-auto"
-                  initial={{ scale: 0.8, rotate: -10 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ duration: 0.5 }}
+              <div className="relative mb-6">
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-indigo-400 transform transition-all hover:scale-110"
                 />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-transparent to-transparent p-3 rounded-full">
+                  <span className="text-yellow-400 font-bold">{testimonial.rating}★</span>
+                </div>
               </div>
-              <div className="lg:w-1/2 lg:pl-12">
-                <blockquote className="text-2xl italic font-bold text-[#1E40AF] mb-6">
-                  "{testimonials[currentIndex].quote}"
-                </blockquote>
-                <div className="mb-4">
-                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                    <Star key={i} className="inline-block w-6 h-6 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <h3 className="text-3xl font-bold text-[#1F2937] mb-2">{testimonials[currentIndex].name}</h3>
-                <p className="text-xl text-indigo-800 mb-4 font-semibold">{testimonials[currentIndex].role}</p>
-                <div className="bg-[#325adb] bg-opacity-90 rounded-lg p-4 inline-block">
-                  <p className="text-lg font-semibold text-white">
-                    Achievement: {testimonials[currentIndex].achievement}
-                  </p>
-                </div>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-2">{testimonial.name}</h3>
+              <p className="text-sm text-gray-500 mb-4">{testimonial.role}</p>
+              <p className="text-gray-700 mb-4 italic">{`"${testimonial.quote}"`}</p>
+              <p className="text-sm text-gray-600">Achievement: <span className="font-semibold">{testimonial.achievement}</span></p>
+              <div className="flex justify-center gap-1 mt-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <motion.span
+                    key={i}
+                    className="text-yellow-500"
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    ★
+                  </motion.span>
+                ))}
               </div>
             </motion.div>
-          </AnimatePresence>
-          <div className="flex justify-center mt-12 space-x-4">
-            <button
-              onClick={prevTestimonial}
-              className="bg-white text-indigo-800 rounded-full p-3 hover:bg-indigo-100 transition duration-300"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
-              onClick={nextTestimonial}
-              className="bg-white text-indigo-800 rounded-full p-3 hover:bg-indigo-100 transition duration-300"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
-export default TestimonialsGallery;
+export default TestimonialSection;

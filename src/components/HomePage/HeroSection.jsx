@@ -4,8 +4,10 @@ import {
   Rocket, Target, Notebook, 
   Star, Zap, Clock, Globe,
   TrendingUp, Heart, Book,
+  Link,
 } from 'lucide-react';
 import { GrAchievement } from "react-icons/gr";
+import {Link as RouterLink} from 'react-router-dom';
 
 
 const HeroSection = () => {
@@ -91,7 +93,7 @@ const HeroSection = () => {
             className="flex space-x-4"
           >
             <button className="bg-purple-500 text-white px-8 py-4 rounded-full font-bold hover:bg-purple-600 shadow-lg transition">
-              Start Your Journey
+              <RouterLink to="/register">Start Your Journey</RouterLink>
             </button>
             <button className="border border-gray-300 px-8 py-4 rounded-full text-gray-700 hover:bg-gray-50 transition">
               Watch Demo
@@ -102,7 +104,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex items-center space-x-4 text-gray-600"
+            className="flex items-center space-x-4 text-gray-600 flex-wrap justify-center "
           >
             <div className="flex -space-x-2">
               {[1, 2, 3, 4, 5].map((i) => (
@@ -126,7 +128,7 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid gap-6  sm:grid-cols-2 lg:grid-cols-2">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -147,7 +149,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="px-6 py-12">
+      <div className="px-6 py-12 hidden lg:block">
         <div className="flex flex-wrap gap-4 justify-between">
           {additionalFeatures.map(({ icon: Icon, title }) => (
             <div

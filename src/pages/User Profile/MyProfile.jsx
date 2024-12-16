@@ -35,11 +35,16 @@ const MyProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/users/${username}`);
+        if (response.data.success) {
         setUser(response.data.user);
         setFollowers(response.data.user.followers);
         setFollowing(response.data.user.following);
-        setIsFollowing(response.data.user.followers.includes(auth.id));
+        setIsFollowing(response.data.user.followers.some((follower) => follower._id === auth.id));
+        setLoading(false);
+        }
+
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
@@ -62,7 +67,7 @@ const MyProfile = () => {
 
     const fetchStories = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/users/${username}/stories`);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/stories/public/${username}`);
         setStories(response.data.stories);
       } catch (error) {
         console.error("Error fetching stories:", error);
@@ -72,7 +77,7 @@ const MyProfile = () => {
 
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/users/${username}/blogs`);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/blogs/${username}`);
         setBlogs(response.data.blogs);
       } catch (error) {
         console.error("Error fetching blogs:", error);
@@ -128,6 +133,14 @@ const MyProfile = () => {
     setIsModalOpen(false);
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-2xl font-medium text-gray-600">Loading Profile...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <Helmet>
@@ -139,7 +152,7 @@ const MyProfile = () => {
         <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-xl shadow-xl p-8 mb-6 mt-8 mx-4 border-t-4 border-purple-500"
+        className=" rounded-xl shadow-xl p-8 mb-6 mt-8 mx-4 border-t-4 border-b-4 border-purple-500 z-50"
       >
         <div className="flex flex-col items-center md:flex-row md:items-start md:space-x-8">
           <motion.div whileHover={{ scale: 1.05 }} className="relative">
@@ -160,25 +173,29 @@ const MyProfile = () => {
                   {user?.bio.length > 0 ? user.bio : "No bio provided."}
                 </p>
               </div>
-              <div className="mt-4 md:mt-0 flex items-center gap-2">
-                <button
-                  onClick={handleFollowToggle}
-                  className={`bg-purple-600 text-white font-medium px-10 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${isFollowing ? "bg-red-400 hover:bg-red-700" : ""}`}
-                >
-                  {isFollowing ? `${loading ? "Unfollowing" : "Unfollow"}` : `${loading ? "Following" : "Follow"}`}
-                </button>
+              <div className="mt-4 md:mt-0 flex items-center gap-2 justify-center ">
+               {
+                  auth && auth?.id !== user?._id && (
+                    <button
+                    onClick={handleFollowToggle}
+                    className={`bg-purple-600 text-white font-medium px-10 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${isFollowing ? "bg-red-400 hover:bg-red-700" : ""}`}
+                  >
+                    {isFollowing ? `${loading ? "Unfollowing" : "Unfollow"}` : `${loading ? "Following" : "Follow"}`}
+                  </button>
+                  )
+               }
                 <button
                   onClick={handleShareProfile}
-                  className="bg-purple-600 text-white font-medium px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                  className="bg-purple-600 text-white font-medium px-4 py-2 rounded-md flex items-center hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                 >
-                  <IoShareSocialOutline className="inline-block w-6 h-6 mr-2" />
+                  <IoShareSocialOutline className="inline-block w-6 h-6 mr-2 hidden lg:block" />
                   Share Profile
                 </button>
               </div>
             </div>
 
-          <div className='flex justify-between items-center'>
-          <div className="flex justify-center md:justify-start space-x-8 mt-6">
+          <div className='flex justify-between items-center sm:flex-row flex-col md:space-x-8 space-x-8 mt-6'>
+          <div className="flex justify-center items-center items-center  md:flex-row md:items-start md:space-x-8 space-x-8 mt-6">
               <div className="text-center cursor-pointer" onClick={() => openModal('followers')}>
                 <span className="block text-2xl font-bold text-purple-600">{followers.length}</span>
                 <span className="text-gray-600">Followers</span>
@@ -188,28 +205,34 @@ const MyProfile = () => {
                 <span className="text-gray-600">Following</span>
               </div>
               <div className="text-center">
-                <span className="block text-2xl font-bold text-purple-600">{user?.posts?.length || 0}</span>
+                <span className="block text-2xl font-bold text-purple-600">{blogs.length}</span>
                 <span className="text-gray-600">Posts</span>
               </div>
             </div>
-            <div>
+            <div className=''>
              {
                 auth && 
-               <button onClick={() => navigate(`/dashboard/${user.role}`)}
+              <div className="flex justify-center space-x-4 mt-6">
+                <button onClick={() => navigate(`/dashboard/${user.role}`)}
                className="bg-purple-600 text-white font-medium px-6 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                 Go to Dashboard
               </button>
+              <button className='bg-red-600 text-white font-medium px-6 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'>
+                Logout
+              </button>  
+            </div>
              }
             </div>
             </div>
           </div>
         </div>
+        <UserProfileAchievements achievements={achievements} />
+        <UserProfileStories stories={stories} />
+        <UserProfileBlog  blogs={blogs} />
+
       </motion.div>
 
-      <UserProfileAchievements achievements={achievements} />
-      <UserProfileStories stories={stories} />
-      <UserProfileBlog  blogs={blogs} />
-
+     
         </main>
         <br></br>
 
