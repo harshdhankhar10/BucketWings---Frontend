@@ -29,8 +29,9 @@ const MyBlogDashboard = () => {
     const fetchBlogs = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/blogs/analytics`);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/blogs/user/analytics`);
         setBlogs(response.data.analytics);
+        console.log('Blogs:', response.data);
       } catch (error) {
         console.error('Error fetching blogs:', error);
       } finally {
@@ -40,10 +41,11 @@ const MyBlogDashboard = () => {
     fetchBlogs();
   }, []);
 
+
   const chartData = [
-    { name: 'Featured', value: blogs.FeaturedBlogs },
-    { name: 'Public', value: blogs.publicBlogs },
-    { name: 'Total', value: blogs.totalBlogs },
+    { name: 'Featured', value: blogs?.FeaturedBlogs },
+    { name: 'Public', value: blogs?.publicBlogs },
+    { name: 'Total', value: blogs?.totalBlogs },
   ];
 
   return (
@@ -74,7 +76,7 @@ const MyBlogDashboard = () => {
               <CardTitle>Featured Blogs</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-4xl font-bold text-purple-600">{blogs.FeaturedBlogs}</p>
+              <p className="text-4xl font-bold text-purple-600">{blogs?.FeaturedBlogs}</p>
             </CardContent>
           </Card>
           
@@ -83,7 +85,7 @@ const MyBlogDashboard = () => {
               <CardTitle>Public Blogs</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-4xl font-bold text-blue-600">{blogs.publicBlogs}</p>
+              <p className="text-4xl font-bold text-blue-600">{blogs?.publicBlogs}</p>
             </CardContent>
           </Card>
           
@@ -92,7 +94,7 @@ const MyBlogDashboard = () => {
               <CardTitle>Total Blogs</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-4xl font-bold text-indigo-600">{blogs.totalBlogs}</p>
+              <p className="text-4xl font-bold text-indigo-600">{blogs?.totalBlogs}</p>
             </CardContent>
           </Card>
           
@@ -101,7 +103,7 @@ const MyBlogDashboard = () => {
               <CardTitle>Total Likes</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-4xl font-bold text-pink-600">{blogs.totalLikes || 0}</p>
+              <p className="text-4xl font-bold text-pink-600">{blogs?.totalLikes || 0}</p>
             </CardContent>
           </Card>
           
@@ -110,7 +112,7 @@ const MyBlogDashboard = () => {
               <CardTitle>Total Views</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-4xl font-bold text-green-600">{blogs.totalViews}</p>
+              <p className="text-4xl font-bold text-green-600">{blogs?.totalViews}</p>
             </CardContent>
           </Card>
         </div>

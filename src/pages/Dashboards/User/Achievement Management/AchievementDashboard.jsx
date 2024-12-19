@@ -7,13 +7,13 @@ import { FiAward, FiEye, FiThumbsUp, FiMessageCircle } from 'react-icons/fi';
 
 const AchievementDashboard = () => {
   const [analytics, setAnalytics] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/achievements/analytics`);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/achievements/my-achievements`);
         setAnalytics(response.data.analytics);
       } catch (error) {
         console.error('Error fetching analytics:', error);
@@ -35,7 +35,7 @@ const AchievementDashboard = () => {
   if (!analytics) {
     return (
       <div className="flex justify-center items-center h-screen bg-gradient-to-br from-indigo-50 to-purple-100">
-        <p className="text-2xl text-indigo-700">Failed to load analytics. Please try again later.</p>
+        <p className="text-2xl text-indigo-700">No analytics data available.</p>
       </div>
     );
   }

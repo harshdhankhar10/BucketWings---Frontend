@@ -64,7 +64,6 @@ import ReportIssue from './Dashboards/User/Support Management/ReportIssue'
 import GuidesAndTutorials from './Dashboards/User/Resources Management/GuidesAndTutorials'
 import RecommendedTools from './Dashboards/User/Resources Management/RecommendedTools'
 
-import ProgressOverview from './Dashboards/User/Progress Management/ProgressOverview'
 
 import CreateGoal from './Dashboards/User/Goal Management/CreateGoal'
 import MyGoals from './Dashboards/User/Goal Management/MyGoals'
@@ -216,7 +215,6 @@ const RoutesPath = () => {
           <Route path="recommended-tools" element={<RecommendedTools />} />
           <Route path="faq" element={<FAQSection/>} />
 
-          <Route path="progress-overview" element={<ProgressOverview />} />
 
           <Route path="create-goal" element={<CreateGoal />} />
           <Route path="myGoals" element={<MyGoals />} />

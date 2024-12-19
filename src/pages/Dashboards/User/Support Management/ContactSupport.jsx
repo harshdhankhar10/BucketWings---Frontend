@@ -104,23 +104,19 @@ const ContactSupport = () => {
               </form>
             </div>
             
-            {/* Contact Information */}
             <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg p-8 text-white flex flex-col justify-between">
               <div>
                 <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
                 <p className="mb-6">We're here to help! Choose the method that works best for you.</p>
                 <ul className="space-y-4">
-                  <li className="flex items-center">
-                    <Phone className="mr-3 w-5 h-5" />
-                    <span>+1 (555) 123-4567</span>
-                  </li>
+                
                   <li className="flex items-center">
                     <Mail className="mr-3 w-5 h-5" />
-                    <span>support@example.com</span>
+                    <span>support@bucketwings.online</span>
                   </li>
                   <li className="flex items-center">
                     <MessageSquare className="mr-3 w-5 h-5" />
-                    <span>Live Chat (9 AM - 5 PM EST)</span>
+                    <span>Live Chat (9 AM - 5 PM IST)</span>
                   </li>
                 </ul>
               </div>

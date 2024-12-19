@@ -123,14 +123,6 @@ const DashboardLayout = () => {
       ],
     },
     {
-      title: "Progress",
-      icon: FiTrendingUp,
-      submenus: [
-        { title: "Progress Overview", link: "/dashboard/user/progress-overview" },
-        { title: "Analytics & Reports", link: "/dashboard/user/analytics" },
-      ],
-    },
-    {
       title: `Messages (${messageLength})`,
       icon: FiMessageSquare,
       submenus: [

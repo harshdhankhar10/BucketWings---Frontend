@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet';
 import Navbar from "../../components/Navbar";
 import { IoShareSocialOutline } from "react-icons/io5";
 import Modal from 'react-modal';
+import Swal from 'sweetalert2';
 
 // User Profile Components 
 import UserProfileAchievements from './UserProfileAchievements';
@@ -21,7 +22,7 @@ const MyProfile = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
-  const [auth, setAuth] = useState(JSON.parse(localStorage.getItem("auth")).user || null);
+  const [auth, setAuth] = useState(JSON.parse(localStorage.getItem("auth"))?.user || null);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState('followers'); 
@@ -52,7 +53,7 @@ const MyProfile = () => {
       }
     };
     fetchUserData();
-  }, [username, auth.id]);
+  }, [username, auth?.id]);
 
   useEffect(()=>{
     const fetchAchievements = async () => {
@@ -132,6 +133,29 @@ const MyProfile = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You are about to logout from BucketWing!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Logout',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("auth");
+        Swal.fire('Logged Out!', 'You have been successfully logged out.', 'success').then(() => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        });
+      }
+    });
+  }
+
 
   if (loading) {
     return (
@@ -217,7 +241,8 @@ const MyProfile = () => {
                className="bg-purple-600 text-white font-medium px-6 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                 Go to Dashboard
               </button>
-              <button className='bg-red-600 text-white font-medium px-6 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'>
+              <button onClick={handleLogout}
+              className='bg-red-600 text-white font-medium px-6 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'>
                 Logout
               </button>  
             </div>

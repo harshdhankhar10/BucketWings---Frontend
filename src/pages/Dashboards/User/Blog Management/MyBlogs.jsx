@@ -19,7 +19,7 @@ const MyBlogs = () => {
     const fetchBlogs = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/blogs/myBlogs`);
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/api/v1/blogs/user/blogs`);
         setBlogs(response.data.blogs);
       } catch (error) {
         console.error('Error fetching blogs:', error);

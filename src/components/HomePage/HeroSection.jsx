@@ -104,7 +104,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex items-center space-x-4 text-gray-600 flex-wrap justify-center "
+            className="flex items-center space-x-4 text-gray-600 flex-wrap sm:justify-start justify-center"
           >
             <div className="flex -space-x-2">
               {[1, 2, 3, 4, 5].map((i) => (
