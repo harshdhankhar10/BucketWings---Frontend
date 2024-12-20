@@ -120,7 +120,7 @@ const ViewPost = () => {
       </header>
 
       <div className="mb-6">
-        <p className="text-gray-700 leading-relaxed">{post.content.replace(/(?:\r\n|\r|\n)/g, '<br>')}</p>
+        <p className="text-gray-700 leading-relaxed">{post.content.replace(/(?:\r\n|\r|\n)/g, '<br />')}</p>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
@@ -139,7 +139,7 @@ const ViewPost = () => {
           </button>
           <button className="flex items-center space-x-1 hover:text-blue-600 transition duration-300">
             <MessageCircle size={18} />
-            <span>{post.messages.length} Comments</span>
+            <span>{comments.length} Comments</span>
           </button>
           <button onClick = {() => navigator.share({ title: post.title, text: post.content, url: window.location.href })}
           className="flex items-center space-x-1 hover:text-blue-600 transition duration-300">

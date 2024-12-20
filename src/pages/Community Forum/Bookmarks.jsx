@@ -7,18 +7,23 @@ import {motion, AnimatePresence} from 'framer-motion'
 import { toast } from 'react-toastify';
 import { MdBookmarkAdded } from "react-icons/md";
 import { FaRegBookmark } from "react-icons/fa";
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const Bookmarks = () => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [auth] = useAuth();
+  const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth'))?.user);
 
-  useEffect(() => {
-    if(JSON.parse(localStorage.getItem('auth'))) {
-      window.location.href = '/community';
+useEffect(() => {
+    if(!auth.user){
+      navigate('/community');
     }
-  }, []);
+  }, [auth, navigate]);
+
 
   useEffect(() => {
     const fetchBookmarks = async () => {

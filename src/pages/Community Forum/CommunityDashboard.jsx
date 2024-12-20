@@ -141,6 +141,17 @@ const ForumPage = () => {
           )}
 
           {/* Categories */}
+
+          <div className="border-b pb-4">
+            <h3 className="font-semibold text-lg mb-3 text-gray-800">Popular Categories</h3>
+            <div className=" flex flex-col gap-3">
+              {categories.map((category, index) => (
+                <Link key={index} to={`/community/category/${category}`} className=" bg-purple-100 w-full text-purple-800 text-sm font-medium px-3 py-2 rounded-lg hover:bg-purple-200 transition duration-300 text-center">
+                  {category}
+                </Link>
+              ))}
+            </div>
+          </div>
         
 
           {/* Top Contributors */}
@@ -250,11 +261,23 @@ const ForumPage = () => {
                 </div>
               </div>
 
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h3 className="font-semibold text-lg mb-4 text-gray-800">Top Contributors</h3>
+                <ul className="space-y-3">
+                  {contributors.map(({ name }, index) => (
+                    <li key={index} className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-md transition duration-300">
+                      <Award size={18} className="text-yellow-500" />
+                      <span className="font-medium text-gray-700">{name}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
             </aside>
 
             {/* Main Content */}
             <main className="flex-grow space-y-6">
-              <div className="bg-white rounded-lg shadow-sm p-6">            
+              <div className="bg-white rounded-lg shadow-sm ">            
                 <Outlet />
               </div>
 

@@ -24,10 +24,10 @@ const CreatePost = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(JSON.parse(localStorage.getItem('auth'))) {
-      window.location.href = '/community';
+    if(!auth.user){
+      navigate('/community');
     }
-  }, []);
+  }, [auth, navigate]);
 
 
 

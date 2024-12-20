@@ -5,17 +5,19 @@ import { Edit, Trash } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const MyPosts = () => {
   const [posts, setPosts] = useState([]);
+  const [auth] = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if(JSON.parse(localStorage.getItem('auth'))) {
-      window.location.href = '/community';
+useEffect(() => {
+    if(!auth.user){
+      navigate('/community');
     }
-  }, []);
-
-
+  }, [auth, navigate]);
 
   useEffect(() => {
     const fetchPosts = async () => {

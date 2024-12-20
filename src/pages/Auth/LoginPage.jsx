@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Navbar from "../../components/Navbar"
 import Swal from 'sweetalert2'
+import { FaGithub  } from "react-icons/fa";
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -72,6 +74,7 @@ const LoginPage = () => {
     }
     setIsSubmitting(false);
   };
+
 
   if (isLoggedIn) return null;
 
@@ -165,6 +168,7 @@ const LoginPage = () => {
               <ArrowRight className="ml-2 h-5 w-5" />
             </motion.button>
           </form>
+
 
           <div className="text-center">
             <p className="mt-2 text-sm text-gray-600">
