@@ -104,8 +104,7 @@ const ResetPassword = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="mx-auto bg-purple-100 rounded-full p-3 w-16 h-16 flex items-center justify-center mb-6"
-            >
+              className="mx-auto bg-purple-100 rounded-full p-3 w-16 h-16 flex items-center justify-center mb-6">
               <Lock className="h-8 w-8 text-purple-600" />
             </motion.div>
             <motion.h2

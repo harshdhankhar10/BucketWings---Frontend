@@ -4,4 +4,3 @@ Disallow: /api/
 Disallow: /dashboard
 
 Sitemap: https://www.bucketwings.online/sitemap.xml
-Sitemap: https://bucketwingbackend.vercel.app/sitemap.xml

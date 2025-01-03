@@ -32,7 +32,7 @@ import PostByTags from './Community Forum/PostByTags'
 
 // import Sitemap from "../../public/sitemap.xml"
 import Sitemap from "../../public/sitemap.jsx"
-import Robots from "../../public/robots.txt"
+import Robots from "/robots.txt"
 import ErrorPage from './ErrorPage404.jsx'
 
 import GoalsHomepage from './Homepage/GoalsHomepage.jsx'
@@ -108,6 +108,9 @@ import ViewNote from './Dashboards/User/QuickNotes Management/ViewNote.jsx'
 import SupportTicketHome from './Dashboards/User/Support Ticket Management/SupportTicketHome.jsx'
 import ViewSupportTicket from './Dashboards/User/Support Ticket Management/ViewSupportTicket.jsx'
 import CreateSupportTicket from './Dashboards/User/Support Ticket Management/CreateSupportTicket.jsx'
+
+import AIChatbotHome from './Dashboards/User/AI Chatbot/AIChatbotHome.jsx'
+import AIChatbotChats from './Dashboards/User/AI Chatbot/AIChatbotChats.jsx'
 
 
 
@@ -259,6 +262,15 @@ const RoutesPath = () => {
           <Route path="support-ticket" element={<SupportTicketHome />} />
           <Route path="support-ticket/view/:id" element={<ViewSupportTicket />} />
           <Route path="support-ticket/create" element={<CreateSupportTicket />} />
+
+          <Route path="chatbot" element={<AIChatbotHome />} />
+          <Route path="chatbot/chat/:id" element={<AIChatbotChats />} />
+
+
+
+
+
+
           
         </Route>
        

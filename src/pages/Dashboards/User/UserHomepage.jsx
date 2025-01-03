@@ -16,6 +16,8 @@ import {
   FiBell
 } from "react-icons/fi";
 import { BsTicketPerforated } from "react-icons/bs";
+import { TbMessageChatbot } from "react-icons/tb";
+
 
 import { AiOutlineFileText } from "react-icons/ai";
 import { GiAchievement } from "react-icons/gi";
@@ -139,6 +141,13 @@ const DashboardLayout = () => {
       ]
     },
     {
+      title : "AI Chatbot",
+      icon : TbMessageChatbot,
+      submenus : [
+        { title : "Chat with Chatbot", link : "/dashboard/user/chatbot" }
+      ]
+    },
+    {
       title: "Settings",
       icon: FiSettings,
       submenus: [
@@ -148,15 +157,6 @@ const DashboardLayout = () => {
         { title: "Privacy", link: "/dashboard/user/privacy" },
       ],
     },
-    // {
-    //   title: "Community",
-    //   icon: FiUsers,
-    //   submenus: [
-    //     { title: "Forums", link: "/dashboard/user/forums" },
-    //     { title: "Chat with Mentors", link: "/dashboard/user/chat-mentors" },
-    //     { title: "Leaderboard", link: "/dashboard/user/leaderboard" },
-    //   ],
-    // },
     {
       title: "Resources",
       icon: FiBook,
@@ -218,7 +218,7 @@ const DashboardLayout = () => {
 
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex  bg-gray-100">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 h-16 flex items-center justify-between px-4">
       {/* Left Section: Logo and Mobile Menu Button */}
@@ -233,7 +233,7 @@ const DashboardLayout = () => {
         )}
         <div className="flex items-center pl-3">
           <img
-            src="https://i.postimg.cc/1zRqmjj9/webLogo.png"
+            src="https://ph-files.imgix.net/854f0b0b-4f3c-4d31-8a77-1dc685b44703.png?auto=compress&codec=mozjpeg&cs=strip&auto=format&w=64&h=64&fit=crop&dpr=1"
             alt="BucketWings Logo"
             className="h-12 w-12 rounded-xl"
           />

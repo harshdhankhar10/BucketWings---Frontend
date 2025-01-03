@@ -21,7 +21,7 @@ const MotivationalQuote = () => {
   }, []); 
 
   return (
-    <div className="bg-blue-100 p-4 rounded-lg shadow-md text-center">
+    <div className="bg-white p-4 rounded-lg shadow-md text-center mb-8">
       <h2 className="text-lg font-semibold">Motivational Quote</h2>
       <p className="mt-2 italic">{quote}</p>
       <p className="mt-2 font-semibold">- {author}</p>
